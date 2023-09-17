@@ -8,7 +8,6 @@ import net.minecraft.registry.Registries;
 import net.minecraft.util.Identifier;
 
 public class RecipeHelper {
-
     public static void createShaped(ItemStack stack, String pattern, JsonObject keys, String group) {
         JsonObject json = new JsonObject();
         json.addProperty("type", "minecraft:crafting_shaped");
@@ -67,7 +66,5 @@ public class RecipeHelper {
 
     private static void inject(JsonObject recipe) {
         Identifier id = new Identifier(recipe.getAsJsonObject("result").getAsJsonPrimitive("item").getAsString());
-        RecipeInjector.register(id, recipe);
     }
-
 }

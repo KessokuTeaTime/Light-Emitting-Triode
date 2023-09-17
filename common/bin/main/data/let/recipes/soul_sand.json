@@ -1,0 +1,15 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "pattern": [
+    "11",
+    "11"
+  ],
+  "key": {
+    "1": {
+      "item": "led:shade"
+    }
+  },
+  "result": {
+    "item": "minecraft:soul_sand"
+  }
+}

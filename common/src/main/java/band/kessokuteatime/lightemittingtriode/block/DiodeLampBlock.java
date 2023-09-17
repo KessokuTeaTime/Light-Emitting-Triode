@@ -27,7 +27,7 @@ public class DiodeLampBlock extends Block {
 
     public DiodeLampBlock(DiodeVariant variant) {
         super(variant.settings()
-                .luminance((state) -> state.get(LIT) ? variant.getLightLevel() : 0)
+                .luminance((state) -> state.get(LIT) ? variant.light() : 0)
                 .emissiveLighting((state, world, pos) -> state.get(LIT))
         );
 
@@ -37,7 +37,7 @@ public class DiodeLampBlock extends Block {
 
     @Override
     public void appendTooltip(ItemStack stack, BlockView world, List<Text> tooltip, TooltipContext options) {
-        final String text = variant.getTooltip();
+        final String text = variant.tooltip();
 
         if (text != null) {
             tooltip.add(Text.translatable(text).formatted(Formatting.GRAY));

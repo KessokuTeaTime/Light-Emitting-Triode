@@ -1,0 +1,67 @@
+{
+	"credit": "Made with Blockbench by magistermaks",
+	"textures": {
+		"1": "led:block/base",
+		"2": "led:block/fixture_on",
+		"3": "led:block/glow",
+        "4": "led:block/bars_fixture",
+		"particle": "led:block/particle"
+	},
+    "jmxl": true,
+	"elements": [
+		{
+			"from": [3, 0, 3],
+			"to": [13, 1, 13],
+			"rotation": {"angle": 0, "axis": "y", "origin": [12, 8, 12]},
+			"faces": {
+				"north": {"uv": [0, 0, 10, 1], "texture": "#1"},
+				"east": {"uv": [0, 3, 10, 4], "texture": "#1"},
+				"south": {"uv": [0, 1, 10, 2], "texture": "#1"},
+				"west": {"uv": [0, 2, 10, 3], "texture": "#1"},
+				"up": {"uv": [6, 6, 16, 16], "texture": "#1"},
+				"down": {"uv": [6, 6, 16, 16], "texture": "#1"}
+			}
+		},
+		{
+			"from": [4, 1, 4],
+			"to": [12, 6, 12],
+			"rotation": {"angle": 0, "axis": "y", "origin": [12, 9, 12]},
+			"faces": {
+				"north": {"uv": [0, 0, 8, 5], "texture": "#2", "tintindex": 0},
+				"east": {"uv": [0, 0, 8, 5], "texture": "#2", "tintindex": 0},
+				"south": {"uv": [0, 0, 8, 5], "texture": "#2", "tintindex": 0},
+				"west": {"uv": [0, 0, 8, 5], "texture": "#2", "tintindex": 0},
+				"up": {"uv": [8, 0, 16, 8], "texture": "#2", "tintindex": 0},
+				"down": {"uv": [8, 0, 16, 8], "texture": "#2", "tintindex": 0}
+			}
+		},
+		{
+			"from": [3.5, 1, 3.5],
+			"to": [12.5, 6.5, 12.5],
+			"rotation": {"angle": 0, "axis": "y", "origin": [12, 9, 12]},
+			"jmxl_layer": "TRANSLUCENT",
+			"faces": {
+				"north": {"uv": [0, 0, 8, 5], "texture": "#3", "tintindex": 0},
+				"east": {"uv": [0, 0, 8, 5], "texture": "#3", "tintindex": 0},
+				"south": {"uv": [0, 0, 8, 5], "texture": "#3", "tintindex": 0},
+				"west": {"uv": [0, 0, 8, 5], "texture": "#3", "tintindex": 0},
+				"up": {"uv": [8, 0, 16, 8], "texture": "#3", "tintindex": 0},
+				"down": {"uv": [8, 0, 16, 8], "texture": "#3", "tintindex": 0}
+			}
+		},
+		{
+			"from": [3.75, 1, 3.75],
+			"to": [12.25, 6.25, 12.25],
+			"rotation": {"angle": 0, "axis": "y", "origin": [12, 9, 12]},
+			"jmxl_layer": "CUTOUT",
+			"faces": {
+				"north": {"uv": [0, 0, 8, 5], "texture": "#4"},
+				"east": {"uv": [0, 0, 8, 5], "texture": "#4"},
+				"south": {"uv": [0, 0, 8, 5], "texture": "#4"},
+				"west": {"uv": [0, 0, 8, 5], "texture": "#4"},
+				"up": {"uv": [8, 0, 16, 8], "texture": "#4"},
+				"down": {"uv": [8, 0, 16, 8], "texture": "#4"}
+			}
+		}
+	]
+}

@@ -1,0 +1,7 @@
+{
+    "variants": {
+        "lit=false": { "model": "led:block/clear_full/roff" },
+        "lit=true": { "model": "led:block/clear_full/ron" }
+    }
+}
+

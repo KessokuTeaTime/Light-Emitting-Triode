@@ -1,7 +1,8 @@
 package band.kessokuteatime.lightemittingtriode.util;
 
-import net.fabricmc.fabric.api.object.builder.v1.block.FabricBlockSettings;
-import net.minecraft.block.Material;
+import band.kessokuteatime.lightemittingtriode.LET;
+import net.minecraft.block.AbstractBlock;
+import net.minecraft.block.Blocks;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.DyeColor;
@@ -28,24 +29,24 @@ public enum DiodeVariant {
         this.reinforced = reinforced;
     }
 
-    public FabricBlockSettings settings() {
-        return FabricBlockSettings.of(Material.METAL).strength(reinforced ? 0.8f : 0.4f);
+    public AbstractBlock.Settings settings() {
+        return AbstractBlock.Settings.copy(Blocks.AMETHYST_BLOCK).strength(reinforced ? 0.8F : 0.4F);
     }
 
-    public int getLightLevel() {
+    public int light() {
         return light;
     }
 
-    public String getTooltip() {
+    public String tooltip() {
         return tooltip;
     }
 
-    public String getName(String name) {
+    public String name(String name) {
         return prefix + name;
     }
 
     private static String id(String name) {
-        return RegistryHelper.ID + ":" + name;
+        return LET.ID + ":" + name;
     }
 
     private String group(String name) {
@@ -93,6 +94,4 @@ public enum DiodeVariant {
             );
         }
     }
-
-
 }

@@ -1,0 +1,18 @@
+{
+    "variants": {
+        "lit=false,facing=down": { "model": "led:block/small/roff" },
+        "lit=false,facing=up": { "model": "led:block/small/roff", "x": 180 },
+        "lit=false,facing=south": { "model": "led:block/small/roff", "x": 90 },
+        "lit=false,facing=north": { "model": "led:block/small/roff", "x": 270 },
+        "lit=false,facing=west": { "model": "led:block/small/roff", "x": 90, "y": 90 },
+        "lit=false,facing=east": { "model": "led:block/small/roff", "x": 90, "y": 270 },
+
+        "lit=true,facing=down": { "model": "led:block/small/ron" },
+        "lit=true,facing=up": { "model": "led:block/small/ron", "x": 180 },
+        "lit=true,facing=south": { "model": "led:block/small/ron", "x": 90 },
+        "lit=true,facing=north": { "model": "led:block/small/ron", "x": 270 },
+        "lit=true,facing=west": { "model": "led:block/small/ron", "x": 90, "y": 90 },
+        "lit=true,facing=east": { "model": "led:block/small/ron", "x": 90, "y": 270 }
+    }
+}
+

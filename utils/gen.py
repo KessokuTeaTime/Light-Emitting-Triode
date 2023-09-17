@@ -1,4 +1,3 @@
-
 import shutil
 import sys
 
@@ -26,9 +25,28 @@ shades = {
     "shaded_"
 }
 
-path = sys.argv[1]
-name = sys.argv[2]
+paths = {
+    "block",
+    "item"
+}
+
+names = {
+    "button",
+    "clear_full",
+    "flat_fixture",
+    "large_fixture",
+    "medium_fixture",
+    "reinforced_fixture",
+    "reinforced_flat_fixture",
+    "reinforced_large_fixture",
+    "reinforced_medium_fixture",
+    "reinforced_small_fixture",
+    "small_fixture",
+    "switch"
+}
 
 for shade in shades:
     for color in colors:
-        shutil.copy2("./input/" + path + "/" + name + ".json", "./output/" + shade + name + "_" + color + ".json")
+        for path in paths:
+            for name in names:
+                shutil.copyfile("./input/" + path + "/" + name + ".json", "./output/" + shade + name + "_" + color + ".json")
