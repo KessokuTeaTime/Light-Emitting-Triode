@@ -1,0 +1,36 @@
+modLoader = "javafml"
+loaderVersion = "[46,)"
+#issueTrackerURL = ""
+license = "GPL-3.0"
+
+[[mods]]
+modId = "let"
+version = "${version}"
+displayName = "Light Emitting Triode"
+displayURL = "https://github.com/KessokuTeaTime/Light-Emitting-Triode"
+authors = "KessokuTeaTime"
+description = '''
+...And God Said, Let There Be Light; And There was Redstone Lamps.
+'''
+logoFile = "icon.png"
+
+[[dependencies.let]]
+modId = "forge"
+mandatory = true
+versionRange = "[46,)"
+ordering = "NONE"
+side = "BOTH"
+
+[[dependencies.let]]
+modId = "minecraft"
+mandatory = true
+versionRange = "[1.20,)"
+ordering = "NONE"
+side = "BOTH"
+
+[[dependencies.let]]
+modId = "architectury"
+mandatory = true
+versionRange = "[9,)"
+ordering = "AFTER"
+side = "BOTH"
