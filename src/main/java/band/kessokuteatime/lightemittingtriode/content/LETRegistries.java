@@ -1,6 +1,7 @@
 package band.kessokuteatime.lightemittingtriode.content;
 
 import band.kessokuteatime.lightemittingtriode.LET;
+import band.kessokuteatime.lightemittingtriode.util.DefaultName;
 import net.fabricmc.fabric.api.client.rendering.v1.ColorProviderRegistry;
 import net.fabricmc.fabric.api.itemgroup.v1.FabricItemGroup;
 import net.fabricmc.fabric.api.itemgroup.v1.ItemGroupEvents;
@@ -17,6 +18,16 @@ import java.util.function.Consumer;
 import java.util.function.Supplier;
 
 public class LETRegistries {
+    private static final HashMap<Item, String> DEFAULT_NAMES = new HashMap<>();
+
+    private static void addDefaultName(Item item, String name) {
+        DEFAULT_NAMES.put(item, name);
+    }
+
+    public static String getDefaultName(Item item) {
+        return DEFAULT_NAMES.getOrDefault(item, "");
+    }
+
     private static Block registerBlock(Identifier id, Block block) {
         return Registry.register(Registries.BLOCK, id, block);
     }
@@ -78,59 +89,72 @@ public class LETRegistries {
 
         public static void register() {
             registerColorVariants(
-                    CEILINGS, "ceiling",
-                    () -> new Block(FabricBlockSettings.create())
+                    CEILINGS,
+                    () -> new Block(FabricBlockSettings.create()),
+                    DefaultName.CEILING, DefaultName.Attachment.NONE
             );
 
             registerColorVariants(
-                    SLABS, "slab",
-                    () -> new Block(FabricBlockSettings.create())
+                    SLABS,
+                    () -> new Block(FabricBlockSettings.create()),
+                    DefaultName.SLAB, DefaultName.Attachment.NONE
             );
             registerColorVariants(
-                    CLEARS, "clear",
-                    () -> new Block(FabricBlockSettings.create())
-            );
-
-            registerColorVariants(
-                    LANTERNS_SMALL, "lantern_small",
-                    () -> new Block(FabricBlockSettings.create())
-            );
-            registerColorVariants(
-                    LANTERNS, "lantern",
-                    () -> new Block(FabricBlockSettings.create())
-            );
-            registerColorVariants(
-                    LANTERNS_LARGE, "lantern_large",
-                    () -> new Block(FabricBlockSettings.create())
+                    CLEARS,
+                    () -> new Block(FabricBlockSettings.create()),
+                    DefaultName.CLEAR, DefaultName.Attachment.NONE
             );
 
             registerColorVariants(
-                    ALARMS_SMALL, "alarm_small",
-                    () -> new Block(FabricBlockSettings.create())
+                    LANTERNS_SMALL,
+                    () -> new Block(FabricBlockSettings.create()),
+                    DefaultName.LANTERN, DefaultName.Attachment.SMALL
             );
             registerColorVariants(
-                    ALARMS, "alarm",
-                    () -> new Block(FabricBlockSettings.create())
+                    LANTERNS,
+                    () -> new Block(FabricBlockSettings.create()),
+                    DefaultName.LANTERN, DefaultName.Attachment.NONE
             );
             registerColorVariants(
-                    ALARMS_LARGE, "alarm_large",
-                    () -> new Block(FabricBlockSettings.create())
+                    LANTERNS_LARGE,
+                    () -> new Block(FabricBlockSettings.create()),
+                    DefaultName.LANTERN, DefaultName.Attachment.LARGE
+            );
+
+            registerColorVariants(
+                    ALARMS_SMALL,
+                    () -> new Block(FabricBlockSettings.create()),
+                    DefaultName.ALARM, DefaultName.Attachment.SMALL
+            );
+            registerColorVariants(
+                    ALARMS,
+                    () -> new Block(FabricBlockSettings.create()),
+                    DefaultName.ALARM, DefaultName.Attachment.NONE
+            );
+            registerColorVariants(
+                    ALARMS_LARGE,
+                    () -> new Block(FabricBlockSettings.create()),
+                    DefaultName.ALARM, DefaultName.Attachment.LARGE
             );
         }
 
-        public static <B extends Block> void registerColorVariants(HashMap<Block, Item> result, String name, Supplier<B> blockSupplier) {
+        public static <B extends Block> void registerColorVariants(
+                HashMap<Block, Item> result,
+                Supplier<B> blockSupplier,
+                DefaultName defaultName,
+                DefaultName.Attachment prefix
+        ) {
             result.clear();
 
             for (DyeColor dyeColor : DyeColor.values()) {
-                Identifier id = LET.id(name + "_" + dyeColor.getName());
+                Identifier id = LET.id(defaultName.getId(dyeColor, prefix));
                 B block = blockSupplier.get();
+                BlockItem item = new BlockItem(block, new Item.Settings());
 
-                result.put(
-                        registerBlock(id, block),
-                        registerItem(id, new BlockItem(block, new Item.Settings()))
-                );
+                result.put(registerBlock(id, block), registerItem(id, item));
 
                 ColorProviderRegistry.BLOCK.register((state, world, pos, tintIndex) -> dyeColor.getSignColor(), block);
+                addDefaultName(item, defaultName.getName(dyeColor, prefix));
             }
         }
     }

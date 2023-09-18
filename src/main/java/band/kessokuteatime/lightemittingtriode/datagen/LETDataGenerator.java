@@ -1,6 +1,5 @@
 package band.kessokuteatime.lightemittingtriode.datagen;
 
-import band.kessokuteatime.lightemittingtriode.LET;
 import band.kessokuteatime.lightemittingtriode.content.LETRegistries;
 import net.fabricmc.fabric.api.datagen.v1.DataGeneratorEntrypoint;
 import net.fabricmc.fabric.api.datagen.v1.FabricDataGenerator;
@@ -10,12 +9,8 @@ import net.fabricmc.fabric.api.datagen.v1.provider.FabricModelProvider;
 import net.minecraft.data.DataProvider;
 import net.minecraft.data.client.BlockStateModelGenerator;
 import net.minecraft.data.client.ItemModelGenerator;
-import net.minecraft.registry.Registries;
-import org.apache.commons.lang3.StringUtils;
 
 import java.io.IOException;
-import java.util.Arrays;
-import java.util.stream.Collectors;
 
 public class LETDataGenerator implements DataGeneratorEntrypoint {
     /**
@@ -49,12 +44,9 @@ public class LETDataGenerator implements DataGeneratorEntrypoint {
                 throw new RuntimeException(ioException);
             }
 
-            LETRegistries.Blocks.forEach(hashMap -> hashMap.values().forEach(item -> translationBuilder.add(
-                    item,
-                    Arrays.stream(Registries.ITEM.getId(item).getPath().split("\\."))
-                            .peek(StringUtils::capitalize)
-                            .collect(Collectors.joining(" "))
-            )));
+            LETRegistries.Blocks.forEach(hashMap -> hashMap.values().forEach(item ->
+                    translationBuilder.add(item, LETRegistries.getDefaultName(item))
+            ));
         }
     }
 

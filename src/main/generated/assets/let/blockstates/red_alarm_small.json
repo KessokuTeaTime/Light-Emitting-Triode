@@ -1,0 +1,7 @@
+{
+  "variants": {
+    "": {
+      "model": "let:block/red_alarm_small"
+    }
+  }
+}
