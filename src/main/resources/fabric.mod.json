@@ -1,0 +1,35 @@
+{
+  "schemaVersion": 1,
+  "id": "let",
+  "version": "${version}",
+
+  "name": "Light Emitting Triode",
+  "description": "...And God Said, Let There be Light; Then There were Redstone Lamps.",
+  "authors": [
+    "Kessoku Tea Time"
+  ],
+  "contact": {
+    "homepage": "https://github.com/KrLite",
+    "sources": "https://github.com/KrLite/Ive-Spoken"
+  },
+
+  "license": "GPL-3.0",
+  "icon": "assets/let/icon.png",
+
+  "environment": "*",
+  "entrypoints": {
+    "main": [
+      "band.kessokuteatime.lightemittingtriode.LET"
+    ]
+  },
+  "mixins": [
+  ],
+
+  "depends": {
+    "fabricloader": ">=0.14.21",
+    "fabric-api": "*",
+    "minecraft": ["~1.20", "~1.20.1"]
+  },
+  "suggests": {
+  }
+}
