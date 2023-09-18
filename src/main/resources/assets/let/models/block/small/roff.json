@@ -2,10 +2,10 @@
 	"credit": "Made with Blockbench by magistermaks",
 	"parent": "block/block",
 	"textures": {
-		"0": "led:block/fixture_off",
-		"1": "led:block/base",
-		"3": "led:block/bars_fixture",
-		"particle": "led:block/particle"
+		"0": "let:block/fixture_off",
+		"1": "let:block/base",
+		"3": "let:block/bars_fixture",
+		"particle": "let:block/particle"
 	},
     "jmxl": true,
 	"elements": [

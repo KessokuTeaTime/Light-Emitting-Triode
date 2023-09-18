@@ -2,10 +2,10 @@
 	"credit": "Made with Blockbench by magistermaks",
 	"parent": "block/block",
 	"textures": {
-		"0": "led:block/bars_full",
-		"1": "led:block/base",
-		"2": "led:block/clear_full_off",
-		"particle": "led:block/particle"
+		"0": "let:block/bars_full",
+		"1": "let:block/base",
+		"2": "let:block/clear_full_off",
+		"particle": "let:block/particle"
 	},
     "jmxl": true,
 	"elements": [

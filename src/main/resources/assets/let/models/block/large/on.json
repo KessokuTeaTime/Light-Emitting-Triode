@@ -1,10 +1,10 @@
 {
 	"credit": "Made with Blockbench by magistermaks",
 	"textures": {
-		"1": "led:block/base",
-		"2": "led:block/fixture_on",
-		"3": "led:block/glow",
-		"particle": "led:block/particle"
+		"1": "let:block/base",
+		"2": "let:block/fixture_on",
+		"3": "let:block/glow",
+		"particle": "let:block/particle"
 	},
     "jmxl": true,
 	"elements": [

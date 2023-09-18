@@ -1,7 +1,7 @@
 {
     "variants": {
-        "lit=false": { "model": "led:block/clear_full/off" },
-        "lit=true": { "model": "led:block/clear_full/on" }
+        "lit=false": { "model": "let:block/clear_full/off" },
+        "lit=true": { "model": "let:block/clear_full/on" }
     }
 }
 

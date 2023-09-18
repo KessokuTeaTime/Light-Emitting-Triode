@@ -1,18 +1,18 @@
 {
     "variants": {
-        "lit=false,facing=down": { "model": "led:block/large/off" },
-        "lit=false,facing=up": { "model": "led:block/large/off", "x": 180 },
-        "lit=false,facing=south": { "model": "led:block/large/off", "x": 90 },
-        "lit=false,facing=north": { "model": "led:block/large/off", "x": 270 },
-        "lit=false,facing=west": { "model": "led:block/large/off", "x": 90, "y": 90 },
-        "lit=false,facing=east": { "model": "led:block/large/off", "x": 90, "y": 270 },
+        "lit=false,facing=down": { "model": "let:block/large/off" },
+        "lit=false,facing=up": { "model": "let:block/large/off", "x": 180 },
+        "lit=false,facing=south": { "model": "let:block/large/off", "x": 90 },
+        "lit=false,facing=north": { "model": "let:block/large/off", "x": 270 },
+        "lit=false,facing=west": { "model": "let:block/large/off", "x": 90, "y": 90 },
+        "lit=false,facing=east": { "model": "let:block/large/off", "x": 90, "y": 270 },
 
-        "lit=true,facing=down": { "model": "led:block/large/on" },
-        "lit=true,facing=up": { "model": "led:block/large/on", "x": 180 },
-        "lit=true,facing=south": { "model": "led:block/large/on", "x": 90 },
-        "lit=true,facing=north": { "model": "led:block/large/on", "x": 270 },
-        "lit=true,facing=west": { "model": "led:block/large/on", "x": 90, "y": 90 },
-        "lit=true,facing=east": { "model": "led:block/large/on", "x": 90, "y": 270 }
+        "lit=true,facing=down": { "model": "let:block/large/on" },
+        "lit=true,facing=up": { "model": "let:block/large/on", "x": 180 },
+        "lit=true,facing=south": { "model": "let:block/large/on", "x": 90 },
+        "lit=true,facing=north": { "model": "let:block/large/on", "x": 270 },
+        "lit=true,facing=west": { "model": "let:block/large/on", "x": 90, "y": 90 },
+        "lit=true,facing=east": { "model": "let:block/large/on", "x": 90, "y": 270 }
     }
 }
 

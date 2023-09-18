@@ -1,7 +1,7 @@
 {
     "textures": {
-        "texture": "led:block/clear_full_on",
-        "2": "led:block/glow",
+        "texture": "let:block/clear_full_on",
+        "2": "let:block/glow",
         "particle": "#texture"
     },
     "jmxl": true,

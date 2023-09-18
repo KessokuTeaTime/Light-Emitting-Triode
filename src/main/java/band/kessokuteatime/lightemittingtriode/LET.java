@@ -1,11 +1,8 @@
 package band.kessokuteatime.lightemittingtriode;
 
-import band.kessokuteatime.lightemittingtriode.block.DiodeButtonLampBlock;
-import band.kessokuteatime.lightemittingtriode.block.DiodeLampBlock;
-import band.kessokuteatime.lightemittingtriode.block.DiodeSwitchLampBlock;
-import band.kessokuteatime.lightemittingtriode.block.DirectionalDiodeLampBlock;
-import band.kessokuteatime.lightemittingtriode.util.DiodeVariant;
+import band.kessokuteatime.lightemittingtriode.content.LETRegistries;
 import band.kessokuteatime.lightemittingtriode.util.Util;
+import net.fabricmc.api.ModInitializer;
 import net.minecraft.text.MutableText;
 import net.minecraft.text.Text;
 import net.minecraft.util.Identifier;
@@ -13,8 +10,8 @@ import net.minecraft.util.shape.VoxelShape;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-public class LET {
-    public static final String ID = "let", NAME = "Light Emitting Diode";
+public class LET implements ModInitializer {
+    public static final String ID = "let", NAME = "Light Emitting Triode";
     public static final Logger LOGGER = LoggerFactory.getLogger(ID);
 
     public static String idString(String category, String... paths) {
@@ -29,12 +26,15 @@ public class LET {
         return new Identifier(ID, String.join("/", paths));
     }
 
-    public static void init() {
+    @Override
+    public void onInitialize() {
+        LETRegistries.register();
+
+        /*
         VoxelShape[] smallDiodeStance = Util.getVariants(4, 0, 4, 12, 1, 12);
         VoxelShape[] largeDiodeStance = Util.getVariants(3, 0, 3, 13, 1, 13);
         VoxelShape[] flatDiodeStance = Util.getVariants(0, 0, 0, 16, 1, 16);
 
-        /*
         // Buttons & switches
         LETRegistries.registerForColors("button", DiodeButtonLampBlock::new, DiodeVariant.getButtonRecipe(true));
         LETRegistries.registerForColors("switch", DiodeSwitchLampBlock::new, DiodeVariant.getButtonRecipe(false));

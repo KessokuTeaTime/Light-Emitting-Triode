@@ -1,6 +1,6 @@
 {   "parent": "block/block",
     "textures": {
-        "texture": "led:block/clear_full_off",
+        "texture": "let:block/clear_full_off",
         "particle": "#texture"
     },
     "elements": [

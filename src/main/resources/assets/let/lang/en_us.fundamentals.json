@@ -1,0 +1,12 @@
+{
+    "item.let.bulb": "Bulb",
+    "item.let.led": "Light Emitting Diode",
+    "item.let.let": "Light Emitting Triode",
+    "item.let.shade": "Piece of Shade",
+
+    "tooltip.let.shaded": "This lamp is shaded and doesn't emit light.",
+    "tooltip.let.reinforced": "This lamp is reinforced.",
+    "tooltip.let.shaded_and_reinforced": "This lamp is reinforced, and doesn't emit light.",
+
+    "itemGroup.let.general": "Light Emitting Triode"
+}

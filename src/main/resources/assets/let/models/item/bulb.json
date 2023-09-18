@@ -1,6 +1,6 @@
 {
   "parent": "item/generated",
   "textures": {
-    "layer0": "led:item/bulb"
+    "layer0": "let:item/bulb"
   }
 }

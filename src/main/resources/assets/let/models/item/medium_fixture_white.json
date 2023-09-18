@@ -1,3 +1,3 @@
 {
-    "parent": "led:block/medium/off"
+    "parent": "let:block/medium/off"
 }

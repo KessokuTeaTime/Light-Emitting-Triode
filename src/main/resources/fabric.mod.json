@@ -20,6 +20,9 @@
   "entrypoints": {
     "main": [
       "band.kessokuteatime.lightemittingtriode.LET"
+    ],
+    "fabric-datagen": [
+      "band.kessokuteatime.lightemittingtriode.datagen.LETDataGenerator"
     ]
   },
   "mixins": [

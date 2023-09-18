@@ -1,18 +1,18 @@
 {
     "variants": {
-        "lit=false,facing=down": { "model": "led:block/medium/roff" },
-        "lit=false,facing=up": { "model": "led:block/medium/roff", "x": 180 },
-        "lit=false,facing=south": { "model": "led:block/medium/roff", "x": 90 },
-        "lit=false,facing=north": { "model": "led:block/medium/roff", "x": 270 },
-        "lit=false,facing=west": { "model": "led:block/medium/roff", "x": 90, "y": 90 },
-        "lit=false,facing=east": { "model": "led:block/medium/roff", "x": 90, "y": 270 },
+        "lit=false,facing=down": { "model": "let:block/medium/roff" },
+        "lit=false,facing=up": { "model": "let:block/medium/roff", "x": 180 },
+        "lit=false,facing=south": { "model": "let:block/medium/roff", "x": 90 },
+        "lit=false,facing=north": { "model": "let:block/medium/roff", "x": 270 },
+        "lit=false,facing=west": { "model": "let:block/medium/roff", "x": 90, "y": 90 },
+        "lit=false,facing=east": { "model": "let:block/medium/roff", "x": 90, "y": 270 },
 
-        "lit=true,facing=down": { "model": "led:block/medium/ron" },
-        "lit=true,facing=up": { "model": "led:block/medium/ron", "x": 180 },
-        "lit=true,facing=south": { "model": "led:block/medium/ron", "x": 90 },
-        "lit=true,facing=north": { "model": "led:block/medium/ron", "x": 270 },
-        "lit=true,facing=west": { "model": "led:block/medium/ron", "x": 90, "y": 90 },
-        "lit=true,facing=east": { "model": "led:block/medium/ron", "x": 90, "y": 270 }
+        "lit=true,facing=down": { "model": "let:block/medium/ron" },
+        "lit=true,facing=up": { "model": "let:block/medium/ron", "x": 180 },
+        "lit=true,facing=south": { "model": "let:block/medium/ron", "x": 90 },
+        "lit=true,facing=north": { "model": "let:block/medium/ron", "x": 270 },
+        "lit=true,facing=west": { "model": "let:block/medium/ron", "x": 90, "y": 90 },
+        "lit=true,facing=east": { "model": "let:block/medium/ron", "x": 90, "y": 270 }
     }
 }
 
