@@ -1,11 +1,13 @@
 package band.kessokuteatime.lightemittingtriode.util;
 
+import band.kessokuteatime.lightemittingtriode.LET;
 import net.minecraft.util.DyeColor;
 import org.apache.commons.lang3.StringUtils;
 import org.jetbrains.annotations.Nullable;
 
-import java.util.*;
-import java.util.function.Function;
+import java.util.Arrays;
+import java.util.HashMap;
+import java.util.Optional;
 import java.util.stream.Collectors;
 
 public enum Describer {
@@ -14,6 +16,31 @@ public enum Describer {
     CLEAR("clear", "Clear"),
     LANTERN("lantern", "Lantern"),
     ALARM("alarm", "Alarm");
+
+    private static final HashMap<String, String> DEFAULT_NAMES = new HashMap<>();
+
+    private static void addDefaultName(String key, String name) {
+        DEFAULT_NAMES.put(key, name);
+    }
+
+    public static String getDefaultName(String key) {
+        if (!DEFAULT_NAMES.containsKey(key)) LET.LOGGER.warn("No default name found for key " + key + ".");
+        return DEFAULT_NAMES.getOrDefault(key, "");
+    }
+
+    public record Wrapper(Describer describer, Attachment attachment) {
+        public String getId(DyeColor dyeColor) {
+            return describer().getId(dyeColor, attachment());
+        }
+
+        public String getName(DyeColor dyeColor) {
+            return describer().getName(dyeColor, attachment());
+        }
+
+        public void addToDefaultNames(DyeColor dyeColor) {
+            describer().addToDefaultNames(dyeColor, attachment());
+        }
+    }
 
     public enum Attachment {
         NONE(null, null),
@@ -37,11 +64,14 @@ public enum Describer {
     }
 
     final String id, name;
-    final Function<DyeColor, String> convertor = Describer::dyeColorToName;
 
     Describer(String id, String name) {
         this.id = id;
         this.name = name;
+    }
+
+    public Wrapper with(Attachment attachment) {
+        return new Wrapper(this, attachment);
     }
 
     private static String dyeColorToName(DyeColor dyeColor) {
@@ -50,15 +80,19 @@ public enum Describer {
                 .collect(Collectors.joining(" "));
     }
 
-    public String getId(DyeColor dyeColor, Attachment prefix) {
+    public String getId(DyeColor dyeColor, Attachment attachment) {
         return id
-                + prefix.getId().map(p -> "_" + p).orElse("")
+                + attachment.getId().map(p -> "_" + p).orElse("")
                 + "_" + dyeColor.getName();
     }
 
-    public String getName(DyeColor dyeColor, Attachment prefix) {
-        return convertor.apply(dyeColor) + " "
-                + prefix.getName().map(p -> p + " ").orElse("")
+    public String getName(DyeColor dyeColor, Attachment attachment) {
+        return dyeColorToName(dyeColor) + " "
+                + attachment.getName().map(p -> p + " ").orElse("")
                 + name;
+    }
+
+    public void addToDefaultNames(DyeColor dyeColor, Attachment attachment) {
+        addDefaultName(getId(dyeColor, attachment), getName(dyeColor, attachment));
     }
 }

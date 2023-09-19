@@ -1,6 +1,7 @@
 package band.kessokuteatime.lightemittingtriode.datagen;
 
 import band.kessokuteatime.lightemittingtriode.content.LETRegistries;
+import band.kessokuteatime.lightemittingtriode.util.Describer;
 import net.fabricmc.fabric.api.datagen.v1.DataGeneratorEntrypoint;
 import net.fabricmc.fabric.api.datagen.v1.FabricDataGenerator;
 import net.fabricmc.fabric.api.datagen.v1.FabricDataOutput;
@@ -9,6 +10,7 @@ import net.fabricmc.fabric.api.datagen.v1.provider.FabricModelProvider;
 import net.minecraft.data.DataProvider;
 import net.minecraft.data.client.BlockStateModelGenerator;
 import net.minecraft.data.client.ItemModelGenerator;
+import net.minecraft.registry.Registries;
 
 import java.io.IOException;
 
@@ -44,9 +46,9 @@ public class LETDataGenerator implements DataGeneratorEntrypoint {
                 throw new RuntimeException(ioException);
             }
 
-            LETRegistries.Blocks.forEach(hashMap -> hashMap.values().forEach(item ->
-                    translationBuilder.add(item, LETRegistries.getDefaultName(item))
-            ));
+            LETRegistries.Blocks.forEach((block, item) ->
+                    translationBuilder.add(item, Describer.getDefaultName(Registries.ITEM.getId(item).getPath()))
+            );
         }
     }
 
@@ -64,9 +66,12 @@ public class LETDataGenerator implements DataGeneratorEntrypoint {
             LETRegistries.Blocks.SLABS.forEach((block, item) ->
                     blockStateModelGenerator.registerSimpleCubeAll(block)
             );
+            /*
             LETRegistries.Blocks.CLEARS.forEach((block, item) ->
                     blockStateModelGenerator.registerSimpleCubeAll(block)
             );
+
+             */
 
             LETRegistries.Blocks.LANTERNS_SMALL.forEach((block, item) ->
                     blockStateModelGenerator.registerSimpleCubeAll(block)

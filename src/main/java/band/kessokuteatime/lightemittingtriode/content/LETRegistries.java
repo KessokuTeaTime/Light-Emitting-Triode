@@ -15,25 +15,16 @@ import net.minecraft.util.DyeColor;
 import net.minecraft.util.Identifier;
 
 import java.util.HashMap;
+import java.util.function.BiConsumer;
 import java.util.function.Consumer;
 import java.util.function.Supplier;
 
 public class LETRegistries {
-    private static final HashMap<Item, String> DEFAULT_NAMES = new HashMap<>();
-
-    private static void addDefaultName(Item item, String name) {
-        DEFAULT_NAMES.put(item, name);
-    }
-
-    public static String getDefaultName(Item item) {
-        return DEFAULT_NAMES.getOrDefault(item, "");
-    }
-
-    private static Block registerBlock(Identifier id, Block block) {
+    private static <B extends Block> B registerBlock(Identifier id, B block) {
         return Registry.register(Registries.BLOCK, id, block);
     }
 
-    private static Item registerItem(Identifier id, Item item) {
+    private static <I extends Item> I registerItem(Identifier id, I item) {
         return Registry.register(Registries.ITEM, id, item);
     }
 
@@ -52,7 +43,7 @@ public class LETRegistries {
                     ItemGroupEvents.modifyEntriesEvent(key).register(entries -> {
                         fill(entries, Items.BULB, Items.LED, Items.LET, Items.SHADE);
 
-                        Blocks.forEach(hashMap -> hashMap.values().forEach(entries::add));
+                        Blocks.forEach((block, item) -> entries.add(item));
                     })
             );
         }
@@ -73,90 +64,85 @@ public class LETRegistries {
                 LANTERNS_SMALL = new HashMap<>(), LANTERNS = new HashMap<>(), LANTERNS_LARGE = new HashMap<>(),
                 ALARMS_SMALL = new HashMap<>(), ALARMS = new HashMap<>(), ALARMS_LARGE = new HashMap<>();
 
-        public static void forEach(Consumer<HashMap<Block, Item>> consumer) {
-            consumer.accept(CEILINGS);
+        public static void forEach(BiConsumer<Block, Item> consumer) {
+            CEILINGS.forEach(consumer);
 
-            consumer.accept(SLABS);
-            consumer.accept(CLEARS);
+            SLABS.forEach(consumer);
+            CLEARS.forEach(consumer);
 
-            consumer.accept(LANTERNS_SMALL);
-            consumer.accept(LANTERNS);
-            consumer.accept(LANTERNS_LARGE);
+            LANTERNS_SMALL.forEach(consumer);
+            LANTERNS.forEach(consumer);
+            LANTERNS_LARGE.forEach(consumer);
 
-            consumer.accept(ALARMS_SMALL);
-            consumer.accept(ALARMS);
-            consumer.accept(ALARMS_LARGE);
+            ALARMS_SMALL.forEach(consumer);
+            ALARMS.forEach(consumer);
+            ALARMS_LARGE.forEach(consumer);
         }
 
         public static void register() {
             registerColorVariants(
-                    CEILINGS,
                     () -> new Block(FabricBlockSettings.create()),
-                    Describer.CEILING, Describer.Attachment.NONE
-            );
+                    Describer.CEILING.with(Describer.Attachment.NONE)
+            ).accept(CEILINGS);
 
             registerColorVariants(
-                    SLABS,
                     () -> new Block(FabricBlockSettings.create()),
-                    Describer.SLAB, Describer.Attachment.NONE
-            );
+                    Describer.SLAB.with(Describer.Attachment.NONE)
+            ).accept(SLABS);
             registerColorVariants(
-                    CLEARS,
                     () -> new Block(FabricBlockSettings.create()),
-                    Describer.CLEAR, Describer.Attachment.NONE
-            );
+                    Describer.CLEAR.with(Describer.Attachment.NONE)
+            ).accept(CLEARS);
 
             registerColorVariants(
-                    LANTERNS_SMALL,
                     () -> new Block(FabricBlockSettings.create()),
-                    Describer.LANTERN, Describer.Attachment.SMALL
-            );
+                    Describer.LANTERN.with(Describer.Attachment.SMALL)
+            ).accept(LANTERNS_SMALL);
             registerColorVariants(
-                    LANTERNS,
                     () -> new Block(FabricBlockSettings.create()),
-                    Describer.LANTERN, Describer.Attachment.NONE
-            );
+                    Describer.LANTERN.with(Describer.Attachment.NONE)
+            ).accept(LANTERNS);
             registerColorVariants(
-                    LANTERNS_LARGE,
                     () -> new Block(FabricBlockSettings.create()),
-                    Describer.LANTERN, Describer.Attachment.LARGE
-            );
+                    Describer.LANTERN.with(Describer.Attachment.LARGE)
+            ).accept(LANTERNS_LARGE);
 
             registerColorVariants(
-                    ALARMS_SMALL,
                     () -> new Block(FabricBlockSettings.create()),
-                    Describer.ALARM, Describer.Attachment.SMALL
-            );
+                    Describer.ALARM.with(Describer.Attachment.SMALL)
+            ).accept(ALARMS_SMALL);
             registerColorVariants(
-                    ALARMS,
                     () -> new Block(FabricBlockSettings.create()),
-                    Describer.ALARM, Describer.Attachment.NONE
-            );
+                    Describer.ALARM.with(Describer.Attachment.NONE)
+            ).accept(ALARMS);
             registerColorVariants(
-                    ALARMS_LARGE,
                     () -> new Block(FabricBlockSettings.create()),
-                    Describer.ALARM, Describer.Attachment.LARGE
-            );
+                    Describer.ALARM.with(Describer.Attachment.LARGE)
+            ).accept(ALARMS_LARGE);
         }
 
-        public static <B extends Block> void registerColorVariants(
-                HashMap<Block, Item> result,
+        public static <B extends Block> Consumer<HashMap<B, Item>> registerColorVariants(
                 Supplier<B> blockSupplier,
-                Describer describer,
-                Describer.Attachment prefix
+                Describer.Wrapper describerWrapper
         ) {
-            result.clear();
+            return hashMap -> {
+                hashMap.clear();
 
-            for (DyeColor dyeColor : DyeColor.values()) {
-                Identifier id = LET.id(describer.getId(dyeColor, prefix));
-                B block = blockSupplier.get();
-                BlockItem item = new ColoredBlockItem(block, new Item.Settings(), dyeColor);
+                for (DyeColor dyeColor : DyeColor.values()) {
+                    Identifier id = LET.id(describerWrapper.getId(dyeColor));
+                    describerWrapper.addToDefaultNames(dyeColor);
 
-                result.put(registerBlock(id, block), registerItem(id, item));
+                    B block = blockSupplier.get();
+                    Item item = new ColoredBlockItem(block, new Item.Settings(), dyeColor);
 
-                ColorProviderRegistry.BLOCK.register((state, world, pos, tintIndex) -> dyeColor.getSignColor(), block);
-                addDefaultName(item, describer.getName(dyeColor, prefix));
-            }
+                    // Store registered contents
+                    hashMap.put(registerBlock(id, block), registerItem(id, item));
+
+                    // Register tint for blocks & items
+                    ColorProviderRegistry.BLOCK.register((state, world, pos, tintIndex) -> dyeColor.getSignColor(), block);
+                    ColorProviderRegistry.ITEM.register((stack, tintIndex) -> dyeColor.getSignColor(), item);
+                }
+            };
         }
     }
 
