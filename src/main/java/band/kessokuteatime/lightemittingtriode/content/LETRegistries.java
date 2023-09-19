@@ -1,7 +1,8 @@
 package band.kessokuteatime.lightemittingtriode.content;
 
 import band.kessokuteatime.lightemittingtriode.LET;
-import band.kessokuteatime.lightemittingtriode.util.DefaultName;
+import band.kessokuteatime.lightemittingtriode.content.item.ColoredBlockItem;
+import band.kessokuteatime.lightemittingtriode.util.Describer;
 import net.fabricmc.fabric.api.client.rendering.v1.ColorProviderRegistry;
 import net.fabricmc.fabric.api.itemgroup.v1.FabricItemGroup;
 import net.fabricmc.fabric.api.itemgroup.v1.ItemGroupEvents;
@@ -91,70 +92,70 @@ public class LETRegistries {
             registerColorVariants(
                     CEILINGS,
                     () -> new Block(FabricBlockSettings.create()),
-                    DefaultName.CEILING, DefaultName.Attachment.NONE
+                    Describer.CEILING, Describer.Attachment.NONE
             );
 
             registerColorVariants(
                     SLABS,
                     () -> new Block(FabricBlockSettings.create()),
-                    DefaultName.SLAB, DefaultName.Attachment.NONE
+                    Describer.SLAB, Describer.Attachment.NONE
             );
             registerColorVariants(
                     CLEARS,
                     () -> new Block(FabricBlockSettings.create()),
-                    DefaultName.CLEAR, DefaultName.Attachment.NONE
+                    Describer.CLEAR, Describer.Attachment.NONE
             );
 
             registerColorVariants(
                     LANTERNS_SMALL,
                     () -> new Block(FabricBlockSettings.create()),
-                    DefaultName.LANTERN, DefaultName.Attachment.SMALL
+                    Describer.LANTERN, Describer.Attachment.SMALL
             );
             registerColorVariants(
                     LANTERNS,
                     () -> new Block(FabricBlockSettings.create()),
-                    DefaultName.LANTERN, DefaultName.Attachment.NONE
+                    Describer.LANTERN, Describer.Attachment.NONE
             );
             registerColorVariants(
                     LANTERNS_LARGE,
                     () -> new Block(FabricBlockSettings.create()),
-                    DefaultName.LANTERN, DefaultName.Attachment.LARGE
+                    Describer.LANTERN, Describer.Attachment.LARGE
             );
 
             registerColorVariants(
                     ALARMS_SMALL,
                     () -> new Block(FabricBlockSettings.create()),
-                    DefaultName.ALARM, DefaultName.Attachment.SMALL
+                    Describer.ALARM, Describer.Attachment.SMALL
             );
             registerColorVariants(
                     ALARMS,
                     () -> new Block(FabricBlockSettings.create()),
-                    DefaultName.ALARM, DefaultName.Attachment.NONE
+                    Describer.ALARM, Describer.Attachment.NONE
             );
             registerColorVariants(
                     ALARMS_LARGE,
                     () -> new Block(FabricBlockSettings.create()),
-                    DefaultName.ALARM, DefaultName.Attachment.LARGE
+                    Describer.ALARM, Describer.Attachment.LARGE
             );
         }
 
         public static <B extends Block> void registerColorVariants(
                 HashMap<Block, Item> result,
                 Supplier<B> blockSupplier,
-                DefaultName defaultName,
-                DefaultName.Attachment prefix
+                Describer describer,
+                Describer.Attachment prefix
         ) {
             result.clear();
 
             for (DyeColor dyeColor : DyeColor.values()) {
-                Identifier id = LET.id(defaultName.getId(dyeColor, prefix));
+                Identifier id = LET.id(describer.getId(dyeColor, prefix));
                 B block = blockSupplier.get();
-                BlockItem item = new BlockItem(block, new Item.Settings());
+                BlockItem item = new ColoredBlockItem(block, new Item.Settings(), dyeColor);
 
                 result.put(registerBlock(id, block), registerItem(id, item));
 
                 ColorProviderRegistry.BLOCK.register((state, world, pos, tintIndex) -> dyeColor.getSignColor(), block);
-                addDefaultName(item, defaultName.getName(dyeColor, prefix));
+                addDefaultName(item, describer.getName(dyeColor, prefix));
             }
         }
     }
