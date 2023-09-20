@@ -1,7 +1,7 @@
 {
   "variants": {
     "": {
-      "model": "let:block/ceiling_pink"
+      "model": "let:block/ceiling"
     }
   }
 }

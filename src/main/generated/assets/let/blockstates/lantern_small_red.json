@@ -1,7 +1,7 @@
 {
   "variants": {
     "": {
-      "model": "let:block/lantern_small_red"
+      "model": "let:block/lantern_small"
     }
   }
 }

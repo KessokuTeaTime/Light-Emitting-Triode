@@ -1,7 +1,7 @@
 {
   "variants": {
     "": {
-      "model": "let:block/ceiling_magenta"
+      "model": "let:block/ceiling"
     }
   }
 }

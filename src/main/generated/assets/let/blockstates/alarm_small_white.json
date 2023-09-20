@@ -1,7 +1,7 @@
 {
   "variants": {
     "": {
-      "model": "let:block/alarm_small_white"
+      "model": "let:block/alarm_small"
     }
   }
 }

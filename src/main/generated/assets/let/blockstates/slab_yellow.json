@@ -1,7 +1,7 @@
 {
   "variants": {
     "": {
-      "model": "let:block/slab_yellow"
+      "model": "let:block/slab"
     }
   }
 }

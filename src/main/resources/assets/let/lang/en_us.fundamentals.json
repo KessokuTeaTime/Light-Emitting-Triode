@@ -4,9 +4,15 @@
     "item.let.let": "Light Emitting Triode",
     "item.let.shade": "Piece of Shade",
 
-    "tooltip.let.shaded": "This lamp is shaded and doesn't emit light.",
-    "tooltip.let.reinforced": "This lamp is reinforced.",
-    "tooltip.let.shaded_and_reinforced": "This lamp is reinforced, and doesn't emit light.",
+    "itemGroup.let.general": "Light Emitting Triode",
 
-    "itemGroup.let.general": "Light Emitting Triode"
+    "block.let.ceiling": "%s Ceiling",
+    "block.let.slab": "%s Slab",
+    "block.let.clear": "%s Clear",
+    "block.let.lantern_small": "%s Small Lantern",
+    "block.let.lantern": "%s Lantern",
+    "block.let.lantern_large": "%s Large Lantern",
+    "block.let.alarm_small": "%s Small Alarm",
+    "block.let.alarm": "%s Alarm",
+    "block.let.alarm_large": "%s Large Alarm"
 }

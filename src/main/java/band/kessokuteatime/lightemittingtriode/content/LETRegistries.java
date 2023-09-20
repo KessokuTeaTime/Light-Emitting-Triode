@@ -1,21 +1,23 @@
 package band.kessokuteatime.lightemittingtriode.content;
 
 import band.kessokuteatime.lightemittingtriode.LET;
+import band.kessokuteatime.lightemittingtriode.content.block.LampBlock;
 import band.kessokuteatime.lightemittingtriode.content.item.ColoredBlockItem;
-import band.kessokuteatime.lightemittingtriode.util.Describer;
+import net.fabricmc.fabric.api.blockrenderlayer.v1.BlockRenderLayerMap;
 import net.fabricmc.fabric.api.client.rendering.v1.ColorProviderRegistry;
 import net.fabricmc.fabric.api.itemgroup.v1.FabricItemGroup;
 import net.fabricmc.fabric.api.itemgroup.v1.ItemGroupEvents;
 import net.fabricmc.fabric.api.object.builder.v1.block.FabricBlockSettings;
 import net.minecraft.block.Block;
+import net.minecraft.client.render.RenderLayer;
 import net.minecraft.item.*;
 import net.minecraft.registry.Registries;
 import net.minecraft.registry.Registry;
 import net.minecraft.util.DyeColor;
 import net.minecraft.util.Identifier;
 
+import java.util.Arrays;
 import java.util.HashMap;
-import java.util.function.BiConsumer;
 import java.util.function.Consumer;
 import java.util.function.Supplier;
 
@@ -43,7 +45,10 @@ public class LETRegistries {
                     ItemGroupEvents.modifyEntriesEvent(key).register(entries -> {
                         fill(entries, Items.BULB, Items.LED, Items.LET, Items.SHADE);
 
-                        Blocks.forEach((block, item) -> entries.add(item));
+                        Arrays.stream(Blocks.Type.values())
+                                .map(Blocks.Type::getBlockItemMap)
+                                .flatMap(map -> map.values().stream())
+                                .forEach(entries::add);
                     })
             );
         }
@@ -58,89 +63,91 @@ public class LETRegistries {
     }
 
     public static class Blocks {
-        public static final HashMap<Block, Item>
-                CEILINGS = new HashMap<>(),
-                SLABS = new HashMap<>(), CLEARS = new HashMap<>(),
-                LANTERNS_SMALL = new HashMap<>(), LANTERNS = new HashMap<>(), LANTERNS_LARGE = new HashMap<>(),
-                ALARMS_SMALL = new HashMap<>(), ALARMS = new HashMap<>(), ALARMS_LARGE = new HashMap<>();
+        public enum Type {
+            CEILING(Variant.CEILING.with(Variant.Size.NORMAL)),
 
-        public static void forEach(BiConsumer<Block, Item> consumer) {
-            CEILINGS.forEach(consumer);
+            SLAB(Variant.SLAB.with(Variant.Size.NORMAL)),
+            CLEAR(Variant.CLEAR.with(Variant.Size.NORMAL)),
 
-            SLABS.forEach(consumer);
-            CLEARS.forEach(consumer);
+            LANTERN_SMALL(Variant.LANTERN.with(Variant.Size.SMALL)),
+            LANTERN(Variant.LANTERN.with(Variant.Size.NORMAL)),
+            LANTERN_LARGE(Variant.LANTERN.with(Variant.Size.LARGE)),
 
-            LANTERNS_SMALL.forEach(consumer);
-            LANTERNS.forEach(consumer);
-            LANTERNS_LARGE.forEach(consumer);
+            ALARM_SMALL(Variant.ALARM.with(Variant.Size.SMALL)),
+            ALARM(Variant.ALARM.with(Variant.Size.NORMAL)),
+            ALARM_LARGE(Variant.ALARM.with(Variant.Size.LARGE));
 
-            ALARMS_SMALL.forEach(consumer);
-            ALARMS.forEach(consumer);
-            ALARMS_LARGE.forEach(consumer);
+            final HashMap<LampBlock, ColoredBlockItem> blockItemMap;
+            final Variant.Wrapper wrapper;
+
+            Type(Variant.Wrapper wrapper) {
+                this.blockItemMap = new HashMap<>();
+                this.wrapper = wrapper;
+            }
+
+            public HashMap<LampBlock, ColoredBlockItem> getBlockItemMap() {
+                return blockItemMap;
+            }
+
+            public Variant.Wrapper getWrapper() {
+                return wrapper;
+            }
         }
 
         public static void register() {
             registerColorVariants(
-                    () -> new Block(FabricBlockSettings.create()),
-                    Describer.CEILING.with(Describer.Attachment.NONE)
-            ).accept(CEILINGS);
+                    Variant.CEILING.with(Variant.Size.NORMAL)
+            ).accept(Type.CEILING.getBlockItemMap());
 
             registerColorVariants(
-                    () -> new Block(FabricBlockSettings.create()),
-                    Describer.SLAB.with(Describer.Attachment.NONE)
-            ).accept(SLABS);
+                    Variant.SLAB.with(Variant.Size.NORMAL)
+            ).accept(Type.SLAB.getBlockItemMap());
             registerColorVariants(
-                    () -> new Block(FabricBlockSettings.create()),
-                    Describer.CLEAR.with(Describer.Attachment.NONE)
-            ).accept(CLEARS);
+                    Variant.CLEAR.with(Variant.Size.NORMAL)
+            ).accept(Type.CLEAR.getBlockItemMap());
 
             registerColorVariants(
-                    () -> new Block(FabricBlockSettings.create()),
-                    Describer.LANTERN.with(Describer.Attachment.SMALL)
-            ).accept(LANTERNS_SMALL);
+                    Variant.LANTERN.with(Variant.Size.SMALL)
+            ).accept(Type.LANTERN_SMALL.getBlockItemMap());
             registerColorVariants(
-                    () -> new Block(FabricBlockSettings.create()),
-                    Describer.LANTERN.with(Describer.Attachment.NONE)
-            ).accept(LANTERNS);
+                    Variant.LANTERN.with(Variant.Size.NORMAL)
+            ).accept(Type.LANTERN.getBlockItemMap());
             registerColorVariants(
-                    () -> new Block(FabricBlockSettings.create()),
-                    Describer.LANTERN.with(Describer.Attachment.LARGE)
-            ).accept(LANTERNS_LARGE);
+                    Variant.LANTERN.with(Variant.Size.LARGE)
+            ).accept(Type.LANTERN_LARGE.getBlockItemMap());
 
             registerColorVariants(
-                    () -> new Block(FabricBlockSettings.create()),
-                    Describer.ALARM.with(Describer.Attachment.SMALL)
-            ).accept(ALARMS_SMALL);
+                    Variant.ALARM.with(Variant.Size.SMALL)
+            ).accept(Type.ALARM_SMALL.getBlockItemMap());
             registerColorVariants(
-                    () -> new Block(FabricBlockSettings.create()),
-                    Describer.ALARM.with(Describer.Attachment.NONE)
-            ).accept(ALARMS);
+                    Variant.ALARM.with(Variant.Size.NORMAL)
+            ).accept(Type.ALARM.getBlockItemMap());
             registerColorVariants(
-                    () -> new Block(FabricBlockSettings.create()),
-                    Describer.ALARM.with(Describer.Attachment.LARGE)
-            ).accept(ALARMS_LARGE);
+                    Variant.ALARM.with(Variant.Size.LARGE)
+            ).accept(Type.ALARM_LARGE.getBlockItemMap());
         }
 
-        public static <B extends Block> Consumer<HashMap<B, Item>> registerColorVariants(
-                Supplier<B> blockSupplier,
-                Describer.Wrapper describerWrapper
+        public static Consumer<HashMap<LampBlock, ColoredBlockItem>> registerColorVariants(
+                Variant.Wrapper wrapper
         ) {
             return hashMap -> {
                 hashMap.clear();
 
                 for (DyeColor dyeColor : DyeColor.values()) {
-                    Identifier id = LET.id(describerWrapper.getId(dyeColor));
-                    describerWrapper.addToDefaultNames(dyeColor);
+                    Identifier id = wrapper.id(dyeColor);
 
-                    B block = blockSupplier.get();
-                    Item item = new ColoredBlockItem(block, new Item.Settings(), dyeColor);
+                    LampBlock block = new LampBlock(wrapper);
+                    ColoredBlockItem item = new ColoredBlockItem(block, new Item.Settings(), dyeColor);
 
                     // Store registered contents
                     hashMap.put(registerBlock(id, block), registerItem(id, item));
 
-                    // Register tint for blocks & items
-                    ColorProviderRegistry.BLOCK.register((state, world, pos, tintIndex) -> dyeColor.getSignColor(), block);
-                    ColorProviderRegistry.ITEM.register((stack, tintIndex) -> dyeColor.getSignColor(), item);
+                    // Register tints
+                    ColorProviderRegistry.BLOCK.register((state, world, pos, tintIndex) -> dyeColor.getFireworkColor(), block);
+                    ColorProviderRegistry.ITEM.register((stack, tintIndex) -> dyeColor.getFireworkColor(), item);
+
+                    // Register render layers
+                    BlockRenderLayerMap.INSTANCE.putBlock(block, RenderLayer.getTranslucent());
                 }
             };
         }

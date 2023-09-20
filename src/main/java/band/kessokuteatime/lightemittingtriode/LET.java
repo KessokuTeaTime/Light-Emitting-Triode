@@ -1,12 +1,10 @@
 package band.kessokuteatime.lightemittingtriode;
 
 import band.kessokuteatime.lightemittingtriode.content.LETRegistries;
-import band.kessokuteatime.lightemittingtriode.util.Util;
 import net.fabricmc.api.ModInitializer;
 import net.minecraft.text.MutableText;
 import net.minecraft.text.Text;
 import net.minecraft.util.Identifier;
-import net.minecraft.util.shape.VoxelShape;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 

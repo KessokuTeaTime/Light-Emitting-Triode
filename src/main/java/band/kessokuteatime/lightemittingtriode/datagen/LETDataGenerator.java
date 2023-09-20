@@ -1,18 +1,24 @@
 package band.kessokuteatime.lightemittingtriode.datagen;
 
+import band.kessokuteatime.lightemittingtriode.LET;
 import band.kessokuteatime.lightemittingtriode.content.LETRegistries;
-import band.kessokuteatime.lightemittingtriode.util.Describer;
 import net.fabricmc.fabric.api.datagen.v1.DataGeneratorEntrypoint;
 import net.fabricmc.fabric.api.datagen.v1.FabricDataGenerator;
 import net.fabricmc.fabric.api.datagen.v1.FabricDataOutput;
 import net.fabricmc.fabric.api.datagen.v1.provider.FabricLanguageProvider;
 import net.fabricmc.fabric.api.datagen.v1.provider.FabricModelProvider;
 import net.minecraft.data.DataProvider;
-import net.minecraft.data.client.BlockStateModelGenerator;
-import net.minecraft.data.client.ItemModelGenerator;
-import net.minecraft.registry.Registries;
+import net.minecraft.data.client.*;
+import net.minecraft.item.Item;
+import net.minecraft.util.DyeColor;
+import net.minecraft.util.Identifier;
+import org.apache.commons.lang3.StringUtils;
+import org.apache.logging.log4j.util.TriConsumer;
 
 import java.io.IOException;
+import java.util.Arrays;
+import java.util.Optional;
+import java.util.stream.Collectors;
 
 public class LETDataGenerator implements DataGeneratorEntrypoint {
     /**
@@ -46,9 +52,15 @@ public class LETDataGenerator implements DataGeneratorEntrypoint {
                 throw new RuntimeException(ioException);
             }
 
-            LETRegistries.Blocks.forEach((block, item) ->
-                    translationBuilder.add(item, Describer.getDefaultName(Registries.ITEM.getId(item).getPath()))
+            Arrays.stream(DyeColor.values()).forEach(dyeColor ->
+                    translationBuilder.add(LET.idString("color", dyeColor.getName()), formatDyeColor(dyeColor))
             );
+        }
+
+        private static String formatDyeColor(DyeColor dyeColor) {
+            return Arrays.stream(dyeColor.getName().split("_"))
+                    .map(StringUtils::capitalize)
+                    .collect(Collectors.joining(" "));
         }
     }
 
@@ -57,46 +69,30 @@ public class LETDataGenerator implements DataGeneratorEntrypoint {
             super(output);
         }
 
+        private static final TriConsumer<ItemModelGenerator, Identifier, Item> uploadModelWithParent = (itemModelGenerator, identifier, item) ->
+                new net.minecraft.data.client.Model(Optional.of(identifier), Optional.empty())
+                        .upload(ModelIds.getItemModelId(item), TextureMap.layer0(item), itemModelGenerator.writer);
+
         @Override
         public void generateBlockStateModels(BlockStateModelGenerator blockStateModelGenerator) {
-            LETRegistries.Blocks.CEILINGS.forEach((block, item) ->
-                    blockStateModelGenerator.registerSimpleCubeAll(block)
-            );
-
-            LETRegistries.Blocks.SLABS.forEach((block, item) ->
-                    blockStateModelGenerator.registerSimpleCubeAll(block)
-            );
-            /*
-            LETRegistries.Blocks.CLEARS.forEach((block, item) ->
-                    blockStateModelGenerator.registerSimpleCubeAll(block)
-            );
-
-             */
-
-            LETRegistries.Blocks.LANTERNS_SMALL.forEach((block, item) ->
-                    blockStateModelGenerator.registerSimpleCubeAll(block)
-            );
-            LETRegistries.Blocks.LANTERNS.forEach((block, item) ->
-                    blockStateModelGenerator.registerSimpleCubeAll(block)
-            );
-            LETRegistries.Blocks.LANTERNS_LARGE.forEach((block, item) ->
-                    blockStateModelGenerator.registerSimpleCubeAll(block)
-            );
-
-            LETRegistries.Blocks.ALARMS_SMALL.forEach((block, item) ->
-                    blockStateModelGenerator.registerSimpleCubeAll(block)
-            );
-            LETRegistries.Blocks.ALARMS.forEach((block, item) ->
-                    blockStateModelGenerator.registerSimpleCubeAll(block)
-            );
-            LETRegistries.Blocks.ALARMS_LARGE.forEach((block, item) ->
-                    blockStateModelGenerator.registerSimpleCubeAll(block)
+            Arrays.stream(LETRegistries.Blocks.Type.values()).forEach(type ->
+                    type.getBlockItemMap().forEach((block, item) ->
+                            blockStateModelGenerator.blockStateCollector.accept(
+                                    BlockStateModelGenerator.createSingletonBlockState(
+                                            block, type.getWrapper().blockId()
+                                    )
+                            )
+                    )
             );
         }
 
         @Override
         public void generateItemModels(ItemModelGenerator itemModelGenerator) {
-
+            Arrays.stream(LETRegistries.Blocks.Type.values()).forEach(type ->
+                    type.getBlockItemMap().forEach((block, item) -> uploadModelWithParent.accept(
+                            itemModelGenerator, type.getWrapper().blockId(), item
+                    ))
+            );
         }
     }
 }
