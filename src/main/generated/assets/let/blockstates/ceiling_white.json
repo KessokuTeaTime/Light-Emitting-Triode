@@ -1,7 +1,20 @@
 {
-  "variants": {
-    "": {
-      "model": "let:block/ceiling"
+  "multipart": [
+    {
+      "apply": {
+        "model": "let:block/ceiling"
+      },
+      "when": {
+        "lit": "false"
+      }
+    },
+    {
+      "apply": {
+        "model": "let:block/glow/ceiling"
+      },
+      "when": {
+        "lit": "true"
+      }
     }
-  }
+  ]
 }

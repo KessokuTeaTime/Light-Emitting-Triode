@@ -1,7 +1,20 @@
 {
-  "variants": {
-    "": {
-      "model": "let:block/lantern_large"
+  "multipart": [
+    {
+      "apply": {
+        "model": "let:block/lantern_large"
+      },
+      "when": {
+        "lit": "false"
+      }
+    },
+    {
+      "apply": {
+        "model": "let:block/glow/lantern_large"
+      },
+      "when": {
+        "lit": "true"
+      }
     }
-  }
+  ]
 }

@@ -43,8 +43,16 @@ public enum Variant {
                     + "_" + dyeColor.getName());
         }
 
+        private String idString() {
+            return variant().getId() + size().getId().map(p -> "_" + p).orElse("");
+        }
+
         public Identifier blockId() {
-            return LET.id("block", variant().getId() + size().getId().map(p -> "_" + p).orElse(""));
+            return LET.id("block", idString());
+        }
+
+        public Identifier blockGlowId() {
+            return LET.id("block", "glow", idString());
         }
 
         public int luminance() {

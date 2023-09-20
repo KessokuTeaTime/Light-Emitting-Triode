@@ -10,6 +10,7 @@ import net.fabricmc.fabric.api.datagen.v1.provider.FabricModelProvider;
 import net.minecraft.data.DataProvider;
 import net.minecraft.data.client.*;
 import net.minecraft.item.Item;
+import net.minecraft.state.property.Properties;
 import net.minecraft.util.DyeColor;
 import net.minecraft.util.Identifier;
 import org.apache.commons.lang3.StringUtils;
@@ -76,13 +77,15 @@ public class LETDataGenerator implements DataGeneratorEntrypoint {
         @Override
         public void generateBlockStateModels(BlockStateModelGenerator blockStateModelGenerator) {
             Arrays.stream(LETRegistries.Blocks.Type.values()).forEach(type ->
-                    type.getBlockItemMap().forEach((block, item) ->
-                            blockStateModelGenerator.blockStateCollector.accept(
-                                    BlockStateModelGenerator.createSingletonBlockState(
-                                            block, type.getWrapper().blockId()
-                                    )
+                    type.getBlockItemMap().forEach((block, item) -> blockStateModelGenerator.blockStateCollector.accept(
+                            MultipartBlockStateSupplier.create(block).with(
+                                    When.create().set(Properties.LIT, false),
+                                    BlockStateVariant.create().put(VariantSettings.MODEL, type.getWrapper().blockId())
+                            ).with(
+                                    new When.PropertyCondition().set(Properties.LIT, true),
+                                    BlockStateVariant.create().put(VariantSettings.MODEL, type.getWrapper().blockGlowId())
                             )
-                    )
+                    ))
             );
         }
 

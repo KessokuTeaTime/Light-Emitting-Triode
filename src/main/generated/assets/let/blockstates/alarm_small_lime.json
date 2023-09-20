@@ -1,7 +1,20 @@
 {
-  "variants": {
-    "": {
-      "model": "let:block/alarm_small"
+  "multipart": [
+    {
+      "apply": {
+        "model": "let:block/alarm_small"
+      },
+      "when": {
+        "lit": "false"
+      }
+    },
+    {
+      "apply": {
+        "model": "let:block/glow/alarm_small"
+      },
+      "when": {
+        "lit": "true"
+      }
     }
-  }
+  ]
 }

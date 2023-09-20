@@ -1,7 +1,20 @@
 {
-  "variants": {
-    "": {
-      "model": "let:block/slab"
+  "multipart": [
+    {
+      "apply": {
+        "model": "let:block/slab"
+      },
+      "when": {
+        "lit": "false"
+      }
+    },
+    {
+      "apply": {
+        "model": "let:block/glow/slab"
+      },
+      "when": {
+        "lit": "true"
+      }
     }
-  }
+  ]
 }

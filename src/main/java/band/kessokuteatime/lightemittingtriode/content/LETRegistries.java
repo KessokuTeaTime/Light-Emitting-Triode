@@ -145,9 +145,6 @@ public class LETRegistries {
                     // Register tints
                     ColorProviderRegistry.BLOCK.register((state, world, pos, tintIndex) -> dyeColor.getFireworkColor(), block);
                     ColorProviderRegistry.ITEM.register((stack, tintIndex) -> dyeColor.getFireworkColor(), item);
-
-                    // Register render layers
-                    BlockRenderLayerMap.INSTANCE.putBlock(block, RenderLayer.getTranslucent());
                 }
             };
         }

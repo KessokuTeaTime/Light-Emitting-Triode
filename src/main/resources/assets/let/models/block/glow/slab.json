@@ -1,0 +1,7 @@
+{
+	"parent": "let:block/slab",
+	"textures": {
+		"end": "let:block/clear_glow",
+		"side": "let:block/slab_glow"
+	}
+}
