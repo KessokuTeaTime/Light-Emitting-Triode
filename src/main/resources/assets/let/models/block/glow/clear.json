@@ -1,6 +1,6 @@
 {
 	"parent": "let:block/clear",
 	"textures": {
-		"all": "let:block/clear_glow"
+		"all": "let:block/lamp_glow"
 	}
 }

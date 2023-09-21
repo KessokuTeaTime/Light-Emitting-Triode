@@ -1,6 +1,6 @@
 {
 	"parent": "let:block/ceiling",
 	"textures": {
-		"all": "let:block/ceiling_glow"
+		"all": "let:block/lamp_glow"
 	}
 }
