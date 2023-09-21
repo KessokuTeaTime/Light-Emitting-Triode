@@ -10,6 +10,7 @@ import net.fabricmc.fabric.api.itemgroup.v1.ItemGroupEvents;
 import net.fabricmc.fabric.api.object.builder.v1.block.FabricBlockSettings;
 import net.minecraft.block.Block;
 import net.minecraft.client.render.RenderLayer;
+import net.minecraft.client.render.RenderLayers;
 import net.minecraft.item.*;
 import net.minecraft.registry.Registries;
 import net.minecraft.registry.Registry;
@@ -145,6 +146,9 @@ public class LETRegistries {
                     // Register tints
                     ColorProviderRegistry.BLOCK.register((state, world, pos, tintIndex) -> dyeColor.getFireworkColor(), block);
                     ColorProviderRegistry.ITEM.register((stack, tintIndex) -> dyeColor.getFireworkColor(), item);
+
+                    // Make translucent
+                    BlockRenderLayerMap.INSTANCE.putBlock(block, RenderLayer.getTranslucent());
                 }
             };
         }

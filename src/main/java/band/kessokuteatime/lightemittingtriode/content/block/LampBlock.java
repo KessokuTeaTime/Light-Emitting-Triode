@@ -17,7 +17,8 @@ public class LampBlock extends AbstractGlassBlock {
 
     public LampBlock(Variant.Wrapper wrapper) {
         super(
-                AbstractBlock.Settings.copy(Blocks.AMETHYST_BLOCK)
+                AbstractBlock.Settings.copy(Blocks.GLASS)
+                        .sounds(BlockSoundGroup.AMETHYST_BLOCK)
                         .luminance(state -> state.get(Properties.LIT) ? wrapper.luminance() : 0)
                         .emissiveLighting((state, world, pos) -> state.get(Properties.LIT))
         );
