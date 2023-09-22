@@ -1,6 +1,10 @@
 package band.kessokuteatime.lightemittingtriode.content;
 
 import band.kessokuteatime.lightemittingtriode.LET;
+import band.kessokuteatime.lightemittingtriode.content.block.DirectionalLampBlock;
+import band.kessokuteatime.lightemittingtriode.content.block.LampBlock;
+import band.kessokuteatime.lightemittingtriode.content.block.SlabLampBlock;
+import net.minecraft.block.Block;
 import net.minecraft.util.DyeColor;
 import net.minecraft.util.Identifier;
 import net.minecraft.util.math.BlockPos;
@@ -10,26 +14,30 @@ import net.minecraft.util.math.random.Random;
 import net.minecraft.util.shape.VoxelShape;
 import net.minecraft.util.shape.VoxelShapes;
 import org.jetbrains.annotations.Nullable;
-import org.joml.Vector3f;
 
 import java.util.Optional;
 import java.util.function.Function;
 
 public enum Variant {
     CEILING("ceiling", 10,
-            size -> fromBottomCenter(16, 1)
+            size -> fromBottomCenter(16, 1),
+            LampBlock::new
     ),
     SLAB("slab", 10,
-            size -> fromBottomCenter(16, 8)
+            size -> fromBottomCenter(16, 8),
+            SlabLampBlock::new
     ),
     CLEAR("clear", 7,
-            size -> VoxelShapes.fullCube()
+            size -> VoxelShapes.fullCube(),
+            DirectionalLampBlock::new
     ),
     LANTERN("lantern", 5,
-            size -> fromBottomCenter(4 + 2 * size, 6 + size)
+            size -> fromBottomCenter(4 + 2 * size, 6 + size),
+            DirectionalLampBlock::new
     ),
     ALARM("alarm", 3,
-            size -> fromBottomCenter(10 + 2 * size, 1)
+            size -> fromBottomCenter(10 + 2 * size, 1),
+            DirectionalLampBlock::new
     );
 
     private static VoxelShape fromBottomCenter(double sizePixel, double thicknessPixel) {
@@ -106,6 +114,10 @@ public enum Variant {
             return variant().getVoxelShape(size().getSize());
         }
 
+        public Block block() {
+            return variant().getBlock(this);
+        }
+
         public Vec3d placeParticle(BlockPos blockPos, Random random, double factor) {
             return Variant.placeParticle(blockPos, voxelShape(), random, factor);
         }
@@ -135,12 +147,18 @@ public enum Variant {
 
     final String id;
     final int luminance;
-    final Function<Integer, VoxelShape> voxelShapeFunction;
+    final Function<Integer, VoxelShape> voxelShapeProvider;
+    final Function<Wrapper, Block> blockProvider;
 
-    Variant(String id, int luminance, Function<Integer, VoxelShape> voxelShapeFunction) {
+    Variant(
+            String id, int luminance,
+            Function<Integer, VoxelShape> voxelShapeProvider,
+            Function<Wrapper, Block> blockProvider
+    ) {
         this.id = id;
         this.luminance = luminance;
-        this.voxelShapeFunction = voxelShapeFunction;
+        this.voxelShapeProvider = voxelShapeProvider;
+        this.blockProvider = blockProvider;
     }
 
     public IdPack with(Size size) {
@@ -160,6 +178,10 @@ public enum Variant {
     }
 
     public VoxelShape getVoxelShape(int size) {
-        return voxelShapeFunction.apply(size);
+        return voxelShapeProvider.apply(size);
+    }
+
+    public Block getBlock(Wrapper wrapper) {
+        return blockProvider.apply(wrapper);
     }
 }

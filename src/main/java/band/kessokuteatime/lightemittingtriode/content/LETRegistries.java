@@ -77,7 +77,7 @@ public class LETRegistries {
             ALARM(Variant.ALARM.with(Variant.Size.NORMAL)),
             ALARM_LARGE(Variant.ALARM.with(Variant.Size.LARGE));
 
-            final HashMap<LampBlock, ColoredBlockItem> blockItemMap;
+            final HashMap<Block, Item> blockItemMap;
             final Variant.IdPack idPack;
 
             Type(Variant.IdPack idPack) {
@@ -85,7 +85,7 @@ public class LETRegistries {
                 this.idPack = idPack;
             }
 
-            public HashMap<LampBlock, ColoredBlockItem> getBlockItemMap() {
+            public HashMap<Block, Item> getBlockItemMap() {
                 return blockItemMap;
             }
 
@@ -127,7 +127,7 @@ public class LETRegistries {
             ).accept(Type.ALARM_LARGE.getBlockItemMap());
         }
 
-        public static Consumer<HashMap<LampBlock, ColoredBlockItem>> registerColorVariants(
+        public static Consumer<HashMap<Block, Item>> registerColorVariants(
                 Function<DyeColor, Variant.Wrapper> wrapperSupplier
         ) {
             return hashMap -> {
@@ -137,8 +137,8 @@ public class LETRegistries {
                     Variant.Wrapper wrapper = wrapperSupplier.apply(dyeColor);
                     Identifier id = wrapper.id();
 
-                    LampBlock block = new LampBlock(wrapper);
-                    ColoredBlockItem item = new ColoredBlockItem(block, new Item.Settings(), dyeColor);
+                    Block block = wrapper.block();
+                    Item item = new ColoredBlockItem(block, new Item.Settings(), dyeColor);
 
                     // Store registered contents
                     hashMap.put(registerBlock(id, block), registerItem(id, item));
