@@ -19,6 +19,7 @@ import net.minecraft.util.Identifier;
 import java.util.Arrays;
 import java.util.HashMap;
 import java.util.function.Consumer;
+import java.util.function.Function;
 
 public class LETRegistries {
     private static <B extends Block> B registerBlock(Identifier id, B block) {
@@ -77,63 +78,64 @@ public class LETRegistries {
             ALARM_LARGE(Variant.ALARM.with(Variant.Size.LARGE));
 
             final HashMap<LampBlock, ColoredBlockItem> blockItemMap;
-            final Variant.Wrapper wrapper;
+            final Variant.IdPack idPack;
 
-            Type(Variant.Wrapper wrapper) {
+            Type(Variant.IdPack idPack) {
                 this.blockItemMap = new HashMap<>();
-                this.wrapper = wrapper;
+                this.idPack = idPack;
             }
 
             public HashMap<LampBlock, ColoredBlockItem> getBlockItemMap() {
                 return blockItemMap;
             }
 
-            public Variant.Wrapper getWrapper() {
-                return wrapper;
+            public Variant.IdPack getIdPack() {
+                return idPack;
             }
         }
 
         public static void register() {
             registerColorVariants(
-                    Variant.CEILING.with(Variant.Size.NORMAL)
+                    dyeColor -> Variant.CEILING.with(Variant.Size.NORMAL, dyeColor)
             ).accept(Type.CEILING.getBlockItemMap());
 
             registerColorVariants(
-                    Variant.SLAB.with(Variant.Size.NORMAL)
+                    dyeColor -> Variant.SLAB.with(Variant.Size.NORMAL, dyeColor)
             ).accept(Type.SLAB.getBlockItemMap());
             registerColorVariants(
-                    Variant.CLEAR.with(Variant.Size.NORMAL)
+                    dyeColor -> Variant.CLEAR.with(Variant.Size.NORMAL, dyeColor)
             ).accept(Type.CLEAR.getBlockItemMap());
 
             registerColorVariants(
-                    Variant.LANTERN.with(Variant.Size.SMALL)
+                    dyeColor -> Variant.LANTERN.with(Variant.Size.SMALL, dyeColor)
             ).accept(Type.LANTERN_SMALL.getBlockItemMap());
             registerColorVariants(
-                    Variant.LANTERN.with(Variant.Size.NORMAL)
+                    dyeColor -> Variant.LANTERN.with(Variant.Size.NORMAL, dyeColor)
             ).accept(Type.LANTERN.getBlockItemMap());
             registerColorVariants(
-                    Variant.LANTERN.with(Variant.Size.LARGE)
+                    dyeColor -> Variant.LANTERN.with(Variant.Size.LARGE, dyeColor)
             ).accept(Type.LANTERN_LARGE.getBlockItemMap());
 
             registerColorVariants(
-                    Variant.ALARM.with(Variant.Size.SMALL)
+                    dyeColor -> Variant.ALARM.with(Variant.Size.SMALL, dyeColor)
             ).accept(Type.ALARM_SMALL.getBlockItemMap());
             registerColorVariants(
-                    Variant.ALARM.with(Variant.Size.NORMAL)
+                    dyeColor -> Variant.ALARM.with(Variant.Size.NORMAL, dyeColor)
             ).accept(Type.ALARM.getBlockItemMap());
             registerColorVariants(
-                    Variant.ALARM.with(Variant.Size.LARGE)
+                    dyeColor -> Variant.ALARM.with(Variant.Size.LARGE, dyeColor)
             ).accept(Type.ALARM_LARGE.getBlockItemMap());
         }
 
         public static Consumer<HashMap<LampBlock, ColoredBlockItem>> registerColorVariants(
-                Variant.Wrapper wrapper
+                Function<DyeColor, Variant.Wrapper> wrapperSupplier
         ) {
             return hashMap -> {
                 hashMap.clear();
 
                 for (DyeColor dyeColor : DyeColor.values()) {
-                    Identifier id = wrapper.id(dyeColor);
+                    Variant.Wrapper wrapper = wrapperSupplier.apply(dyeColor);
+                    Identifier id = wrapper.id();
 
                     LampBlock block = new LampBlock(wrapper);
                     ColoredBlockItem item = new ColoredBlockItem(block, new Item.Settings(), dyeColor);
@@ -142,8 +144,8 @@ public class LETRegistries {
                     hashMap.put(registerBlock(id, block), registerItem(id, item));
 
                     // Register tints
-                    ColorProviderRegistry.BLOCK.register((state, world, pos, tintIndex) -> wrapper.colorOverlay(dyeColor, state.get(Properties.LIT), tintIndex), block);
-                    ColorProviderRegistry.ITEM.register((stack, tintIndex) -> wrapper.colorOverlay(dyeColor, false, 1), item);
+                    ColorProviderRegistry.BLOCK.register((state, world, pos, tintIndex) -> wrapper.colorOverlay(state.get(Properties.LIT), tintIndex), block);
+                    ColorProviderRegistry.ITEM.register((stack, tintIndex) -> wrapper.colorOverlay(false, 1), item);
 
                     // Make translucent
                     BlockRenderLayerMap.INSTANCE.putBlock(block, RenderLayer.getTranslucent());

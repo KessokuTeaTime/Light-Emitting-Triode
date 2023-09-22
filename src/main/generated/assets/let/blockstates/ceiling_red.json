@@ -10,7 +10,7 @@
     },
     {
       "apply": {
-        "model": "let:block/glow/ceiling"
+        "model": "let:block/ceiling"
       },
       "when": {
         "lit": "true"

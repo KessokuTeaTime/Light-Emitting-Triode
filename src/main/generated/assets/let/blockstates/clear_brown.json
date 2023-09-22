@@ -10,7 +10,7 @@
     },
     {
       "apply": {
-        "model": "let:block/glow/clear"
+        "model": "let:block/clear"
       },
       "when": {
         "lit": "true"

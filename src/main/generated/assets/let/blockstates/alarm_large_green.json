@@ -10,7 +10,7 @@
     },
     {
       "apply": {
-        "model": "let:block/glow/alarm_large"
+        "model": "let:block/alarm_large"
       },
       "when": {
         "lit": "true"

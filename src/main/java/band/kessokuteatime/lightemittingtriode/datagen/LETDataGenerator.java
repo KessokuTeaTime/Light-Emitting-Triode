@@ -80,10 +80,10 @@ public class LETDataGenerator implements DataGeneratorEntrypoint {
                     type.getBlockItemMap().forEach((block, item) -> blockStateModelGenerator.blockStateCollector.accept(
                             MultipartBlockStateSupplier.create(block).with(
                                     When.create().set(Properties.LIT, false),
-                                    BlockStateVariant.create().put(VariantSettings.MODEL, type.getWrapper().blockId())
+                                    BlockStateVariant.create().put(VariantSettings.MODEL, type.getIdPack().blockId())
                             ).with(
                                     new When.PropertyCondition().set(Properties.LIT, true),
-                                    BlockStateVariant.create().put(VariantSettings.MODEL, type.getWrapper().blockGlowId())
+                                    BlockStateVariant.create().put(VariantSettings.MODEL, type.getIdPack().blockId())
                             )
                     ))
             );
@@ -93,7 +93,7 @@ public class LETDataGenerator implements DataGeneratorEntrypoint {
         public void generateItemModels(ItemModelGenerator itemModelGenerator) {
             Arrays.stream(LETRegistries.Blocks.Type.values()).forEach(type ->
                     type.getBlockItemMap().forEach((block, item) -> uploadModelWithParent.accept(
-                            itemModelGenerator, type.getWrapper().blockId(), item
+                            itemModelGenerator, type.getIdPack().blockId(), item
                     ))
             );
         }

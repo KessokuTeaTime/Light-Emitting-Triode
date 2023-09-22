@@ -3,9 +3,14 @@ package band.kessokuteatime.lightemittingtriode.content;
 import band.kessokuteatime.lightemittingtriode.LET;
 import net.minecraft.util.DyeColor;
 import net.minecraft.util.Identifier;
+import net.minecraft.util.math.BlockPos;
+import net.minecraft.util.math.Direction;
+import net.minecraft.util.math.Vec3d;
+import net.minecraft.util.math.random.Random;
 import net.minecraft.util.shape.VoxelShape;
 import net.minecraft.util.shape.VoxelShapes;
 import org.jetbrains.annotations.Nullable;
+import org.joml.Vector3f;
 
 import java.util.Optional;
 import java.util.function.Function;
@@ -36,13 +41,35 @@ public enum Variant {
         );
     }
 
-    public record Wrapper(Variant variant, Size size) {
-        public Identifier id(DyeColor dyeColor) {
-            return LET.id(variant().getId()
-                    + size().getId().map(p -> "_" + p).orElse("")
-                    + "_" + dyeColor.getName());
-        }
+    private static Vec3d placeParticle(BlockPos blockPos, VoxelShape voxelShape, Random random, double factor) {
+        Vec3d offset = new Vec3d(
+                (random.nextDouble() * 2 - 1) * factor,
+                (random.nextDouble() * 2 - 1) * factor,
+                (random.nextDouble() * 2 - 1) * factor
+        );
 
+        Vec3d localSize = new Vec3d(
+                voxelShape.getMax(Direction.Axis.X) - voxelShape.getMin(Direction.Axis.X),
+                voxelShape.getMax(Direction.Axis.Y) - voxelShape.getMin(Direction.Axis.Y),
+                voxelShape.getMax(Direction.Axis.Z) - voxelShape.getMin(Direction.Axis.Z)
+        );
+
+        Vec3d localCenter = new Vec3d(
+                (voxelShape.getMin(Direction.Axis.X) + voxelShape.getMax(Direction.Axis.X)) / 2,
+                (voxelShape.getMin(Direction.Axis.Y) + voxelShape.getMax(Direction.Axis.Y)) / 2,
+                (voxelShape.getMin(Direction.Axis.Z) + voxelShape.getMax(Direction.Axis.Z)) / 2
+        );
+
+        Vec3d pos = new Vec3d(blockPos.getX(), blockPos.getY(), blockPos.getZ());
+
+        return pos.add(localCenter.add(
+                localSize.getX() * offset.getX(),
+                localSize.getY() * offset.getY(),
+                localSize.getZ() * offset.getZ()
+        ));
+    }
+
+    public record IdPack(Variant variant, Size size) {
         private String idString() {
             return variant().getId() + size().getId().map(p -> "_" + p).orElse("");
         }
@@ -50,20 +77,24 @@ public enum Variant {
         public Identifier blockId() {
             return LET.id("block", idString());
         }
+    }
 
-        public Identifier blockGlowId() {
-            return LET.id("block", "glow", idString());
+    public record Wrapper(Variant variant, Size size, DyeColor dyeColor) {
+        public Identifier id() {
+            return LET.id(variant().getId()
+                    + size().getId().map(p -> "_" + p).orElse("")
+                    + "_" + dyeColor().getName());
         }
 
-        public int color(DyeColor dyeColor) {
-            return LET.getColorFromDye(dyeColor);
+        public int color() {
+            return LET.getColorFromDye(dyeColor());
         }
 
-        public int colorOverlay(DyeColor dyeColor, boolean lit, int tintIndex) {
+        public int colorOverlay(boolean lit, int tintIndex) {
             return switch (tintIndex) {
-                case 0 -> LET.mapColorRange(color(dyeColor), lit ? 0xE4 : 0, lit ? 0 : 0xD2);
-                case 1 -> LET.mapColorRange(color(dyeColor), lit ? 0x80 : 0x10, lit ? 0x10 : 0x80);
-                default -> color(dyeColor);
+                case 0 -> LET.mapColorRange(color(), lit ? 0xE4 : 0, lit ? 0 : 0xD2);
+                case 1 -> LET.mapColorRange(color(), lit ? 0x80 : 0x10, lit ? 0x10 : 0x80);
+                default -> color();
             };
         }
 
@@ -73,6 +104,10 @@ public enum Variant {
 
         public VoxelShape voxelShape() {
             return variant().getVoxelShape(size().getSize());
+        }
+
+        public Vec3d placeParticle(BlockPos blockPos, Random random, double factor) {
+            return Variant.placeParticle(blockPos, voxelShape(), random, factor);
         }
     }
 
@@ -108,8 +143,12 @@ public enum Variant {
         this.voxelShapeFunction = voxelShapeFunction;
     }
 
-    public Wrapper with(Size size) {
-        return new Wrapper(this, size);
+    public IdPack with(Size size) {
+        return new IdPack(this, size);
+    }
+
+    public Wrapper with(Size size, DyeColor dyeColor) {
+        return new Wrapper(this, size, dyeColor);
     }
 
     public String getId() {

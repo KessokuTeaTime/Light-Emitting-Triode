@@ -10,7 +10,7 @@
     },
     {
       "apply": {
-        "model": "let:block/glow/slab"
+        "model": "let:block/slab"
       },
       "when": {
         "lit": "true"

@@ -1,12 +1,15 @@
 package band.kessokuteatime.lightemittingtriode.content.block;
 
+import band.kessokuteatime.lightemittingtriode.LET;
 import band.kessokuteatime.lightemittingtriode.content.Variant;
 import net.minecraft.block.*;
+import net.minecraft.particle.DustParticleEffect;
 import net.minecraft.server.world.ServerWorld;
 import net.minecraft.sound.BlockSoundGroup;
 import net.minecraft.state.StateManager;
 import net.minecraft.state.property.Properties;
 import net.minecraft.util.math.BlockPos;
+import net.minecraft.util.math.Vec3d;
 import net.minecraft.util.math.random.Random;
 import net.minecraft.util.shape.VoxelShape;
 import net.minecraft.world.BlockView;
@@ -66,5 +69,19 @@ public class LampBlock extends AbstractGlassBlock {
 
     protected boolean hasPower(World world, BlockPos pos) {
         return world.isReceivingRedstonePower(pos);
+    }
+
+    @Override
+    public void randomDisplayTick(BlockState state, World world, BlockPos pos, Random random) {
+        boolean lit = state.get(Properties.LIT);
+
+        if (lit) {
+            Vec3d particlePos = wrapper.placeParticle(pos, random, 1);
+            world.addParticle(
+                    new DustParticleEffect(LET.toColorArrayFloat(wrapper.colorOverlay(true, 1)), 0.85F),
+                    particlePos.getX(), particlePos.getY(), particlePos.getZ(),
+                    0, 0, 0
+            );
+        }
     }
 }

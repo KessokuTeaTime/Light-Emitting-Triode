@@ -10,7 +10,7 @@
     },
     {
       "apply": {
-        "model": "let:block/glow/lantern"
+        "model": "let:block/lantern"
       },
       "when": {
         "lit": "true"

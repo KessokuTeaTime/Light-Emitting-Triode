@@ -7,6 +7,7 @@ import net.minecraft.text.Text;
 import net.minecraft.util.DyeColor;
 import net.minecraft.util.Identifier;
 import net.minecraft.util.math.MathHelper;
+import org.joml.Vector3f;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -39,6 +40,10 @@ public class LET implements ModInitializer {
         b = (int) (range * ((double) b / 0xFF) + preOffset);
 
         return (MathHelper.clamp(r, 0, 0xFF) << 16) + (MathHelper.clamp(g, 0, 0xFF) << 8) + MathHelper.clamp(b, 0, 0xFF);
+    }
+
+    public static Vector3f toColorArrayFloat(int color) {
+        return new Vector3f(((color & 0xFF0000) >> 16) / 255F, ((color & 0xFF00) >> 8) / 255F, (color & 0xFF) / 255F);
     }
 
     @Override
