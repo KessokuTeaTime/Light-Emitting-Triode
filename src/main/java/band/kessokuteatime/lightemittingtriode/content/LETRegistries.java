@@ -7,20 +7,18 @@ import net.fabricmc.fabric.api.blockrenderlayer.v1.BlockRenderLayerMap;
 import net.fabricmc.fabric.api.client.rendering.v1.ColorProviderRegistry;
 import net.fabricmc.fabric.api.itemgroup.v1.FabricItemGroup;
 import net.fabricmc.fabric.api.itemgroup.v1.ItemGroupEvents;
-import net.fabricmc.fabric.api.object.builder.v1.block.FabricBlockSettings;
 import net.minecraft.block.Block;
 import net.minecraft.client.render.RenderLayer;
-import net.minecraft.client.render.RenderLayers;
 import net.minecraft.item.*;
 import net.minecraft.registry.Registries;
 import net.minecraft.registry.Registry;
+import net.minecraft.state.property.Properties;
 import net.minecraft.util.DyeColor;
 import net.minecraft.util.Identifier;
 
 import java.util.Arrays;
 import java.util.HashMap;
 import java.util.function.Consumer;
-import java.util.function.Supplier;
 
 public class LETRegistries {
     private static <B extends Block> B registerBlock(Identifier id, B block) {
@@ -144,8 +142,8 @@ public class LETRegistries {
                     hashMap.put(registerBlock(id, block), registerItem(id, item));
 
                     // Register tints
-                    ColorProviderRegistry.BLOCK.register((state, world, pos, tintIndex) -> dyeColor.getFireworkColor(), block);
-                    ColorProviderRegistry.ITEM.register((stack, tintIndex) -> dyeColor.getFireworkColor(), item);
+                    ColorProviderRegistry.BLOCK.register((state, world, pos, tintIndex) -> wrapper.colorOverlay(dyeColor, state.get(Properties.LIT), tintIndex), block);
+                    ColorProviderRegistry.ITEM.register((stack, tintIndex) -> wrapper.colorOverlay(dyeColor, false, 1), item);
 
                     // Make translucent
                     BlockRenderLayerMap.INSTANCE.putBlock(block, RenderLayer.getTranslucent());

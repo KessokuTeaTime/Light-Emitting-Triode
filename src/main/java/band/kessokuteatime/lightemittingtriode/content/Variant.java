@@ -24,7 +24,7 @@ public enum Variant {
             size -> fromBottomCenter(4 + 2 * size, 6 + size)
     ),
     ALARM("alarm", 3,
-            size -> fromBottomCenter(10 + 2 * size, 4 + size)
+            size -> fromBottomCenter(10 + 2 * size, 1)
     );
 
     private static VoxelShape fromBottomCenter(double sizePixel, double thicknessPixel) {
@@ -53,6 +53,18 @@ public enum Variant {
 
         public Identifier blockGlowId() {
             return LET.id("block", "glow", idString());
+        }
+
+        public int color(DyeColor dyeColor) {
+            return LET.getColorFromDye(dyeColor);
+        }
+
+        public int colorOverlay(DyeColor dyeColor, boolean lit, int tintIndex) {
+            return switch (tintIndex) {
+                case 0 -> LET.mapColorRange(color(dyeColor), lit ? 0xE4 : 0, lit ? 0 : 0xD2);
+                case 1 -> LET.mapColorRange(color(dyeColor), lit ? 0x80 : 0x10, lit ? 0x10 : 0x80);
+                default -> color(dyeColor);
+            };
         }
 
         public int luminance() {

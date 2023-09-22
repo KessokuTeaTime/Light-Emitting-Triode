@@ -23,13 +23,7 @@ public class ColoredBlockItem extends BlockItem {
     }
 
     public int getDisplayColor() {
-        int color = getDyeColor().getFireworkColor();
-        int gray = 0x55;
-        int r = (color & 0xFF0000) >> 16, g = (color & 0xFF00) >> 8, b = color & 0xFF;
-
-        return (Math.max(gray, r) << 16)
-                + (Math.max(gray, g) << 8)
-                + Math.max(gray, b);
+        return LET.mapColorRange(getDyeColor().getSignColor(), 0x55, 0);
     }
 
     private String getParentTranslationKey() {
