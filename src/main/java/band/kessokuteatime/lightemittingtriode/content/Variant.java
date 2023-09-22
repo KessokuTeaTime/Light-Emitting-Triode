@@ -1,6 +1,7 @@
 package band.kessokuteatime.lightemittingtriode.content;
 
 import band.kessokuteatime.lightemittingtriode.LET;
+import band.kessokuteatime.lightemittingtriode.VoxelShapingTool;
 import band.kessokuteatime.lightemittingtriode.content.block.DirectionalLampBlock;
 import band.kessokuteatime.lightemittingtriode.content.block.LampBlock;
 import band.kessokuteatime.lightemittingtriode.content.block.SlabLampBlock;
@@ -20,11 +21,11 @@ import java.util.function.Function;
 
 public enum Variant {
     CEILING("ceiling", 10,
-            size -> fromBottomCenter(16, 1),
+            size -> VoxelShapingTool.fromBottomCenter(16, 1),
             LampBlock::new
     ),
     SLAB("slab", 10,
-            size -> fromBottomCenter(16, 8),
+            size -> VoxelShapingTool.fromBottomCenter(16, 8),
             SlabLampBlock::new
     ),
     CLEAR("clear", 7,
@@ -32,24 +33,15 @@ public enum Variant {
             DirectionalLampBlock::new
     ),
     LANTERN("lantern", 5,
-            size -> fromBottomCenter(4 + 2 * size, 6 + size),
+            size -> VoxelShapingTool.fromBottomCenter(4 + 2 * size, 6 + size),
             DirectionalLampBlock::new
     ),
     ALARM("alarm", 3,
-            size -> fromBottomCenter(10 + 2 * size, 1),
+            size -> VoxelShapingTool.fromBottomCenter(10 + 2 * size, 1),
             DirectionalLampBlock::new
     );
 
-    private static VoxelShape fromBottomCenter(double sizePixel, double thicknessPixel) {
-        double size = sizePixel / 16, thickness = thicknessPixel / 16;
-
-        return VoxelShapes.cuboid(
-                0.5 - size / 2, 0, 0.5 - size / 2,
-                0.5 + size / 2, thickness, 0.5 + size / 2
-        );
-    }
-
-    private static Vec3d placeParticle(BlockPos blockPos, VoxelShape voxelShape, Random random, double factor) {
+    public static Vec3d placeParticle(BlockPos blockPos, VoxelShape voxelShape, Random random, double factor) {
         Vec3d offset = new Vec3d(
                 (random.nextDouble() * 2 - 1) * factor,
                 (random.nextDouble() * 2 - 1) * factor,

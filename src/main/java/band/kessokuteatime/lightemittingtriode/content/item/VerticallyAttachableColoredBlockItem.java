@@ -1,17 +1,21 @@
 package band.kessokuteatime.lightemittingtriode.content.item;
 
-import band.kessokuteatime.lightemittingtriode.LET;
 import net.minecraft.block.Block;
-import net.minecraft.item.BlockItem;
 import net.minecraft.item.ItemStack;
+import net.minecraft.item.VerticallyAttachableBlockItem;
 import net.minecraft.text.Text;
 import net.minecraft.util.DyeColor;
+import net.minecraft.util.math.Direction;
 
-public class ColoredBlockItem extends BlockItem implements Colorable {
+public class VerticallyAttachableColoredBlockItem extends VerticallyAttachableBlockItem implements Colorable {
     private final DyeColor dyeColor;
 
-    public ColoredBlockItem(Block block, Settings settings, DyeColor dyeColor) {
-        super(block, settings);
+    public VerticallyAttachableColoredBlockItem(
+            Block standingBlock, Block wallBlock,
+            Settings settings, Direction verticalAttachmentDirection,
+            DyeColor dyeColor
+    ) {
+        super(standingBlock, wallBlock, settings, verticalAttachmentDirection);
         this.dyeColor = dyeColor;
     }
 
