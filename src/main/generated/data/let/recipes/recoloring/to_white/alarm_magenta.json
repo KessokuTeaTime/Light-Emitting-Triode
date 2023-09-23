@@ -1,0 +1,13 @@
+{
+  "type": "minecraft:smithing_transform",
+  "addition": {
+    "item": "minecraft:white_dye"
+  },
+  "base": {
+    "item": "let:alarm_magenta"
+  },
+  "result": {
+    "item": "let:alarm_white"
+  },
+  "template": []
+}

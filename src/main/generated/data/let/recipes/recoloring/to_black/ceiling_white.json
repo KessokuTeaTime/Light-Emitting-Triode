@@ -1,0 +1,13 @@
+{
+  "type": "minecraft:smithing_transform",
+  "addition": {
+    "item": "minecraft:black_dye"
+  },
+  "base": {
+    "item": "let:ceiling_white"
+  },
+  "result": {
+    "item": "let:ceiling_black"
+  },
+  "template": []
+}

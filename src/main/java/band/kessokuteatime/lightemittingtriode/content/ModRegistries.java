@@ -78,19 +78,19 @@ public class ModRegistries {
             ALARM_LARGE(Variant.ALARM.with(Variant.Size.LARGE));
 
             final HashMap<Block, BlockItem> blockItemMap;
-            final Variant.Fixed fixed;
+            final Variant.Basis basis;
 
-            Type(Variant.Fixed fixed) {
+            Type(Variant.Basis basis) {
                 this.blockItemMap = new HashMap<>();
-                this.fixed = fixed;
+                this.basis = basis;
             }
 
             public HashMap<Block, BlockItem> getBlockItemMap() {
                 return blockItemMap;
             }
 
-            public Variant.Fixed getIdPack() {
-                return fixed;
+            public Variant.Basis getIdPack() {
+                return basis;
             }
         }
 

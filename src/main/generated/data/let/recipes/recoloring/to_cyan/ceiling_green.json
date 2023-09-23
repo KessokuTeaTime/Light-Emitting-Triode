@@ -1,0 +1,13 @@
+{
+  "type": "minecraft:smithing_transform",
+  "addition": {
+    "item": "minecraft:cyan_dye"
+  },
+  "base": {
+    "item": "let:ceiling_green"
+  },
+  "result": {
+    "item": "let:ceiling_cyan"
+  },
+  "template": []
+}

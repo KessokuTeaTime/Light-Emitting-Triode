@@ -1,0 +1,13 @@
+{
+  "type": "minecraft:smithing_transform",
+  "addition": {
+    "item": "minecraft:light_gray_dye"
+  },
+  "base": {
+    "item": "let:ceiling_pink"
+  },
+  "result": {
+    "item": "let:ceiling_light_gray"
+  },
+  "template": []
+}

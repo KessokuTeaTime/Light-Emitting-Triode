@@ -1,0 +1,13 @@
+{
+  "type": "minecraft:smithing_transform",
+  "addition": {
+    "item": "minecraft:brown_dye"
+  },
+  "base": {
+    "item": "let:lantern_small_magenta"
+  },
+  "result": {
+    "item": "let:lantern_small_brown"
+  },
+  "template": []
+}

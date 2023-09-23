@@ -1,0 +1,13 @@
+{
+  "type": "minecraft:smithing_transform",
+  "addition": {
+    "item": "minecraft:black_dye"
+  },
+  "base": {
+    "item": "let:alarm_small_red"
+  },
+  "result": {
+    "item": "let:alarm_small_black"
+  },
+  "template": []
+}

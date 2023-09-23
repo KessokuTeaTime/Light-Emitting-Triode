@@ -1,7 +1,7 @@
 {
   "type": "minecraft:smithing_transform",
   "addition": {
-    "item": "let:let"
+    "item": "let:led"
   },
   "base": {
     "item": "let:lantern_small_black"

@@ -1,0 +1,13 @@
+{
+  "type": "minecraft:smithing_transform",
+  "addition": {
+    "item": "minecraft:lime_dye"
+  },
+  "base": {
+    "item": "let:clear_brown"
+  },
+  "result": {
+    "item": "let:clear_lime"
+  },
+  "template": []
+}

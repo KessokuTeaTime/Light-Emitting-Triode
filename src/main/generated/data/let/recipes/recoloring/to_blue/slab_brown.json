@@ -1,0 +1,13 @@
+{
+  "type": "minecraft:smithing_transform",
+  "addition": {
+    "item": "minecraft:blue_dye"
+  },
+  "base": {
+    "item": "let:slab_brown"
+  },
+  "result": {
+    "item": "let:slab_blue"
+  },
+  "template": []
+}

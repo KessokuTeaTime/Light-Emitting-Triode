@@ -1,0 +1,13 @@
+{
+  "type": "minecraft:smithing_transform",
+  "addition": {
+    "item": "minecraft:purple_dye"
+  },
+  "base": {
+    "item": "let:alarm_small_black"
+  },
+  "result": {
+    "item": "let:alarm_small_purple"
+  },
+  "template": []
+}

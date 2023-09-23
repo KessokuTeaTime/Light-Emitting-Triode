@@ -1,0 +1,13 @@
+{
+  "type": "minecraft:smithing_transform",
+  "addition": {
+    "item": "minecraft:cyan_dye"
+  },
+  "base": {
+    "item": "let:clear_red"
+  },
+  "result": {
+    "item": "let:clear_cyan"
+  },
+  "template": []
+}

@@ -1,0 +1,13 @@
+{
+  "type": "minecraft:smithing_transform",
+  "addition": {
+    "item": "minecraft:white_dye"
+  },
+  "base": {
+    "item": "let:lantern_green"
+  },
+  "result": {
+    "item": "let:lantern_white"
+  },
+  "template": []
+}

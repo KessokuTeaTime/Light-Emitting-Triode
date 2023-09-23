@@ -1,0 +1,13 @@
+{
+  "type": "minecraft:smithing_transform",
+  "addition": {
+    "item": "minecraft:magenta_dye"
+  },
+  "base": {
+    "item": "let:slab_gray"
+  },
+  "result": {
+    "item": "let:slab_magenta"
+  },
+  "template": []
+}

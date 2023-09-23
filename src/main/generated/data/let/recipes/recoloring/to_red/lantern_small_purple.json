@@ -1,0 +1,13 @@
+{
+  "type": "minecraft:smithing_transform",
+  "addition": {
+    "item": "minecraft:red_dye"
+  },
+  "base": {
+    "item": "let:lantern_small_purple"
+  },
+  "result": {
+    "item": "let:lantern_small_red"
+  },
+  "template": []
+}

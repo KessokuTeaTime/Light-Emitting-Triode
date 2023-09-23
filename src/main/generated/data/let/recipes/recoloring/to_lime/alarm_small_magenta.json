@@ -1,0 +1,13 @@
+{
+  "type": "minecraft:smithing_transform",
+  "addition": {
+    "item": "minecraft:lime_dye"
+  },
+  "base": {
+    "item": "let:alarm_small_magenta"
+  },
+  "result": {
+    "item": "let:alarm_small_lime"
+  },
+  "template": []
+}

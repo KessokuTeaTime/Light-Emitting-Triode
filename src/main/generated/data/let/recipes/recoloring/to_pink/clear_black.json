@@ -1,0 +1,13 @@
+{
+  "type": "minecraft:smithing_transform",
+  "addition": {
+    "item": "minecraft:pink_dye"
+  },
+  "base": {
+    "item": "let:clear_black"
+  },
+  "result": {
+    "item": "let:clear_pink"
+  },
+  "template": []
+}

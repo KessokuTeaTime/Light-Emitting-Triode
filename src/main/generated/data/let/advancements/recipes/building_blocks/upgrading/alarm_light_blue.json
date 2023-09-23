@@ -13,12 +13,12 @@
       },
       "trigger": "minecraft:inventory_changed"
     },
-    "has_let": {
+    "has_led": {
       "conditions": {
         "items": [
           {
             "items": [
-              "let:let"
+              "let:led"
             ]
           }
         ]
@@ -35,7 +35,7 @@
   "requirements": [
     [
       "has_alarm_light_blue",
-      "has_let",
+      "has_led",
       "has_the_recipe"
     ]
   ],

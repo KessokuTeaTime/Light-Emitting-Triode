@@ -1,0 +1,13 @@
+{
+  "type": "minecraft:smithing_transform",
+  "addition": {
+    "item": "minecraft:gray_dye"
+  },
+  "base": {
+    "item": "let:lantern_yellow"
+  },
+  "result": {
+    "item": "let:lantern_gray"
+  },
+  "template": []
+}

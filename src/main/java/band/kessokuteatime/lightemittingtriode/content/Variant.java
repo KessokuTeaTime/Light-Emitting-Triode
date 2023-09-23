@@ -8,9 +8,7 @@ import band.kessokuteatime.lightemittingtriode.content.block.SlabFacingLampBlock
 import band.kessokuteatime.lightemittingtriode.content.item.ColoredBlockItem;
 import net.fabricmc.fabric.api.datagen.v1.provider.FabricRecipeProvider;
 import net.minecraft.block.Block;
-import net.minecraft.data.server.recipe.CraftingRecipeJsonBuilder;
-import net.minecraft.data.server.recipe.ShapelessRecipeJsonBuilder;
-import net.minecraft.data.server.recipe.SmithingTransformRecipeJsonBuilder;
+import net.minecraft.data.server.recipe.*;
 import net.minecraft.item.BlockItem;
 import net.minecraft.item.Item;
 import net.minecraft.item.Items;
@@ -28,10 +26,11 @@ import net.minecraft.util.shape.VoxelShape;
 import net.minecraft.util.shape.VoxelShapes;
 import org.jetbrains.annotations.Nullable;
 
-import java.util.Arrays;
-import java.util.Optional;
+import java.util.*;
 import java.util.function.BiFunction;
+import java.util.function.Consumer;
 import java.util.function.Function;
+import java.util.stream.Collectors;
 
 public enum Variant {
     CLEAR("clear", 7,
@@ -64,11 +63,12 @@ public enum Variant {
 
             wrapper -> SmithingTransformRecipeJsonBuilder.create(
                             Ingredient.empty(),
-                            Ingredient.ofItems(wrapper.block().asItem()), Ingredient.ofItems(ModRegistries.Items.LET),
-                            RecipeCategory.BUILDING_BLOCKS, wrapper.blockItem(Variant.CLEAR.with(Size.NORMAL))
+                            Ingredient.ofItems(wrapper.blockItem()), Ingredient.ofItems(ModRegistries.Items.LET),
+                            RecipeCategory.BUILDING_BLOCKS,
+                            wrapper.blockItem(Variant.CLEAR.with(Size.NORMAL), wrapper.dyeColor())
                     )
-                    .criterion(FabricRecipeProvider.hasItem(wrapper.block().asItem()),
-                            FabricRecipeProvider.conditionsFromItem(wrapper.block().asItem()))
+                    .criterion(FabricRecipeProvider.hasItem(wrapper.blockItem()),
+                            FabricRecipeProvider.conditionsFromItem(wrapper.blockItem()))
                     .criterion(FabricRecipeProvider.hasItem(ModRegistries.Items.LET),
                             FabricRecipeProvider.conditionsFromItem(ModRegistries.Items.LET))
     ),
@@ -86,12 +86,13 @@ public enum Variant {
                             FabricRecipeProvider.conditionsFromItem(wrapper.dye())),
 
             wrapper -> SmithingTransformRecipeJsonBuilder.create(
-                    Ingredient.empty(),
-                    Ingredient.ofItems(wrapper.block().asItem()), Ingredient.ofItems(ModRegistries.Items.LET),
-                    RecipeCategory.BUILDING_BLOCKS, wrapper.blockItem(Variant.SLAB.with(Size.NORMAL))
-            )
-                    .criterion(FabricRecipeProvider.hasItem(wrapper.block().asItem()),
-                            FabricRecipeProvider.conditionsFromItem(wrapper.block().asItem()))
+                            Ingredient.empty(),
+                            Ingredient.ofItems(wrapper.blockItem()), Ingredient.ofItems(ModRegistries.Items.LET),
+                            RecipeCategory.BUILDING_BLOCKS,
+                            wrapper.blockItem(Variant.SLAB.with(Size.NORMAL), wrapper.dyeColor())
+                    )
+                    .criterion(FabricRecipeProvider.hasItem(wrapper.blockItem()),
+                            FabricRecipeProvider.conditionsFromItem(wrapper.blockItem()))
                     .criterion(FabricRecipeProvider.hasItem(ModRegistries.Items.LET),
                             FabricRecipeProvider.conditionsFromItem(ModRegistries.Items.LET))
     ),
@@ -102,7 +103,7 @@ public enum Variant {
 
             wrapper -> ShapelessRecipeJsonBuilder.create(RecipeCategory.BUILDING_BLOCKS, wrapper.block())
                     .input(Items.IRON_NUGGET)
-                    .input(ModRegistries.Items.LED, 1 + wrapper.fixed().size().getSize())
+                    .input(ModRegistries.Items.LED, 1 + wrapper.basis().size().getSize())
                     .input(wrapper.dye())
                     .criterion(FabricRecipeProvider.hasItem(Items.IRON_NUGGET),
                             FabricRecipeProvider.conditionsFromItem(Items.IRON_NUGGET))
@@ -111,15 +112,16 @@ public enum Variant {
                     .criterion(FabricRecipeProvider.hasItem(wrapper.dye()),
                             FabricRecipeProvider.conditionsFromItem(wrapper.dye())),
 
-            wrapper -> wrapper.fixed().size().getSize() >= 2 ? null : SmithingTransformRecipeJsonBuilder.create(
+            wrapper -> wrapper.basis().size().getSize() >= 2 ? null : SmithingTransformRecipeJsonBuilder.create(
                             Ingredient.empty(),
-                            Ingredient.ofItems(wrapper.block().asItem()), Ingredient.ofItems(ModRegistries.Items.LET),
-                            RecipeCategory.BUILDING_BLOCKS, wrapper.blockItem(Variant.valueOf("LANTERN").with(wrapper.fixed().size().larger()))
+                            Ingredient.ofItems(wrapper.blockItem()), Ingredient.ofItems(ModRegistries.Items.LED),
+                            RecipeCategory.BUILDING_BLOCKS,
+                            wrapper.blockItem(Variant.valueOf("LANTERN").with(wrapper.basis().size().larger()), wrapper.dyeColor())
                     )
-                    .criterion(FabricRecipeProvider.hasItem(wrapper.block().asItem()),
-                            FabricRecipeProvider.conditionsFromItem(wrapper.block().asItem()))
-                    .criterion(FabricRecipeProvider.hasItem(ModRegistries.Items.LET),
-                            FabricRecipeProvider.conditionsFromItem(ModRegistries.Items.LET))
+                    .criterion(FabricRecipeProvider.hasItem(wrapper.blockItem()),
+                            FabricRecipeProvider.conditionsFromItem(wrapper.blockItem()))
+                    .criterion(FabricRecipeProvider.hasItem(ModRegistries.Items.LED),
+                            FabricRecipeProvider.conditionsFromItem(ModRegistries.Items.LED))
     ),
     ALARM("alarm", 3,
             size -> VoxelShapingTool.fromBottomCenter(10 + 2 * size, 1),
@@ -128,7 +130,7 @@ public enum Variant {
 
             wrapper -> ShapelessRecipeJsonBuilder.create(RecipeCategory.BUILDING_BLOCKS, wrapper.block())
                     .input(Items.GOLD_NUGGET)
-                    .input(ModRegistries.Items.LED, 1 + wrapper.fixed().size().getSize())
+                    .input(ModRegistries.Items.LED, 1 + wrapper.basis().size().getSize())
                     .input(wrapper.dye())
                     .criterion(FabricRecipeProvider.hasItem(Items.GOLD_NUGGET),
                             FabricRecipeProvider.conditionsFromItem(Items.GOLD_NUGGET))
@@ -137,15 +139,16 @@ public enum Variant {
                     .criterion(FabricRecipeProvider.hasItem(wrapper.dye()),
                             FabricRecipeProvider.conditionsFromItem(wrapper.dye())),
 
-            wrapper -> wrapper.fixed().size().getSize() >= 2 ? null : SmithingTransformRecipeJsonBuilder.create(
+            wrapper -> wrapper.basis().size().getSize() >= 2 ? null : SmithingTransformRecipeJsonBuilder.create(
                             Ingredient.empty(),
-                            Ingredient.ofItems(wrapper.block().asItem()), Ingredient.ofItems(ModRegistries.Items.LET),
-                            RecipeCategory.BUILDING_BLOCKS, wrapper.blockItem(Variant.valueOf("ALARM").with(wrapper.fixed().size().larger()))
+                            Ingredient.ofItems(wrapper.blockItem()), Ingredient.ofItems(ModRegistries.Items.LED),
+                            RecipeCategory.BUILDING_BLOCKS,
+                            wrapper.blockItem(Variant.valueOf("ALARM").with(wrapper.basis().size().larger()), wrapper.dyeColor())
                     )
-                    .criterion(FabricRecipeProvider.hasItem(wrapper.block().asItem()),
-                            FabricRecipeProvider.conditionsFromItem(wrapper.block().asItem()))
-                    .criterion(FabricRecipeProvider.hasItem(ModRegistries.Items.LET),
-                            FabricRecipeProvider.conditionsFromItem(ModRegistries.Items.LET))
+                    .criterion(FabricRecipeProvider.hasItem(wrapper.blockItem()),
+                            FabricRecipeProvider.conditionsFromItem(wrapper.blockItem()))
+                    .criterion(FabricRecipeProvider.hasItem(ModRegistries.Items.LED),
+                            FabricRecipeProvider.conditionsFromItem(ModRegistries.Items.LED))
     );
 
     public static Vec3d placeParticle(BlockPos blockPos, VoxelShape voxelShape, Random random, double factor) {
@@ -176,7 +179,7 @@ public enum Variant {
         ));
     }
 
-    public record Fixed(Variant variant, Size size) {
+    public record Basis(Variant variant, Size size) {
         private String genericIdString() {
             return variant().getId() + size().getId().map(p -> "_" + p).orElse("");
         }
@@ -186,23 +189,33 @@ public enum Variant {
         }
     }
 
-    public record Wrapper(Fixed fixed, DyeColor dyeColor) {
-        public String idString(Fixed fixed) {
-            return fixed.variant().getId()
-                    + fixed.size().getId().map(p -> "_" + p).orElse("")
-                    + "_" + dyeColor().getName();
+    public record Wrapper(Basis basis, DyeColor dyeColor) {
+        public ArrayList<Wrapper> wrappersOfOtherColors() {
+            return Arrays.stream(DyeColor.values())
+                    .filter(d -> d != dyeColor())
+                    .map(d -> new Wrapper(basis(), d))
+                    .collect(Collectors.toCollection(ArrayList::new));
+        }
+
+        public String idString(Basis basis, DyeColor dyeColor) {
+            return basis.variant().getId()
+                    + basis.size().getId().map(p -> "_" + p).orElse("")
+                    + "_" + dyeColor.getName();
         }
 
         public String idString() {
-            return idString(fixed());
+            return idString(basis(), dyeColor());
         }
 
         public Identifier id() {
             return LET.id(idString());
         }
 
-        public Identifier categorizedId(String category) {
-            return LET.id(category, idString());
+        public Identifier categorizedId(String... categories) {
+            ArrayList<String> paths = new ArrayList<>(List.of(categories));
+            paths.add(idString());
+
+            return LET.id(paths.toArray(new String[]{}));
         }
 
         public int color() {
@@ -222,47 +235,61 @@ public enum Variant {
         }
 
         public int luminance() {
-            return fixed().variant().getLuminance(fixed().size().getSize());
+            return basis().variant().getLuminance(basis().size().getSize());
         }
 
         public VoxelShape voxelShape() {
-            return fixed().variant().getVoxelShape(fixed().size().getSize());
+            return basis().variant().getVoxelShape(basis().size().getSize());
         }
 
         public Block createBlock() {
-            return fixed().variant().getBlock(this);
+            return basis().variant().getBlock(this);
         }
 
         public BlockItem createBlockItem(Block block) {
-            return fixed().variant().getBlockItem(block, dyeColor());
+            return basis().variant().getBlockItem(block, dyeColor());
         }
 
-        public Block block(Fixed fixed) {
-            return Registries.BLOCK.get(LET.id(idString(fixed)));
+        public Block block(Basis basis, DyeColor dyeColor) {
+            return Registries.BLOCK.get(LET.id(idString(basis, dyeColor)));
         }
 
         public Block block() {
-            return block(fixed());
+            return block(basis(), dyeColor());
         }
 
-        public BlockItem blockItem(Fixed fixed) {
-            return (BlockItem) Registries.ITEM.get(LET.id(idString(fixed)));
+        public BlockItem blockItem(Basis basis, DyeColor dyeColor) {
+            return (BlockItem) Registries.ITEM.get(LET.id(idString(basis, dyeColor)));
         }
 
         public BlockItem blockItem() {
-            return blockItem(fixed());
+            return blockItem(basis(), dyeColor());
         }
 
         public Item dye() {
             return Registries.ITEM.get(new Identifier(dyeColor().getName() + "_dye"));
         }
 
-        public Optional<CraftingRecipeJsonBuilder> craftingRecipeJsonBuilder() {
-            return Optional.ofNullable(fixed().variant().craftingRecipeJsonBuilder(this));
+        public Consumer<Consumer<RecipeJsonProvider>> useCraftingRecipeJsonBuilder() {
+            return exporter -> Optional.ofNullable(basis().variant().craftingRecipeJsonBuilder(this))
+                    .ifPresent(builder -> builder.offerTo(exporter, categorizedId("crafting")));
         }
 
-        public Optional<SmithingTransformRecipeJsonBuilder> upgradingRecipeJsonBuilder() {
-            return Optional.ofNullable(fixed().variant().upgradingRecipeJsonBuilder(this));
+        public Consumer<Consumer<RecipeJsonProvider>> useUpgradingRecipeJsonBuilder() {
+            return exporter -> Optional.ofNullable(basis().variant().upgradingRecipeJsonBuilder(this))
+                    .ifPresent(builder -> builder.offerTo(exporter, categorizedId("upgrading")));
+        }
+
+        public Consumer<Consumer<RecipeJsonProvider>> useRecoloringRecipeJsonBuilders() {
+            return exporter -> Optional.ofNullable(basis().variant().recoloringRecipeJsonBuilder())
+                    .ifPresent(builder ->
+                            wrappersOfOtherColors().stream()
+                                    .map(wrapper -> new AbstractMap.SimpleEntry<>(wrapper, builder.apply(Ingredient.ofItems(blockItem()), wrapper)))
+                                    .forEach(entry -> entry.getValue().offerTo(
+                                            exporter, 
+                                            categorizedId("recoloring", "to_" + entry.getKey().dyeColor().getName())
+                                    ))
+            );
         }
     }
 
@@ -307,6 +334,17 @@ public enum Variant {
     final BiFunction<Block, DyeColor, BlockItem> blockItemProvider;
     @Nullable final Function<Wrapper, CraftingRecipeJsonBuilder> craftingRecipeJsonBuilder;
     @Nullable final Function<Wrapper, SmithingTransformRecipeJsonBuilder> upgradingRecipeJsonBuilder;
+    @Nullable final BiFunction<Ingredient, Wrapper, SmithingTransformRecipeJsonBuilder> recoloringRecipeJsonBuilder = (ingredient, wrapper) ->
+            SmithingTransformRecipeJsonBuilder.create(
+                            Ingredient.empty(),
+                            ingredient, Ingredient.ofItems(wrapper.dye()),
+                            RecipeCategory.BUILDING_BLOCKS,
+                            wrapper.blockItem(wrapper.basis(), wrapper.dyeColor())
+                    )
+                    .criterion(FabricRecipeProvider.hasItem(wrapper.blockItem()),
+                            FabricRecipeProvider.conditionsFromItem(wrapper.blockItem()))
+                    .criterion(FabricRecipeProvider.hasItem(wrapper.dye()),
+                            FabricRecipeProvider.conditionsFromItem(wrapper.dye()));
 
     Variant(
             String id, int luminance,
@@ -325,12 +363,12 @@ public enum Variant {
         this.upgradingRecipeJsonBuilder = upgradingRecipeJsonBuilder;
     }
 
-    public Fixed with(Size size) {
-        return new Fixed(this, size);
+    public Basis with(Size size) {
+        return new Basis(this, size);
     }
 
     public Wrapper with(Size size, DyeColor dyeColor) {
-        return new Wrapper(new Fixed(this, size), dyeColor);
+        return new Wrapper(new Basis(this, size), dyeColor);
     }
 
     public String getId() {
@@ -359,5 +397,9 @@ public enum Variant {
 
     public @Nullable SmithingTransformRecipeJsonBuilder upgradingRecipeJsonBuilder(Wrapper wrapper) {
         return upgradingRecipeJsonBuilder == null ? null : upgradingRecipeJsonBuilder.apply(wrapper);
+    }
+
+    public @Nullable BiFunction<Ingredient, Wrapper, SmithingTransformRecipeJsonBuilder> recoloringRecipeJsonBuilder() {
+        return recoloringRecipeJsonBuilder;
     }
 }

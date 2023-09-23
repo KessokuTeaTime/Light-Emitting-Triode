@@ -1,0 +1,13 @@
+{
+  "type": "minecraft:smithing_transform",
+  "addition": {
+    "item": "minecraft:orange_dye"
+  },
+  "base": {
+    "item": "let:ceiling_light_blue"
+  },
+  "result": {
+    "item": "let:ceiling_orange"
+  },
+  "template": []
+}

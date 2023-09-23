@@ -1,0 +1,13 @@
+{
+  "type": "minecraft:smithing_transform",
+  "addition": {
+    "item": "minecraft:orange_dye"
+  },
+  "base": {
+    "item": "let:slab_red"
+  },
+  "result": {
+    "item": "let:slab_orange"
+  },
+  "template": []
+}
