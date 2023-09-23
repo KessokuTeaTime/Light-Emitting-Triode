@@ -1,19 +1,19 @@
 {
   "type": "minecraft:crafting_shaped",
   "pattern": [
-    "2",
-    "1"
+    "1",
+    "2"
   ],
   "key": {
     "1": {
-      "item": "minecraft:iron_nugget"
+      "item": "let:bulb"
     },
     "2": {
-      "item": "minecraft:quartz"
+      "item": "minecraft:iron_nugget"
     }
   },
   "result": {
     "item": "let:led",
-    "count": 4
+    "count": 2
   }
 }

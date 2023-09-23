@@ -1,0 +1,13 @@
+{
+  "type": "minecraft:smithing_transform",
+  "addition": {
+    "item": "minecraft:red_dye"
+  },
+  "base": {
+    "item": "let:button_lime"
+  },
+  "result": {
+    "item": "let:button_red"
+  },
+  "template": []
+}

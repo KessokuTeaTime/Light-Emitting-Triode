@@ -1,0 +1,48 @@
+{
+  "parent": "minecraft:recipes/root",
+  "criteria": {
+    "has_gray_dye": {
+      "conditions": {
+        "items": [
+          {
+            "items": [
+              "minecraft:gray_dye"
+            ]
+          }
+        ]
+      },
+      "trigger": "minecraft:inventory_changed"
+    },
+    "has_switch_gray": {
+      "conditions": {
+        "items": [
+          {
+            "items": [
+              "let:switch_gray"
+            ]
+          }
+        ]
+      },
+      "trigger": "minecraft:inventory_changed"
+    },
+    "has_the_recipe": {
+      "conditions": {
+        "recipe": "let:recoloring/to_gray/switch_white"
+      },
+      "trigger": "minecraft:recipe_unlocked"
+    }
+  },
+  "requirements": [
+    [
+      "has_switch_gray",
+      "has_gray_dye",
+      "has_the_recipe"
+    ]
+  ],
+  "rewards": {
+    "recipes": [
+      "let:recoloring/to_gray/switch_white"
+    ]
+  },
+  "sends_telemetry_event": false
+}

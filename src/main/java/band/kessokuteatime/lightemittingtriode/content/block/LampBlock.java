@@ -54,7 +54,7 @@ public class LampBlock extends AbstractGlassBlock implements Waterloggable {
 
     public BiFunction<BlockStateModelGenerator, Block, BlockStateSupplier> generateBlockStates(ModRegistries.Blocks.Type type) {
         return (blockStateModelGenerator, block) -> VariantsBlockStateSupplier
-                .create(block, BlockStateVariant.create().put(VariantSettings.MODEL, type.getIdPack().genericId()));
+                .create(block, BlockStateVariant.create().put(VariantSettings.MODEL, type.basis().genericId()));
     }
 
     public Consumer<Consumer<RecipeJsonProvider>> recipeBuilders() {

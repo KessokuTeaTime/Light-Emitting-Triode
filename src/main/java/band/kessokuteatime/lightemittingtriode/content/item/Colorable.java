@@ -20,8 +20,4 @@ public interface Colorable {
                 Text.translatable(LET.idString("color", getDyeColor().getName()))
         ).styled(style -> style.withColor(getDisplayColor()));
     }
-
-    default Text getName(ItemStack stack) {
-        return getName();
-    }
 }

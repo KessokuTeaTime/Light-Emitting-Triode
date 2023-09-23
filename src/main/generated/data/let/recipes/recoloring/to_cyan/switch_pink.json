@@ -1,0 +1,13 @@
+{
+  "type": "minecraft:smithing_transform",
+  "addition": {
+    "item": "minecraft:cyan_dye"
+  },
+  "base": {
+    "item": "let:switch_pink"
+  },
+  "result": {
+    "item": "let:switch_cyan"
+  },
+  "template": []
+}

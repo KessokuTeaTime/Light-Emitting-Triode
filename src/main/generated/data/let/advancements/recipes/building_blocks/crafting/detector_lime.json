@@ -1,0 +1,74 @@
+{
+  "parent": "minecraft:recipes/root",
+  "criteria": {
+    "has_gold_nugget": {
+      "conditions": {
+        "items": [
+          {
+            "items": [
+              "minecraft:gold_nugget"
+            ]
+          }
+        ]
+      },
+      "trigger": "minecraft:inventory_changed"
+    },
+    "has_lime_dye": {
+      "conditions": {
+        "items": [
+          {
+            "items": [
+              "minecraft:lime_dye"
+            ]
+          }
+        ]
+      },
+      "trigger": "minecraft:inventory_changed"
+    },
+    "has_shade": {
+      "conditions": {
+        "items": [
+          {
+            "items": [
+              "let:shade"
+            ]
+          }
+        ]
+      },
+      "trigger": "minecraft:inventory_changed"
+    },
+    "has_the_recipe": {
+      "conditions": {
+        "recipe": "let:crafting/detector_lime"
+      },
+      "trigger": "minecraft:recipe_unlocked"
+    },
+    "has_tube": {
+      "conditions": {
+        "items": [
+          {
+            "items": [
+              "let:tube"
+            ]
+          }
+        ]
+      },
+      "trigger": "minecraft:inventory_changed"
+    }
+  },
+  "requirements": [
+    [
+      "has_tube",
+      "has_shade",
+      "has_gold_nugget",
+      "has_lime_dye",
+      "has_the_recipe"
+    ]
+  ],
+  "rewards": {
+    "recipes": [
+      "let:crafting/detector_lime"
+    ]
+  },
+  "sends_telemetry_event": false
+}

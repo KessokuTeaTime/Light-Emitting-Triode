@@ -1,0 +1,13 @@
+{
+  "type": "minecraft:smithing_transform",
+  "addition": {
+    "item": "minecraft:yellow_dye"
+  },
+  "base": {
+    "item": "let:switch_light_blue"
+  },
+  "result": {
+    "item": "let:switch_yellow"
+  },
+  "template": []
+}

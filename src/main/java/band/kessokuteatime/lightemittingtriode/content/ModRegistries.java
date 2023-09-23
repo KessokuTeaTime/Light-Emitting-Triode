@@ -18,8 +18,6 @@ import net.minecraft.util.Identifier;
 
 import java.util.Arrays;
 import java.util.HashMap;
-import java.util.function.Consumer;
-import java.util.function.Function;
 
 public class ModRegistries {
     private static <B extends Block> B registerBlock(Identifier id, B block) {
@@ -46,7 +44,7 @@ public class ModRegistries {
                         fill(entries, Items.SHADE, Items.BULB, Items.LED, Items.LET, Items.TUBE);
 
                         Arrays.stream(Blocks.Type.values())
-                                .map(Blocks.Type::getBlockItemMap)
+                                .map(Blocks.Type::blockItemMap)
                                 .flatMap(map -> map.values().stream())
                                 .forEach(entries::add);
                     })
@@ -64,10 +62,10 @@ public class ModRegistries {
 
     public static class Blocks {
         public enum Type {
-            CEILING(Variant.CEILING.with(Variant.Size.NORMAL)),
+            CLEAR(Variant.CLEAR.with(Variant.Size.NORMAL)),
 
             SLAB(Variant.SLAB.with(Variant.Size.NORMAL)),
-            CLEAR(Variant.CLEAR.with(Variant.Size.NORMAL)),
+            CEILING(Variant.CEILING.with(Variant.Size.NORMAL)),
 
             LANTERN_SMALL(Variant.LANTERN.with(Variant.Size.SMALL)),
             LANTERN(Variant.LANTERN.with(Variant.Size.NORMAL)),
@@ -75,7 +73,12 @@ public class ModRegistries {
 
             ALARM_SMALL(Variant.ALARM.with(Variant.Size.SMALL)),
             ALARM(Variant.ALARM.with(Variant.Size.NORMAL)),
-            ALARM_LARGE(Variant.ALARM.with(Variant.Size.LARGE));
+            ALARM_LARGE(Variant.ALARM.with(Variant.Size.LARGE)),
+
+            SWITCH(Variant.SWITCH.with(Variant.Size.NORMAL)),
+            BUTTON(Variant.BUTTON.with(Variant.Size.NORMAL)),
+
+            DETECTOR(Variant.DETECTOR.with(Variant.Size.NORMAL));
 
             final HashMap<Block, BlockItem> blockItemMap;
             final Variant.Basis basis;
@@ -85,63 +88,52 @@ public class ModRegistries {
                 this.basis = basis;
             }
 
-            public HashMap<Block, BlockItem> getBlockItemMap() {
+            public HashMap<Block, BlockItem> blockItemMap() {
                 return blockItemMap;
             }
 
-            public Variant.Basis getIdPack() {
+            public Variant.Basis basis() {
                 return basis;
             }
         }
 
         public static void register() {
-            registerColorVariants(
-                    dyeColor -> Variant.CEILING.with(Variant.Size.NORMAL, dyeColor)
-            ).accept(Type.CEILING.getBlockItemMap());
+            registerColorVariantsForTypes(
+                    Type.CLEAR,
+                    Type.SLAB,
 
-            registerColorVariants(
-                    dyeColor -> Variant.SLAB.with(Variant.Size.NORMAL, dyeColor)
-            ).accept(Type.SLAB.getBlockItemMap());
-            registerColorVariants(
-                    dyeColor -> Variant.CLEAR.with(Variant.Size.NORMAL, dyeColor)
-            ).accept(Type.CLEAR.getBlockItemMap());
+                    Type.CEILING,
 
-            registerColorVariants(
-                    dyeColor -> Variant.LANTERN.with(Variant.Size.SMALL, dyeColor)
-            ).accept(Type.LANTERN_SMALL.getBlockItemMap());
-            registerColorVariants(
-                    dyeColor -> Variant.LANTERN.with(Variant.Size.NORMAL, dyeColor)
-            ).accept(Type.LANTERN.getBlockItemMap());
-            registerColorVariants(
-                    dyeColor -> Variant.LANTERN.with(Variant.Size.LARGE, dyeColor)
-            ).accept(Type.LANTERN_LARGE.getBlockItemMap());
+                    Type.LANTERN_SMALL,
+                    Type.LANTERN,
+                    Type.LANTERN_LARGE,
 
-            registerColorVariants(
-                    dyeColor -> Variant.ALARM.with(Variant.Size.SMALL, dyeColor)
-            ).accept(Type.ALARM_SMALL.getBlockItemMap());
-            registerColorVariants(
-                    dyeColor -> Variant.ALARM.with(Variant.Size.NORMAL, dyeColor)
-            ).accept(Type.ALARM.getBlockItemMap());
-            registerColorVariants(
-                    dyeColor -> Variant.ALARM.with(Variant.Size.LARGE, dyeColor)
-            ).accept(Type.ALARM_LARGE.getBlockItemMap());
+                    Type.ALARM_SMALL,
+                    Type.ALARM,
+                    Type.ALARM_LARGE,
+
+                    Type.SWITCH,
+                    Type.BUTTON,
+
+                    Type.DETECTOR
+            );
         }
 
-        public static Consumer<HashMap<Block, BlockItem>> registerColorVariants(
-                Function<DyeColor, Variant.Wrapper> wrapperSupplier
+        public static void registerColorVariantsForTypes(
+                Type... types
         ) {
-            return hashMap -> {
-                hashMap.clear();
+            for (Type type : types) {
+                type.blockItemMap().clear();
 
                 for (DyeColor dyeColor : DyeColor.values()) {
-                    Variant.Wrapper wrapper = wrapperSupplier.apply(dyeColor);
+                    Variant.Wrapper wrapper = type.basis().with(dyeColor);
                     Identifier id = wrapper.id();
 
                     Block block = wrapper.createBlock();
                     Item item = wrapper.createBlockItem(block);
 
                     // Store registered contents
-                    hashMap.put(registerBlock(id, block), (BlockItem) registerItem(id, item));
+                    type.blockItemMap().put(registerBlock(id, block), (BlockItem) registerItem(id, item));
 
                     // Register tints
                     ColorProviderRegistry.BLOCK.register((state, world, pos, tintIndex) -> wrapper.colorOverlay(state.get(Properties.LIT), tintIndex), block);
@@ -150,7 +142,7 @@ public class ModRegistries {
                     // Make translucent
                     BlockRenderLayerMap.INSTANCE.putBlock(block, RenderLayer.getTranslucent());
                 }
-            };
+            }
         }
     }
 

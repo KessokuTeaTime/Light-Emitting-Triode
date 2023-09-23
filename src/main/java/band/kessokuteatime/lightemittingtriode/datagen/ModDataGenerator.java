@@ -90,7 +90,7 @@ public class ModDataGenerator implements DataGeneratorEntrypoint {
         public void generateBlockStateModels(BlockStateModelGenerator blockStateModelGenerator) {
             // Use specified generators for blocks
             Arrays.stream(ModRegistries.Blocks.Type.values())
-                    .forEach(type -> type.getBlockItemMap()
+                    .forEach(type -> type.blockItemMap()
                             .forEach((block, item) -> blockStateModelGenerator.blockStateCollector.accept(
                                     ((LampBlock) block).generateBlockStates(type).apply(blockStateModelGenerator, block)
                             ))
@@ -101,8 +101,8 @@ public class ModDataGenerator implements DataGeneratorEntrypoint {
         public void generateItemModels(ItemModelGenerator itemModelGenerator) {
             // Use generic block ids for items
             Arrays.stream(ModRegistries.Blocks.Type.values()).forEach(type ->
-                    type.getBlockItemMap().forEach((block, blockItem) -> uploadModelWithParent.accept(
-                            itemModelGenerator, type.getIdPack().genericId(), blockItem
+                    type.blockItemMap().forEach((block, blockItem) -> uploadModelWithParent.accept(
+                            itemModelGenerator, type.basis().genericId(), blockItem
                     ))
             );
         }
@@ -121,7 +121,7 @@ public class ModDataGenerator implements DataGeneratorEntrypoint {
         @Override
         public void generate(Consumer<RecipeJsonProvider> exporter) {
             Arrays.stream(ModRegistries.Blocks.Type.values())
-                    .forEach(type -> type.getBlockItemMap()
+                    .forEach(type -> type.blockItemMap()
                             .keySet().forEach(block -> ((LampBlock) block).recipeBuilders().accept(exporter))
                     );
         }
@@ -142,7 +142,7 @@ public class ModDataGenerator implements DataGeneratorEntrypoint {
         public void generate() {
             // Let blocks drop themselves
             Arrays.stream(ModRegistries.Blocks.Type.values()).forEach(type ->
-                    type.getBlockItemMap().forEach(this::addDrop)
+                    type.blockItemMap().forEach(this::addDrop)
             );
         }
     }
@@ -178,7 +178,7 @@ public class ModDataGenerator implements DataGeneratorEntrypoint {
 
         private void addAll(FabricTagBuilder builder, ModRegistries.Blocks.Type... type) {
             Arrays.stream(type)
-                .map(ModRegistries.Blocks.Type::getBlockItemMap)
+                .map(ModRegistries.Blocks.Type::blockItemMap)
                 .map(HashMap::keySet)
                 .forEach(values -> values.forEach(builder::add));
         }

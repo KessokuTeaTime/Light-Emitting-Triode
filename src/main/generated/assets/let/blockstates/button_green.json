@@ -1,0 +1,30 @@
+{
+  "variants": {
+    "facing=down": {
+      "model": "let:block/button",
+      "x": 180
+    },
+    "facing=east": {
+      "model": "let:block/button",
+      "x": 90,
+      "y": 90
+    },
+    "facing=north": {
+      "model": "let:block/button",
+      "x": 90
+    },
+    "facing=south": {
+      "model": "let:block/button",
+      "x": 90,
+      "y": 180
+    },
+    "facing=up": {
+      "model": "let:block/button"
+    },
+    "facing=west": {
+      "model": "let:block/button",
+      "x": 90,
+      "y": 270
+    }
+  }
+}

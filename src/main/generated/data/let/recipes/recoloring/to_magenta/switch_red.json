@@ -1,0 +1,13 @@
+{
+  "type": "minecraft:smithing_transform",
+  "addition": {
+    "item": "minecraft:magenta_dye"
+  },
+  "base": {
+    "item": "let:switch_red"
+  },
+  "result": {
+    "item": "let:switch_magenta"
+  },
+  "template": []
+}

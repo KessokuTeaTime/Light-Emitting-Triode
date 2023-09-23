@@ -1,0 +1,13 @@
+{
+  "type": "minecraft:smithing_transform",
+  "addition": {
+    "item": "minecraft:lime_dye"
+  },
+  "base": {
+    "item": "let:button_orange"
+  },
+  "result": {
+    "item": "let:button_lime"
+  },
+  "template": []
+}

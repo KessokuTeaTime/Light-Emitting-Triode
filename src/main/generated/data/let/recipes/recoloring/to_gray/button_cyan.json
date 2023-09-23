@@ -1,0 +1,13 @@
+{
+  "type": "minecraft:smithing_transform",
+  "addition": {
+    "item": "minecraft:gray_dye"
+  },
+  "base": {
+    "item": "let:button_cyan"
+  },
+  "result": {
+    "item": "let:button_gray"
+  },
+  "template": []
+}

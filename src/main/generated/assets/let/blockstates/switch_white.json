@@ -1,0 +1,30 @@
+{
+  "variants": {
+    "facing=down": {
+      "model": "let:block/switch",
+      "x": 180
+    },
+    "facing=east": {
+      "model": "let:block/switch",
+      "x": 90,
+      "y": 90
+    },
+    "facing=north": {
+      "model": "let:block/switch",
+      "x": 90
+    },
+    "facing=south": {
+      "model": "let:block/switch",
+      "x": 90,
+      "y": 180
+    },
+    "facing=up": {
+      "model": "let:block/switch"
+    },
+    "facing=west": {
+      "model": "let:block/switch",
+      "x": 90,
+      "y": 270
+    }
+  }
+}

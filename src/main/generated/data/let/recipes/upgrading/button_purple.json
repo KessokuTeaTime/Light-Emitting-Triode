@@ -1,0 +1,13 @@
+{
+  "type": "minecraft:smithing_transform",
+  "addition": {
+    "item": "minecraft:quartz"
+  },
+  "base": {
+    "item": "let:button_purple"
+  },
+  "result": {
+    "item": "let:switch_purple"
+  },
+  "template": []
+}

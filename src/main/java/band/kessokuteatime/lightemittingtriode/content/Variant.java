@@ -1,10 +1,13 @@
 package band.kessokuteatime.lightemittingtriode.content;
 
 import band.kessokuteatime.lightemittingtriode.LET;
-import band.kessokuteatime.lightemittingtriode.VoxelShapingTool;
-import band.kessokuteatime.lightemittingtriode.content.block.FacingLampBlock;
+import band.kessokuteatime.lightemittingtriode.VoxelShaper;
+import band.kessokuteatime.lightemittingtriode.content.block.decorational.FacingLampBlock;
 import band.kessokuteatime.lightemittingtriode.content.block.LampBlock;
-import band.kessokuteatime.lightemittingtriode.content.block.SlabFacingLampBlock;
+import band.kessokuteatime.lightemittingtriode.content.block.decorational.SlabFacingLampBlock;
+import band.kessokuteatime.lightemittingtriode.content.block.functional.ButtonFacingLampBlock;
+import band.kessokuteatime.lightemittingtriode.content.block.functional.DetectorFacingLampBlock;
+import band.kessokuteatime.lightemittingtriode.content.block.functional.SwitchFacingLampBlock;
 import band.kessokuteatime.lightemittingtriode.content.item.ColoredBlockItem;
 import net.fabricmc.fabric.api.datagen.v1.provider.FabricRecipeProvider;
 import net.minecraft.block.Block;
@@ -30,10 +33,11 @@ import java.util.*;
 import java.util.function.BiFunction;
 import java.util.function.Consumer;
 import java.util.function.Function;
+import java.util.function.IntFunction;
 import java.util.stream.Collectors;
 
 public enum Variant {
-    CLEAR("clear", 7,
+    CLEAR("clear", size -> 15,
             size -> VoxelShapes.fullCube(),
             LampBlock::new,
             (block, dyeColor) -> new ColoredBlockItem(block, new Item.Settings(), dyeColor),
@@ -48,8 +52,8 @@ public enum Variant {
 
             null
     ),
-    SLAB("slab", 10,
-            size -> VoxelShapingTool.fromBottomCenter(16, 8),
+    SLAB("slab", size -> 13,
+            size -> VoxelShaper.fromBottomCenter(16, 8),
             SlabFacingLampBlock::new,
             (block, dyeColor) -> new ColoredBlockItem(block, new Item.Settings(), dyeColor),
 
@@ -72,8 +76,8 @@ public enum Variant {
                     .criterion(FabricRecipeProvider.hasItem(ModRegistries.Items.LET),
                             FabricRecipeProvider.conditionsFromItem(ModRegistries.Items.LET))
     ),
-    CEILING("ceiling", 10,
-            size -> VoxelShapingTool.fromBottomCenter(16, 1),
+    CEILING("ceiling", size -> 10,
+            size -> VoxelShaper.fromBottomCenter(16, 1),
             FacingLampBlock::new,
             (block, dyeColor) -> new ColoredBlockItem(block, new Item.Settings(), dyeColor),
 
@@ -96,8 +100,8 @@ public enum Variant {
                     .criterion(FabricRecipeProvider.hasItem(ModRegistries.Items.LET),
                             FabricRecipeProvider.conditionsFromItem(ModRegistries.Items.LET))
     ),
-    LANTERN("lantern", 5,
-            size -> VoxelShapingTool.fromBottomCenter(4 + 2 * size, 6 + size),
+    LANTERN("lantern", size -> 5 + size * 2,
+            size -> VoxelShaper.fromBottomCenter(4 + 2 * size, 6 + size),
             FacingLampBlock::new,
             (block, dyeColor) -> new ColoredBlockItem(block, new Item.Settings(), dyeColor),
 
@@ -123,8 +127,8 @@ public enum Variant {
                     .criterion(FabricRecipeProvider.hasItem(ModRegistries.Items.LED),
                             FabricRecipeProvider.conditionsFromItem(ModRegistries.Items.LED))
     ),
-    ALARM("alarm", 3,
-            size -> VoxelShapingTool.fromBottomCenter(10 + 2 * size, 1),
+    ALARM("alarm", size -> 3 + size * 3,
+            size -> VoxelShaper.fromBottomCenter(10 + 2 * size, 1),
             FacingLampBlock::new,
             (block, dyeColor) -> new ColoredBlockItem(block, new Item.Settings(), dyeColor),
 
@@ -149,6 +153,69 @@ public enum Variant {
                             FabricRecipeProvider.conditionsFromItem(wrapper.blockItem()))
                     .criterion(FabricRecipeProvider.hasItem(ModRegistries.Items.LED),
                             FabricRecipeProvider.conditionsFromItem(ModRegistries.Items.LED))
+    ),
+    SWITCH("switch", size -> 1,
+            size -> VoxelShaper.fromBottomCenter(8, 2),
+            SwitchFacingLampBlock::new,
+            (block, dyeColor) -> new ColoredBlockItem(block, new Item.Settings(), dyeColor),
+
+            wrapper -> ShapelessRecipeJsonBuilder.create(RecipeCategory.BUILDING_BLOCKS, wrapper.block())
+                    .input(Items.QUARTZ)
+                    .input(ModRegistries.Items.TUBE)
+                    .input(wrapper.dye())
+                    .criterion(FabricRecipeProvider.hasItem(Items.QUARTZ),
+                            FabricRecipeProvider.conditionsFromItem(Items.QUARTZ))
+                    .criterion(FabricRecipeProvider.hasItem(ModRegistries.Items.TUBE),
+                            FabricRecipeProvider.conditionsFromItem(ModRegistries.Items.TUBE))
+                    .criterion(FabricRecipeProvider.hasItem(wrapper.dye()),
+                            FabricRecipeProvider.conditionsFromItem(wrapper.dye())),
+
+            null
+    ),
+    BUTTON("button", size -> 1,
+            size -> Block.createCuboidShape(6, 0, 5, 10, 2, 11),
+            ButtonFacingLampBlock::new,
+            (block, dyeColor) -> new ColoredBlockItem(block, new Item.Settings(), dyeColor),
+
+            wrapper -> ShapelessRecipeJsonBuilder.create(RecipeCategory.BUILDING_BLOCKS, wrapper.block())
+                    .input(ModRegistries.Items.TUBE)
+                    .input(wrapper.dye())
+                    .criterion(FabricRecipeProvider.hasItem(ModRegistries.Items.TUBE),
+                            FabricRecipeProvider.conditionsFromItem(ModRegistries.Items.TUBE))
+                    .criterion(FabricRecipeProvider.hasItem(wrapper.dye()),
+                            FabricRecipeProvider.conditionsFromItem(wrapper.dye())),
+
+            wrapper -> SmithingTransformRecipeJsonBuilder.create(
+                            Ingredient.empty(),
+                            Ingredient.ofItems(wrapper.blockItem()), Ingredient.ofItems(Items.QUARTZ),
+                            RecipeCategory.BUILDING_BLOCKS,
+                            wrapper.blockItem(Variant.SWITCH.with(Size.NORMAL), wrapper.dyeColor())
+                    )
+                    .criterion(FabricRecipeProvider.hasItem(wrapper.blockItem()),
+                            FabricRecipeProvider.conditionsFromItem(wrapper.blockItem()))
+                    .criterion(FabricRecipeProvider.hasItem(Items.QUARTZ),
+                            FabricRecipeProvider.conditionsFromItem(Items.QUARTZ))
+    ),
+    DETECTOR("detector", size -> 2,
+            size -> VoxelShaper.fromBottomCenter(16, 1),
+            DetectorFacingLampBlock::new,
+            (block, dyeColor) -> new ColoredBlockItem(block, new Item.Settings(), dyeColor),
+
+            wrapper -> ShapelessRecipeJsonBuilder.create(RecipeCategory.BUILDING_BLOCKS, wrapper.block())
+                    .input(ModRegistries.Items.TUBE, 2)
+                    .input(ModRegistries.Items.SHADE)
+                    .input(Items.GOLD_NUGGET)
+                    .input(wrapper.dye())
+                    .criterion(FabricRecipeProvider.hasItem(ModRegistries.Items.TUBE),
+                            FabricRecipeProvider.conditionsFromItem(ModRegistries.Items.TUBE))
+                    .criterion(FabricRecipeProvider.hasItem(ModRegistries.Items.SHADE),
+                            FabricRecipeProvider.conditionsFromItem(ModRegistries.Items.SHADE))
+                    .criterion(FabricRecipeProvider.hasItem(Items.GOLD_NUGGET),
+                            FabricRecipeProvider.conditionsFromItem(Items.GOLD_NUGGET))
+                    .criterion(FabricRecipeProvider.hasItem(wrapper.dye()),
+                            FabricRecipeProvider.conditionsFromItem(wrapper.dye())),
+
+            null
     );
 
     public static Vec3d placeParticle(BlockPos blockPos, VoxelShape voxelShape, Random random, double factor) {
@@ -186,6 +253,10 @@ public enum Variant {
 
         public Identifier genericId() {
             return LET.id("block", genericIdString());
+        }
+
+        public Wrapper with(DyeColor dyeColor) {
+            return new Wrapper(this, dyeColor);
         }
     }
 
@@ -328,7 +399,7 @@ public enum Variant {
     }
 
     final String id;
-    final int luminance;
+    final IntFunction<Integer> luminance;
     final Function<Integer, VoxelShape> voxelShapeProvider;
     final Function<Wrapper, Block> blockProvider;
     final BiFunction<Block, DyeColor, BlockItem> blockItemProvider;
@@ -347,7 +418,7 @@ public enum Variant {
                             FabricRecipeProvider.conditionsFromItem(wrapper.dye()));
 
     Variant(
-            String id, int luminance,
+            String id, IntFunction<Integer> luminance,
             Function<Integer, VoxelShape> voxelShapeProvider,
             Function<Wrapper, Block> blockProvider,
             BiFunction<Block, DyeColor, BlockItem> blockItemProvider,
@@ -367,16 +438,12 @@ public enum Variant {
         return new Basis(this, size);
     }
 
-    public Wrapper with(Size size, DyeColor dyeColor) {
-        return new Wrapper(new Basis(this, size), dyeColor);
-    }
-
     public String getId() {
         return id;
     }
 
     public int getLuminance(int size) {
-        return luminance + 2 * size + 1;
+        return luminance.apply(size);
     }
 
     public VoxelShape getVoxelShape(int size) {

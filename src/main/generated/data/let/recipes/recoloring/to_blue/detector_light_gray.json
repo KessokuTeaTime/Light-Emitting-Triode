@@ -1,0 +1,13 @@
+{
+  "type": "minecraft:smithing_transform",
+  "addition": {
+    "item": "minecraft:blue_dye"
+  },
+  "base": {
+    "item": "let:detector_light_gray"
+  },
+  "result": {
+    "item": "let:detector_blue"
+  },
+  "template": []
+}

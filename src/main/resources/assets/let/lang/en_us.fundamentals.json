@@ -1,18 +1,27 @@
 {
+    "item.let.shade": "The Shade",
     "item.let.bulb": "Bulb",
     "item.let.led": "Light Emitting Diode",
     "item.let.let": "Light Emitting Triode",
-    "item.let.shade": "Piece of Shade",
+    "item.let.tube": "Tube",
 
     "itemGroup.let.general": "Light Emitting Triode",
 
-    "block.let.ceiling": "%s Ceiling",
-    "block.let.slab": "%s Slab",
     "block.let.clear": "%s Clear",
+    "block.let.slab": "%s Slab",
+
+    "block.let.ceiling": "%s Ceiling",
+
     "block.let.lantern_small": "Small %s Lantern",
     "block.let.lantern": "%s Lantern",
     "block.let.lantern_large": "Large %s Lantern",
+
     "block.let.alarm_small": "Small %s Alarm",
     "block.let.alarm": "%s Alarm",
-    "block.let.alarm_large": "Large %s Alarm"
+    "block.let.alarm_large": "Large %s Alarm",
+
+    "block.let.switch": "%s Switch",
+    "block.let.button": "%s Button",
+
+    "block.let.detector": "%s Detector"
 }

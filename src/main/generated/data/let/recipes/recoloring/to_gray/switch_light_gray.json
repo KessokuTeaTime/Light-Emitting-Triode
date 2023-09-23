@@ -1,0 +1,13 @@
+{
+  "type": "minecraft:smithing_transform",
+  "addition": {
+    "item": "minecraft:gray_dye"
+  },
+  "base": {
+    "item": "let:switch_light_gray"
+  },
+  "result": {
+    "item": "let:switch_gray"
+  },
+  "template": []
+}
