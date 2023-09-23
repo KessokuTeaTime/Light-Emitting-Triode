@@ -24,6 +24,8 @@ import net.minecraft.world.WorldView;
 import org.jetbrains.annotations.Nullable;
 
 import java.util.Objects;
+import java.util.Set;
+import java.util.WeakHashMap;
 import java.util.function.BiFunction;
 
 public class SlabFacingLampBlock extends FacingLampBlock {
@@ -46,13 +48,13 @@ public class SlabFacingLampBlock extends FacingLampBlock {
     }
 
     @Override
-    public boolean hasSidedTransparency(BlockState state) {
-        return !state.get(LET.Properties.FULL);
+    protected void appendProperties(StateManager.Builder<Block, BlockState> builder) {
+        super.appendProperties(builder.add(LET.Properties.FULL));
     }
 
     @Override
-    protected void appendProperties(StateManager.Builder<Block, BlockState> builder) {
-        super.appendProperties(builder.add(LET.Properties.FULL));
+    public boolean hasSidedTransparency(BlockState state) {
+        return !state.get(LET.Properties.FULL);
     }
 
     @Override
@@ -96,8 +98,6 @@ public class SlabFacingLampBlock extends FacingLampBlock {
                     zLowerHalf = context.getHitPos().getZ() - context.getBlockPos().getZ() <= 0.5;
 
             Direction direction = context.getSide(), facing = state.get(Properties.FACING);
-            System.out.println(context.getHitPos().subtract(Vec3d.of(context.getBlockPos())));
-            System.out.println(direction + ", " + facing);
             
             return facing == direction && switch (facing) {
                 case DOWN -> yLowerHalf;

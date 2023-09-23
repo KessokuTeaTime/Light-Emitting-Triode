@@ -1,8 +1,9 @@
-package band.kessokuteatime.lightemittingtriode.content.block.decorational;
+package band.kessokuteatime.lightemittingtriode.content.block.functional;
 
 import band.kessokuteatime.lightemittingtriode.VoxelShaper;
 import band.kessokuteatime.lightemittingtriode.content.ModRegistries;
 import band.kessokuteatime.lightemittingtriode.content.Variant;
+import band.kessokuteatime.lightemittingtriode.content.block.functional.base.AbstractPowerableLampBlock;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockState;
 import net.minecraft.block.Blocks;
@@ -24,8 +25,8 @@ import org.jetbrains.annotations.Nullable;
 import java.util.Objects;
 import java.util.function.BiFunction;
 
-public class FacingLampBlock extends LampBlock {
-    public FacingLampBlock(Variant.Wrapper wrapper) {
+public class FacingPowerableLampBlock extends AbstractPowerableLampBlock {
+    protected FacingPowerableLampBlock(Variant.Wrapper wrapper) {
         super(wrapper);
         setDefaultState(
                 getDefaultState()

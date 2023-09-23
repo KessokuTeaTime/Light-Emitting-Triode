@@ -1,25 +1,24 @@
-package band.kessokuteatime.lightemittingtriode.content.block;
+package band.kessokuteatime.lightemittingtriode.content.block.base;
 
 import band.kessokuteatime.lightemittingtriode.content.Variant;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockState;
+import net.minecraft.block.Waterloggable;
 import net.minecraft.fluid.FluidState;
 import net.minecraft.fluid.Fluids;
 import net.minecraft.item.ItemPlacementContext;
-import net.minecraft.server.world.ServerWorld;
 import net.minecraft.state.StateManager;
 import net.minecraft.state.property.Properties;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.Direction;
-import net.minecraft.util.math.random.Random;
 import net.minecraft.world.WorldAccess;
 import org.jetbrains.annotations.Nullable;
 
 import java.util.Objects;
 
-public class WaterLoggableLampBlock extends LampBlock {
-    public WaterLoggableLampBlock(Variant.Wrapper wrapper) {
-        super(wrapper);
+public abstract class AbstractWaterLoggableLampBlock extends AbstractLampBlock implements Waterloggable {
+    protected AbstractWaterLoggableLampBlock(Settings settings, Variant.Wrapper wrapper) {
+        super(settings, wrapper);
         setDefaultState(
                 getDefaultState()
                         .with(Properties.WATERLOGGED, false)

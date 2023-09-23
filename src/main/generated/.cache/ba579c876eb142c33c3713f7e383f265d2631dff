@@ -1,4 +1,4 @@
-// 1.20	2023-09-23T19:10:22.297459	Light Emitting Triode/Block Loot Tables
+// 1.20	2023-09-23T23:22:32.741378	Light Emitting Triode/Block Loot Tables
 139a9de27de615b8688f28723963bcefd8da794a data/let/loot_tables/blocks/slab_pink.json
 892e19af9f64ae58554ce84b5b6a720e19c40a7e data/let/loot_tables/blocks/lantern_large_white.json
 1a76d0215b78d933e570151c0dcf9bedb52aca88 data/let/loot_tables/blocks/lantern_large_lime.json
@@ -115,8 +115,8 @@ aea52f827037d4a501e0e3df017fb7fd7f7beabb data/let/loot_tables/blocks/lantern_lar
 68fbe5237db2692777664cda4f602ee3ed72f044 data/let/loot_tables/blocks/alarm_small_red.json
 47952317d1eb6aacb0b6c1939e734e29605a55d0 data/let/loot_tables/blocks/button_gray.json
 451a3a8af01a43d742471c21cfe0d4dbdb500977 data/let/loot_tables/blocks/lantern_small_gray.json
-511cd8b2ebceedea5bf72c94d5a2e52a21b767e0 data/let/loot_tables/blocks/lantern_large_gray.json
 e2e133b746e265d0f316a4970b30c36eb9a758da data/let/loot_tables/blocks/alarm_light_blue.json
+511cd8b2ebceedea5bf72c94d5a2e52a21b767e0 data/let/loot_tables/blocks/lantern_large_gray.json
 e3afaee7df1a1b83bc598ae8a98a3eed5ea1325d data/let/loot_tables/blocks/alarm_small_gray.json
 17394c86ebae65b61ec4a2725d8631061a3464c1 data/let/loot_tables/blocks/slab_light_blue.json
 75aa86909b9cf3aeef07a2a5e61243b150907b66 data/let/loot_tables/blocks/switch_red.json

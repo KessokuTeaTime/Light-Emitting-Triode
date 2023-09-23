@@ -1,9 +1,9 @@
 package band.kessokuteatime.lightemittingtriode.content.item;
 
 import band.kessokuteatime.lightemittingtriode.LET;
+import band.kessokuteatime.lightemittingtriode.content.item.base.Colorable;
 import net.minecraft.block.Block;
 import net.minecraft.client.item.TooltipContext;
-import net.minecraft.client.item.TooltipData;
 import net.minecraft.item.BlockItem;
 import net.minecraft.item.ItemStack;
 import net.minecraft.text.Text;
@@ -13,7 +13,6 @@ import net.minecraft.world.World;
 import org.jetbrains.annotations.Nullable;
 
 import java.util.List;
-import java.util.Optional;
 
 public class ColoredBlockItem extends BlockItem implements Colorable {
     private final DyeColor dyeColor;

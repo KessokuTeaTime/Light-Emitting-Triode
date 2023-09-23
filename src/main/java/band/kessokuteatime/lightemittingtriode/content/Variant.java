@@ -3,12 +3,13 @@ package band.kessokuteatime.lightemittingtriode.content;
 import band.kessokuteatime.lightemittingtriode.LET;
 import band.kessokuteatime.lightemittingtriode.VoxelShaper;
 import band.kessokuteatime.lightemittingtriode.content.block.decorational.FacingLampBlock;
-import band.kessokuteatime.lightemittingtriode.content.block.LampBlock;
+import band.kessokuteatime.lightemittingtriode.content.block.decorational.LampBlock;
 import band.kessokuteatime.lightemittingtriode.content.block.decorational.SlabFacingLampBlock;
-import band.kessokuteatime.lightemittingtriode.content.block.functional.ButtonFacingLampBlock;
-import band.kessokuteatime.lightemittingtriode.content.block.functional.DetectorFacingLampBlock;
-import band.kessokuteatime.lightemittingtriode.content.block.functional.SwitchFacingLampBlock;
+import band.kessokuteatime.lightemittingtriode.content.block.functional.ButtonLampBlock;
+import band.kessokuteatime.lightemittingtriode.content.block.functional.DetectorLampBlock;
+import band.kessokuteatime.lightemittingtriode.content.block.functional.SwitchLampBlock;
 import band.kessokuteatime.lightemittingtriode.content.item.ColoredBlockItem;
+import band.kessokuteatime.lightemittingtriode.content.item.InventoryColoredBlockItem;
 import net.fabricmc.fabric.api.datagen.v1.provider.FabricRecipeProvider;
 import net.minecraft.block.Block;
 import net.minecraft.data.server.recipe.*;
@@ -100,7 +101,7 @@ public enum Variant {
                     .criterion(FabricRecipeProvider.hasItem(ModRegistries.Items.LET),
                             FabricRecipeProvider.conditionsFromItem(ModRegistries.Items.LET))
     ),
-    LANTERN("lantern", size -> 5 + size * 2,
+    LANTERN("lantern", size -> 8 + size * 2,
             size -> VoxelShaper.fromBottomCenter(4 + 2 * size, 6 + size),
             FacingLampBlock::new,
             (block, dyeColor) -> new ColoredBlockItem(block, new Item.Settings(), dyeColor),
@@ -127,7 +128,7 @@ public enum Variant {
                     .criterion(FabricRecipeProvider.hasItem(ModRegistries.Items.LED),
                             FabricRecipeProvider.conditionsFromItem(ModRegistries.Items.LED))
     ),
-    ALARM("alarm", size -> 3 + size * 3,
+    ALARM("alarm", size -> 5 + size * 3,
             size -> VoxelShaper.fromBottomCenter(10 + 2 * size, 1),
             FacingLampBlock::new,
             (block, dyeColor) -> new ColoredBlockItem(block, new Item.Settings(), dyeColor),
@@ -156,8 +157,8 @@ public enum Variant {
     ),
     SWITCH("switch", size -> 1,
             size -> VoxelShaper.fromBottomCenter(8, 2),
-            SwitchFacingLampBlock::new,
-            (block, dyeColor) -> new ColoredBlockItem(block, new Item.Settings(), dyeColor),
+            SwitchLampBlock::new,
+            (block, dyeColor) -> new InventoryColoredBlockItem(block, new Item.Settings(), dyeColor),
 
             wrapper -> ShapelessRecipeJsonBuilder.create(RecipeCategory.BUILDING_BLOCKS, wrapper.block())
                     .input(Items.QUARTZ)
@@ -174,8 +175,8 @@ public enum Variant {
     ),
     BUTTON("button", size -> 1,
             size -> Block.createCuboidShape(6, 0, 5, 10, 2, 11),
-            ButtonFacingLampBlock::new,
-            (block, dyeColor) -> new ColoredBlockItem(block, new Item.Settings(), dyeColor),
+            wrapper -> new ButtonLampBlock(wrapper, 22),
+            (block, dyeColor) -> new InventoryColoredBlockItem(block, new Item.Settings(), dyeColor),
 
             wrapper -> ShapelessRecipeJsonBuilder.create(RecipeCategory.BUILDING_BLOCKS, wrapper.block())
                     .input(ModRegistries.Items.TUBE)
@@ -196,9 +197,9 @@ public enum Variant {
                     .criterion(FabricRecipeProvider.hasItem(Items.QUARTZ),
                             FabricRecipeProvider.conditionsFromItem(Items.QUARTZ))
     ),
-    DETECTOR("detector", size -> 2,
+    DETECTOR("detector", size -> 1,
             size -> VoxelShaper.fromBottomCenter(16, 1),
-            DetectorFacingLampBlock::new,
+            DetectorLampBlock::new,
             (block, dyeColor) -> new ColoredBlockItem(block, new Item.Settings(), dyeColor),
 
             wrapper -> ShapelessRecipeJsonBuilder.create(RecipeCategory.BUILDING_BLOCKS, wrapper.block())
@@ -247,12 +248,18 @@ public enum Variant {
     }
 
     public record Basis(Variant variant, Size size) {
-        private String genericIdString() {
-            return variant().getId() + size().getId().map(p -> "_" + p).orElse("");
+        private String genericIdString(String... postfixes) {
+            return variant().getId()
+                    + size().getId().map(p -> "_" + p).orElse("")
+                    + Arrays.stream(postfixes)
+                    .filter(Objects::nonNull)
+                    .filter(s -> !s.isBlank())
+                    .map(s -> "_" + s)
+                    .collect(Collectors.joining());
         }
 
-        public Identifier genericId() {
-            return LET.id("block", genericIdString());
+        public Identifier genericId(String... postfixes) {
+            return LET.id("block", genericIdString(postfixes));
         }
 
         public Wrapper with(DyeColor dyeColor) {

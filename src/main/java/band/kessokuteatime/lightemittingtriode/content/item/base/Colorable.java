@@ -1,4 +1,4 @@
-package band.kessokuteatime.lightemittingtriode.content.item;
+package band.kessokuteatime.lightemittingtriode.content.item.base;
 
 import band.kessokuteatime.lightemittingtriode.LET;
 import net.minecraft.item.ItemStack;

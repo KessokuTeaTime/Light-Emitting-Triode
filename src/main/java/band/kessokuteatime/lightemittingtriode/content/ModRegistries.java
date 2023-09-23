@@ -1,6 +1,7 @@
 package band.kessokuteatime.lightemittingtriode.content;
 
 import band.kessokuteatime.lightemittingtriode.LET;
+import band.kessokuteatime.lightemittingtriode.content.block.base.AbstractLampBlock;
 import band.kessokuteatime.lightemittingtriode.content.item.ShadeItem;
 import net.fabricmc.fabric.api.blockrenderlayer.v1.BlockRenderLayerMap;
 import net.fabricmc.fabric.api.client.rendering.v1.ColorProviderRegistry;
@@ -12,7 +13,6 @@ import net.minecraft.item.*;
 import net.minecraft.registry.Registry;
 import net.minecraft.registry.RegistryKeys;
 import net.minecraft.registry.tag.TagKey;
-import net.minecraft.state.property.Properties;
 import net.minecraft.util.DyeColor;
 import net.minecraft.util.Identifier;
 
@@ -136,7 +136,9 @@ public class ModRegistries {
                     type.blockItemMap().put(registerBlock(id, block), (BlockItem) registerItem(id, item));
 
                     // Register tints
-                    ColorProviderRegistry.BLOCK.register((state, world, pos, tintIndex) -> wrapper.colorOverlay(state.get(Properties.LIT), tintIndex), block);
+                    ColorProviderRegistry.BLOCK.register((state, world, pos, tintIndex) -> wrapper.colorOverlay(
+                            ((AbstractLampBlock) state.getBlock()).isLit(state), tintIndex
+                    ), block);
                     ColorProviderRegistry.ITEM.register((stack, tintIndex) -> wrapper.colorOverlay(false, 1), item);
 
                     // Make translucent

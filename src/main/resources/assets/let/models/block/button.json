@@ -1,0 +1,77 @@
+{
+	"credit": "Made with Blockbench by KrLite",
+	"textures": {
+		"particle": "let:block/gradient_map",
+		"texture": "let:block/gradient_map"
+	},
+	"elements": [
+		{
+			"from": [6, 2, 7],
+			"to": [10, 2, 9],
+			"faces": {
+				"up": {"uv": [15, 14, 16, 15], "texture": "#texture", "tintindex": 0}
+			}
+		},
+		{
+			"from": [5, 0, 6],
+			"to": [11, 2, 7],
+			"faces": {
+				"north": {"uv": [15, 14, 16, 15], "texture": "#texture", "tintindex": 0},
+				"east": {"uv": [15, 14, 16, 15], "texture": "#texture", "tintindex": 0},
+				"west": {"uv": [15, 14, 16, 15], "texture": "#texture", "tintindex": 0},
+				"up": {"uv": [15, 14, 16, 15], "texture": "#texture", "tintindex": 0},
+				"down": {"uv": [15, 14, 16, 15], "texture": "#texture", "tintindex": 0}
+			}
+		},
+		{
+			"from": [5, 0, 9],
+			"to": [11, 2, 10],
+			"faces": {
+				"east": {"uv": [15, 14, 16, 15], "texture": "#texture", "tintindex": 0},
+				"south": {"uv": [15, 14, 16, 15], "texture": "#texture", "tintindex": 0},
+				"west": {"uv": [15, 14, 16, 15], "texture": "#texture", "tintindex": 0},
+				"up": {"uv": [15, 14, 16, 15], "texture": "#texture", "tintindex": 0},
+				"down": {"uv": [15, 14, 16, 15], "texture": "#texture", "tintindex": 0}
+			}
+		},
+		{
+			"from": [5, 0, 7],
+			"to": [6, 2, 9],
+			"faces": {
+				"west": {"uv": [15, 14, 16, 15], "texture": "#texture", "tintindex": 0},
+				"up": {"uv": [15, 14, 16, 15], "texture": "#texture", "tintindex": 0},
+				"down": {"uv": [15, 14, 16, 15], "texture": "#texture", "tintindex": 0}
+			}
+		},
+		{
+			"from": [10, 0, 7],
+			"to": [11, 2, 9],
+			"faces": {
+				"east": {"uv": [15, 14, 16, 15], "texture": "#texture", "tintindex": 0},
+				"up": {"uv": [15, 14, 16, 15], "texture": "#texture", "tintindex": 0},
+				"down": {"uv": [15, 14, 16, 15], "texture": "#texture", "tintindex": 0}
+			}
+		},
+		{
+			"from": [6, 0, 7],
+			"to": [10, 1, 9],
+			"faces": {
+				"north": {"uv": [15, 14, 16, 15], "texture": "#texture", "tintindex": 1},
+				"east": {"uv": [15, 14, 16, 15], "texture": "#texture", "tintindex": 1},
+				"south": {"uv": [15, 14, 16, 15], "texture": "#texture", "tintindex": 1},
+				"west": {"uv": [15, 14, 16, 15], "texture": "#texture", "tintindex": 1},
+				"up": {"uv": [15, 14, 16, 15], "texture": "#texture", "tintindex": 1},
+				"down": {"uv": [15, 14, 16, 15], "texture": "#texture", "tintindex": 1}
+			}
+		}
+	],
+	"groups": [
+		{
+			"name": "frame",
+			"origin": [0, 0, 0],
+			"color": 0,
+			"children": [0, 1, 2, 3, 4]
+		},
+		5
+	]
+}

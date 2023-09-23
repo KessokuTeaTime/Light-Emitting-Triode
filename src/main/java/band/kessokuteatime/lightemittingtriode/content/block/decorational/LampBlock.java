@@ -1,14 +1,13 @@
-package band.kessokuteatime.lightemittingtriode.content.block;
+package band.kessokuteatime.lightemittingtriode.content.block.decorational;
 
 import band.kessokuteatime.lightemittingtriode.LET;
 import band.kessokuteatime.lightemittingtriode.content.ModRegistries;
 import band.kessokuteatime.lightemittingtriode.content.Variant;
+import band.kessokuteatime.lightemittingtriode.content.block.base.AbstractWaterLoggableLampBlock;
 import net.minecraft.block.*;
 import net.minecraft.data.client.*;
-import net.minecraft.data.server.recipe.RecipeJsonProvider;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.ItemStack;
-import net.minecraft.particle.DustParticleEffect;
 import net.minecraft.registry.tag.ItemTags;
 import net.minecraft.server.world.ServerWorld;
 import net.minecraft.sound.BlockSoundGroup;
@@ -20,18 +19,14 @@ import net.minecraft.util.ActionResult;
 import net.minecraft.util.Hand;
 import net.minecraft.util.hit.BlockHitResult;
 import net.minecraft.util.math.BlockPos;
-import net.minecraft.util.math.Vec3d;
 import net.minecraft.util.math.random.Random;
 import net.minecraft.util.shape.VoxelShape;
 import net.minecraft.world.BlockView;
 import net.minecraft.world.World;
 
 import java.util.function.BiFunction;
-import java.util.function.Consumer;
 
-public class LampBlock extends AbstractGlassBlock implements Waterloggable {
-    protected final Variant.Wrapper wrapper;
-
+public class LampBlock extends AbstractWaterLoggableLampBlock {
     public LampBlock(Variant.Wrapper wrapper) {
         super(
                 AbstractBlock.Settings.copy(Blocks.GLASS)
@@ -41,10 +36,10 @@ public class LampBlock extends AbstractGlassBlock implements Waterloggable {
                                         ? wrapper.luminance()
                                         : 0
                         )
-                        .emissiveLighting((state, world, pos) -> state.get(Properties.LIT))
+                        .emissiveLighting((state, world, pos) -> state.get(Properties.LIT)),
+                wrapper
         );
 
-        this.wrapper = wrapper;
         setDefaultState(
                 getDefaultState()
                         .with(Properties.LIT, false)
@@ -52,21 +47,23 @@ public class LampBlock extends AbstractGlassBlock implements Waterloggable {
         );
     }
 
+    @Override
     public BiFunction<BlockStateModelGenerator, Block, BlockStateSupplier> generateBlockStates(ModRegistries.Blocks.Type type) {
         return (blockStateModelGenerator, block) -> VariantsBlockStateSupplier
                 .create(block, BlockStateVariant.create().put(VariantSettings.MODEL, type.basis().genericId()));
     }
 
-    public Consumer<Consumer<RecipeJsonProvider>> recipeBuilders() {
-        return exporter -> {
-            wrapper.useCraftingRecipeJsonBuilder().accept(exporter);
-            wrapper.useUpgradingRecipeJsonBuilder().accept(exporter);
-            wrapper.useRecoloringRecipeJsonBuilders().accept(exporter);
-        };
+    @Override
+    public boolean isLit(BlockState state) {
+        return state.get(Properties.LIT);
     }
 
-    protected boolean hasPower(World world, BlockPos pos) {
+    protected boolean receivingPower(World world, BlockPos pos) {
         return world.isReceivingRedstonePower(pos);
+    }
+
+    public static boolean canUse(ItemStack stack) {
+        return stack.isIn(ItemTags.TOOLS) && !stack.isIn(ItemTags.SWORDS);
     }
 
     @Override
@@ -76,14 +73,14 @@ public class LampBlock extends AbstractGlassBlock implements Waterloggable {
 
     @Override
     public VoxelShape getOutlineShape(BlockState state, BlockView world, BlockPos pos, ShapeContext context) {
-        return wrapper.voxelShape();
+        return wrapper().voxelShape();
     }
 
     @Override
     public void onBlockAdded(BlockState state, World world, BlockPos pos, BlockState oldState, boolean notify) {
         super.onBlockAdded(state, world, pos, oldState, notify);
 
-        if (hasPower(world, pos))
+        if (receivingPower(world, pos))
             world.setBlockState(pos, state.with(Properties.LIT, true));
     }
 
@@ -104,10 +101,6 @@ public class LampBlock extends AbstractGlassBlock implements Waterloggable {
         return super.onUse(state, world, pos, player, hand, hit);
     }
 
-    public static boolean canUse(ItemStack stack) {
-        return stack.isIn(ItemTags.TOOLS) && !stack.isIn(ItemTags.SWORDS);
-    }
-
     @Override
     public void neighborUpdate(BlockState state, World world, BlockPos pos, Block block, BlockPos fromPos, boolean notify) {
         super.neighborUpdate(state, world, pos, block, fromPos, notify);
@@ -115,9 +108,9 @@ public class LampBlock extends AbstractGlassBlock implements Waterloggable {
         if (!world.isClient) {
             boolean lit = state.get(Properties.LIT);
 
-            if (lit != hasPower(world, pos)) {
+            if (lit != receivingPower(world, pos)) {
                 if (lit)
-                    world.scheduleBlockTick(pos, this, 4);
+                    world.scheduleBlockTick(pos, this, 2);
                 else
                     world.setBlockState(pos, state.cycle(Properties.LIT), 2);
             }
@@ -128,23 +121,7 @@ public class LampBlock extends AbstractGlassBlock implements Waterloggable {
     public void scheduledTick(BlockState state, ServerWorld world, BlockPos pos, Random random) {
         super.scheduledTick(state, world, pos, random);
 
-        if (state.get(Properties.LIT) && !hasPower(world, pos))
+        if (state.get(Properties.LIT) && !receivingPower(world, pos))
             world.setBlockState(pos, state.cycle(Properties.LIT), 2);
-    }
-
-    @Override
-    public void randomDisplayTick(BlockState state, World world, BlockPos pos, Random random) {
-        super.randomDisplayTick(state, world, pos, random);
-
-        boolean lit = state.get(Properties.LIT);
-
-        if (lit) {
-            Vec3d particlePos = wrapper.placeParticle(pos, random, 1);
-            world.addParticle(
-                    new DustParticleEffect(LET.toColorArrayFloat(wrapper.colorOverlay(true, 1)), 0.85F),
-                    particlePos.getX(), particlePos.getY(), particlePos.getZ(),
-                    0, 0, 0
-            );
-        }
     }
 }
