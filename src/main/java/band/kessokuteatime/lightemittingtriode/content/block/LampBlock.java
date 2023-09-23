@@ -48,12 +48,6 @@ public class LampBlock extends AbstractGlassBlock implements Waterloggable {
         return world.isReceivingRedstonePower(pos);
     }
 
-    protected boolean isFullBlock() {
-        return wrapper.voxelShape().getMax(Direction.Axis.X) - wrapper.voxelShape().getMin(Direction.Axis.X) >= 1
-                && wrapper.voxelShape().getMax(Direction.Axis.Y) - wrapper.voxelShape().getMin(Direction.Axis.Y) >= 1
-                && wrapper.voxelShape().getMax(Direction.Axis.Z) - wrapper.voxelShape().getMin(Direction.Axis.Z) >= 1;
-    }
-
     @Override
     protected void appendProperties(StateManager.Builder<Block, BlockState> builder) {
         super.appendProperties(builder.add(Properties.LIT));

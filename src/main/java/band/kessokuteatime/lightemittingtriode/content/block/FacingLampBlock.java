@@ -5,6 +5,7 @@ import band.kessokuteatime.lightemittingtriode.content.LETRegistries;
 import band.kessokuteatime.lightemittingtriode.content.Variant;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockState;
+import net.minecraft.block.Blocks;
 import net.minecraft.block.ShapeContext;
 import net.minecraft.data.client.*;
 import net.minecraft.entity.ai.pathing.NavigationType;
@@ -18,6 +19,8 @@ import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.Direction;
 import net.minecraft.util.shape.VoxelShape;
 import net.minecraft.world.BlockView;
+import net.minecraft.world.WorldAccess;
+import net.minecraft.world.WorldView;
 import org.jetbrains.annotations.Nullable;
 
 import java.util.Objects;
@@ -59,22 +62,40 @@ public class FacingLampBlock extends WaterLoggableLampBlock {
     }
 
     @Override
-    public boolean canPathfindThrough(BlockState state, BlockView world, BlockPos pos, NavigationType type) {
-        return switch (type) {
-            case AIR -> false;
-            case LAND -> state.get(Properties.FACING) == Direction.UP;
-            case WATER -> world.getFluidState(pos).isIn(FluidTags.WATER);
-        };
-    }
-
-    @Override
     protected void appendProperties(StateManager.Builder<Block, BlockState> builder) {
         super.appendProperties(builder.add(Properties.FACING));
     }
 
     @Override
-    public @Nullable BlockState getPlacementState(ItemPlacementContext ctx) {
-        return Objects.requireNonNull(super.getPlacementState(ctx))
-                .with(Properties.FACING, ctx.getSide());
+    public @Nullable BlockState getPlacementState(ItemPlacementContext context) {
+        return Objects.requireNonNull(super.getPlacementState(context))
+                .with(Properties.FACING, context.getSide());
+    }
+
+    @Override
+    public BlockState getStateForNeighborUpdate(BlockState state, Direction direction, BlockState neighborState, WorldAccess world, BlockPos pos, BlockPos neighborPos) {
+        return getStateForNeighborUpdateFragile(state, direction, neighborState, world, pos, neighborPos, true);
+    }
+
+    public BlockState getStateForNeighborUpdateFragile(
+            BlockState state, Direction direction, BlockState neighborState,
+            WorldAccess world, BlockPos pos, BlockPos neighborPos,
+            boolean fragile
+    ) {
+        return fragile && direction == state.get(Properties.FACING).getOpposite() && !this.canPlaceAt(state, world, pos)
+                ? Blocks.AIR.getDefaultState()
+                : super.getStateForNeighborUpdate(state, direction, neighborState, world, pos, neighborPos);
+    }
+
+    @Override
+    public boolean canPlaceAt(BlockState state, WorldView world, BlockPos pos) {
+        return switch (state.get(Properties.FACING)) {
+            case DOWN -> Block.sideCoversSmallSquare(world, pos.up(), Direction.DOWN);
+            case UP -> Block.sideCoversSmallSquare(world, pos.down(), Direction.UP);
+            case NORTH -> Block.sideCoversSmallSquare(world, pos.south(), Direction.NORTH);
+            case SOUTH -> Block.sideCoversSmallSquare(world, pos.north(), Direction.SOUTH);
+            case WEST -> Block.sideCoversSmallSquare(world, pos.east(), Direction.WEST);
+            case EAST -> Block.sideCoversSmallSquare(world, pos.west(), Direction.EAST);
+        };
     }
 }

@@ -1,28 +1,54 @@
 {
   "variants": {
-    "facing=down": {
+    "facing=down,full=false": {
       "model": "let:block/slab",
       "x": 180
     },
-    "facing=east": {
+    "facing=down,full=true": {
+      "model": "let:block/clear",
+      "x": 180
+    },
+    "facing=east,full=false": {
       "model": "let:block/slab",
       "x": 90,
       "y": 90
     },
-    "facing=north": {
+    "facing=east,full=true": {
+      "model": "let:block/clear",
+      "x": 90,
+      "y": 90
+    },
+    "facing=north,full=false": {
       "model": "let:block/slab",
       "x": 90
     },
-    "facing=south": {
+    "facing=north,full=true": {
+      "model": "let:block/clear",
+      "x": 90
+    },
+    "facing=south,full=false": {
       "model": "let:block/slab",
       "x": 90,
       "y": 180
     },
-    "facing=up": {
+    "facing=south,full=true": {
+      "model": "let:block/clear",
+      "x": 90,
+      "y": 180
+    },
+    "facing=up,full=false": {
       "model": "let:block/slab"
     },
-    "facing=west": {
+    "facing=up,full=true": {
+      "model": "let:block/clear"
+    },
+    "facing=west,full=false": {
       "model": "let:block/slab",
+      "x": 90,
+      "y": 270
+    },
+    "facing=west,full=true": {
+      "model": "let:block/clear",
       "x": 90,
       "y": 270
     }

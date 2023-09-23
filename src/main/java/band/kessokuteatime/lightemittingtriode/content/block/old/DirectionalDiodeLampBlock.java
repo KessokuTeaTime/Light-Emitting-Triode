@@ -37,11 +37,11 @@ public class DirectionalDiodeLampBlock extends DiodeLampBlock {
     }
 
     @Override
-    public BlockState getPlacementState(ItemPlacementContext ctx) {
-        Direction direction = ctx.getPlacementDirections()[0];
-        WorldAccess worldAccess = ctx.getWorld();
+    public BlockState getPlacementState(ItemPlacementContext context) {
+        Direction direction = context.getPlacementDirections()[0];
+        WorldAccess worldAccess = context.getWorld();
 
-        if (isDirectionValid(direction, worldAccess, ctx.getBlockPos())) {
+        if (isDirectionValid(direction, worldAccess, context.getBlockPos())) {
             return getDefaultState().with(FACING, direction);
         }
 

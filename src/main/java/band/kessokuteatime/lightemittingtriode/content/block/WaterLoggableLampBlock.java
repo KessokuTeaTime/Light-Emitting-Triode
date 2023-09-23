@@ -33,11 +33,11 @@ public class WaterLoggableLampBlock extends LampBlock {
 
     @Nullable
     @Override
-    public BlockState getPlacementState(ItemPlacementContext ctx) {
-        return Objects.requireNonNull(super.getPlacementState(ctx))
+    public BlockState getPlacementState(ItemPlacementContext context) {
+        return Objects.requireNonNull(super.getPlacementState(context))
                 .with(
                         Properties.WATERLOGGED,
-                        ctx.getWorld().getFluidState(ctx.getBlockPos()).getFluid() == Fluids.WATER
+                        context.getWorld().getFluidState(context.getBlockPos()).getFluid() == Fluids.WATER
                 );
     }
 
