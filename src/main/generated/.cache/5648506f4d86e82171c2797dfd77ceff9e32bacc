@@ -1,4 +1,4 @@
-// 1.20	2023-09-23T16:34:20.489994	Light Emitting Triode/Recipes
+// 1.20	2023-09-23T16:34:44.601648	Light Emitting Triode/Recipes
 94e328e25e79559e3af9d2db0b093797a518ad15 data/let/recipes/crafting/alarm_green.json
 e82e06ad377a043fe23ba5db6c1f1515cfeb40f4 data/let/recipes/crafting/lantern_blue.json
 bba1445a90786b66461a3af53c99f9a93b194a72 data/let/recipes/crafting/alarm_black.json
@@ -25,8 +25,8 @@ b7e113aae0b92c53dbd74af4880a6f8d191f3669 data/let/recipes/crafting/lantern_large
 fecdfdc44f20f954b021142da21725de10cd353a data/let/advancements/recipes/building_blocks/crafting/lantern_small_pink.json
 14ea98a57c35037f3167a2bb5e55ec8d2e34eed0 data/let/advancements/recipes/building_blocks/crafting/alarm_large_orange.json
 d68abe7dba05af7b0e26203f632038581d91e353 data/let/recipes/crafting/slab_black.json
-98961530d13c2d57fbb6fbd4632d5c1eb2122023 data/let/advancements/recipes/building_blocks/crafting/slab_gray.json
 081dbb6e41b58fb9a5d9e8bfb32f04d0175cc79a data/let/advancements/recipes/building_blocks/crafting/slab_yellow.json
+98961530d13c2d57fbb6fbd4632d5c1eb2122023 data/let/advancements/recipes/building_blocks/crafting/slab_gray.json
 da1a21ceff0574cfd1ddca0fdab45dcdd2216489 data/let/advancements/recipes/building_blocks/crafting/ceiling_blue.json
 c35d8ee108cf83b1504d31c2e9fca137885f1018 data/let/recipes/crafting/slab_red.json
 b9a8552a7945133fe20a3b67c4f761fdcd6d68db data/let/advancements/recipes/building_blocks/crafting/alarm_large_red.json
@@ -91,8 +91,8 @@ c19b3eb3f8f9ed8f9bff9b1c9a057e280bb7f6fa data/let/recipes/crafting/lantern_light
 a4e9d8fc07afd87fd99a74731f411d7af6bf274f data/let/advancements/recipes/building_blocks/crafting/ceiling_yellow.json
 f1e145a10fdc7d5e2fd7d7ad00d9b8b6a7fb4fcc data/let/recipes/crafting/slab_light_blue.json
 d1be66a3e5b5f47a759b66109544bf63a931dfe8 data/let/advancements/recipes/building_blocks/crafting/clear_blue.json
-c1fb7be61c943a58be72b46ab813c7c4b4ecfae5 data/let/recipes/crafting/alarm_magenta.json
 14aaabc5c2309585913ee666335706edc6b9b3a2 data/let/advancements/recipes/building_blocks/crafting/alarm_small_light_blue.json
+c1fb7be61c943a58be72b46ab813c7c4b4ecfae5 data/let/recipes/crafting/alarm_magenta.json
 14fd0fe8bc2673a53aa536b426bcfc5a66504dae data/let/recipes/crafting/clear_light_blue.json
 fde12a4fe6e4f8c43333b2760d37650e86f4835c data/let/recipes/crafting/lantern_large_light_blue.json
 d7c4a9a0373ec004cf1beaefb428104b3d8814af data/let/advancements/recipes/building_blocks/crafting/lantern_black.json
@@ -222,8 +222,8 @@ b4c71d49af6c072bd9f31c652b827a9c039be3b9 data/let/advancements/recipes/building_
 b8e975069b62ad7279b9c1f337acf651c21f1003 data/let/advancements/recipes/building_blocks/crafting/slab_green.json
 9729d6019de3b7d1093d0de878b824ab343470de data/let/recipes/crafting/lantern_gray.json
 5c15d8136751f5bebd6780b11a8f672d13f4885e data/let/advancements/recipes/building_blocks/crafting/lantern_small_light_blue.json
-71c22e4f8a30844c278b575b02ddcf402b0d9153 data/let/recipes/crafting/lantern_white.json
 fcb2f8c314286f822accde3f4a83a2bdd11e90cc data/let/recipes/crafting/lantern_large_brown.json
+71c22e4f8a30844c278b575b02ddcf402b0d9153 data/let/recipes/crafting/lantern_white.json
 a5154c46c3573453cace645d15fdfaaa6d79611c data/let/advancements/recipes/building_blocks/crafting/clear_brown.json
 f3764f0efef215346ed4c3bbf74956880515ff3a data/let/recipes/crafting/lantern_large_white.json
 b4760b518c2597be2824c6efa9a26c04dc2f6584 data/let/advancements/recipes/building_blocks/crafting/alarm_small_brown.json
@@ -261,8 +261,8 @@ c3d1f5c1ad8324cb19ca80011915a4ba5a8acf24 data/let/recipes/crafting/clear_brown.j
 beb8915c0420a3bfa84e1d99e4be77c46e4a1ef6 data/let/advancements/recipes/building_blocks/crafting/alarm_red.json
 000c2f837fb830c0bb2ad6eaf7d8d33e016be0ca data/let/recipes/crafting/slab_magenta.json
 0478d102efdf5104f324d69119e380cd2b696dd0 data/let/recipes/crafting/ceiling_light_blue.json
-91f18968cace82541ecc4e544c953a9c181f2474 data/let/advancements/recipes/building_blocks/crafting/lantern_large_light_gray.json
 bdbda897193d166445ec5e2532ae431603ada3db data/let/advancements/recipes/building_blocks/crafting/lantern_large_brown.json
+91f18968cace82541ecc4e544c953a9c181f2474 data/let/advancements/recipes/building_blocks/crafting/lantern_large_light_gray.json
 d6d2abf4764a8b2410b5b06aa9da504488cdaaa5 data/let/advancements/recipes/building_blocks/crafting/slab_lime.json
 27f18d55069f91e9f977b0a6c9ca3f537a4d7120 data/let/advancements/recipes/building_blocks/crafting/clear_cyan.json
 5657907b75f0e9584d1e0bfd7d089f53fab376cb data/let/recipes/crafting/slab_brown.json

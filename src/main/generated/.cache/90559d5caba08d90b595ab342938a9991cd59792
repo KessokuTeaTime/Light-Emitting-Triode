@@ -1,4 +1,4 @@
-// 1.20	2023-09-23T16:34:20.485931	Light Emitting Triode/Model Definitions
+// 1.20	2023-09-23T16:34:44.597416	Light Emitting Triode/Model Definitions
 e023f73f8048bfdad1d388c27cbbb291c503c866 assets/let/blockstates/alarm_large_gray.json
 f4b40b2c9ab421b08a609b19b19107a47409531c assets/let/models/item/alarm_large_light_blue.json
 731e3550818b9f40809cb1582a6ae59406846a05 assets/let/models/item/lantern_large_yellow.json
@@ -57,8 +57,8 @@ a47cec7a6bc9da296cae1bdfe319065561212be9 assets/let/models/item/slab_light_gray.
 a47cec7a6bc9da296cae1bdfe319065561212be9 assets/let/models/item/slab_orange.json
 b1d54e0ce471304f7fa271c97fa700c6e134295e assets/let/models/item/lantern_small_pink.json
 4f7a6e32af10812d69a11420bd432c092e27fd4f assets/let/blockstates/alarm_small_brown.json
-035ff7e08db0674ffc26835eb918da2abc04f3fc assets/let/blockstates/slab_green.json
 4f7a6e32af10812d69a11420bd432c092e27fd4f assets/let/blockstates/alarm_small_light_blue.json
+035ff7e08db0674ffc26835eb918da2abc04f3fc assets/let/blockstates/slab_green.json
 8fb71690779d9a4ec17f4d208e7934b7c6297fd0 assets/let/models/item/lantern_light_blue.json
 b1d54e0ce471304f7fa271c97fa700c6e134295e assets/let/models/item/lantern_small_magenta.json
 731e3550818b9f40809cb1582a6ae59406846a05 assets/let/models/item/lantern_large_light_gray.json
@@ -123,9 +123,9 @@ cc82138226a669b61ed7a55bfaa0b9961a1112d4 assets/let/blockstates/lantern_green.js
 035ff7e08db0674ffc26835eb918da2abc04f3fc assets/let/blockstates/slab_blue.json
 e0d41aec6f3a85464304c462d2080f69dce01106 assets/let/models/item/clear_cyan.json
 6df3a41640436909d08d4f2ad0c9c8612c51746f assets/let/models/item/alarm_small_lime.json
-3c6bbaa20bb49c9e400640baf34abd2881a6424e assets/let/blockstates/ceiling_brown.json
 035ff7e08db0674ffc26835eb918da2abc04f3fc assets/let/blockstates/slab_orange.json
 cc82138226a669b61ed7a55bfaa0b9961a1112d4 assets/let/blockstates/lantern_magenta.json
+3c6bbaa20bb49c9e400640baf34abd2881a6424e assets/let/blockstates/ceiling_brown.json
 cc82138226a669b61ed7a55bfaa0b9961a1112d4 assets/let/blockstates/lantern_cyan.json
 1253fcaf678afdc473ac87aba1661b6abd7c9325 assets/let/blockstates/alarm_brown.json
 f4b40b2c9ab421b08a609b19b19107a47409531c assets/let/models/item/alarm_large_light_gray.json
@@ -146,9 +146,9 @@ e023f73f8048bfdad1d388c27cbbb291c503c866 assets/let/blockstates/alarm_large_red.
 2982a7b8f7926aec49788b08a58f685a40afa89b assets/let/models/item/alarm_white.json
 7abfed8f0e194f508ce3ff1fd436d18ff26de67d assets/let/blockstates/clear_white.json
 731e3550818b9f40809cb1582a6ae59406846a05 assets/let/models/item/lantern_large_green.json
-1253fcaf678afdc473ac87aba1661b6abd7c9325 assets/let/blockstates/alarm_gray.json
-1253fcaf678afdc473ac87aba1661b6abd7c9325 assets/let/blockstates/alarm_light_blue.json
 c4e878cce51485b64198531a622ad8ae72de8efd assets/let/blockstates/lantern_small_gray.json
+1253fcaf678afdc473ac87aba1661b6abd7c9325 assets/let/blockstates/alarm_light_blue.json
+1253fcaf678afdc473ac87aba1661b6abd7c9325 assets/let/blockstates/alarm_gray.json
 731e3550818b9f40809cb1582a6ae59406846a05 assets/let/models/item/lantern_large_black.json
 035ff7e08db0674ffc26835eb918da2abc04f3fc assets/let/blockstates/slab_lime.json
 731e3550818b9f40809cb1582a6ae59406846a05 assets/let/models/item/lantern_large_orange.json
@@ -281,8 +281,8 @@ c4e878cce51485b64198531a622ad8ae72de8efd assets/let/blockstates/lantern_small_wh
 f4b40b2c9ab421b08a609b19b19107a47409531c assets/let/models/item/alarm_large_purple.json
 7abfed8f0e194f508ce3ff1fd436d18ff26de67d assets/let/blockstates/clear_yellow.json
 2982a7b8f7926aec49788b08a58f685a40afa89b assets/let/models/item/alarm_yellow.json
-1253fcaf678afdc473ac87aba1661b6abd7c9325 assets/let/blockstates/alarm_white.json
 1253fcaf678afdc473ac87aba1661b6abd7c9325 assets/let/blockstates/alarm_light_gray.json
+1253fcaf678afdc473ac87aba1661b6abd7c9325 assets/let/blockstates/alarm_white.json
 6df3a41640436909d08d4f2ad0c9c8612c51746f assets/let/models/item/alarm_small_brown.json
 b8c1df40ddd7f65d2d180a426031abe5160cdab3 assets/let/blockstates/lantern_large_pink.json
 f4b40b2c9ab421b08a609b19b19107a47409531c assets/let/models/item/alarm_large_yellow.json
