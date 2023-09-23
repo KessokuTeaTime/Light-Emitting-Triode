@@ -1,16 +1,14 @@
 package band.kessokuteatime.lightemittingtriode.content.block;
 
 import band.kessokuteatime.lightemittingtriode.VoxelShapingTool;
-import band.kessokuteatime.lightemittingtriode.content.LETRegistries;
+import band.kessokuteatime.lightemittingtriode.content.Registries;
 import band.kessokuteatime.lightemittingtriode.content.Variant;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockState;
 import net.minecraft.block.Blocks;
 import net.minecraft.block.ShapeContext;
 import net.minecraft.data.client.*;
-import net.minecraft.entity.ai.pathing.NavigationType;
 import net.minecraft.item.ItemPlacementContext;
-import net.minecraft.registry.tag.FluidTags;
 import net.minecraft.state.StateManager;
 import net.minecraft.state.property.Properties;
 import net.minecraft.util.BlockMirror;
@@ -36,7 +34,7 @@ public class FacingLampBlock extends WaterLoggableLampBlock {
     }
 
     @Override
-    public BiFunction<BlockStateModelGenerator, Block, BlockStateSupplier> generateBlockStates(LETRegistries.Blocks.Type type) {
+    public BiFunction<BlockStateModelGenerator, Block, BlockStateSupplier> generateBlockStates(Registries.Blocks.Type type) {
         return (blockStateModelGenerator, block) -> VariantsBlockStateSupplier
                 .create(block, BlockStateVariant.create().put(VariantSettings.MODEL, type.getIdPack().blockId()))
                 .coordinate(blockStateModelGenerator.createUpDefaultFacingVariantMap());

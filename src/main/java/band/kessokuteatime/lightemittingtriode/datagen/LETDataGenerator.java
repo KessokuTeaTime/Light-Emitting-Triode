@@ -1,34 +1,29 @@
 package band.kessokuteatime.lightemittingtriode.datagen;
 
 import band.kessokuteatime.lightemittingtriode.LET;
-import band.kessokuteatime.lightemittingtriode.VoxelShapingTool;
-import band.kessokuteatime.lightemittingtriode.content.LETRegistries;
+import band.kessokuteatime.lightemittingtriode.content.Registries;
 import band.kessokuteatime.lightemittingtriode.content.block.LampBlock;
 import net.fabricmc.fabric.api.datagen.v1.DataGeneratorEntrypoint;
 import net.fabricmc.fabric.api.datagen.v1.FabricDataGenerator;
 import net.fabricmc.fabric.api.datagen.v1.FabricDataOutput;
-import net.fabricmc.fabric.api.datagen.v1.provider.FabricBlockLootTableProvider;
-import net.fabricmc.fabric.api.datagen.v1.provider.FabricLanguageProvider;
-import net.fabricmc.fabric.api.datagen.v1.provider.FabricModelProvider;
-import net.minecraft.block.Block;
+import net.fabricmc.fabric.api.datagen.v1.provider.*;
 import net.minecraft.data.DataProvider;
-import net.minecraft.data.client.*;
-import net.minecraft.data.server.loottable.BlockLootTableGenerator;
-import net.minecraft.item.BlockItem;
+import net.minecraft.data.client.BlockStateModelGenerator;
+import net.minecraft.data.client.ItemModelGenerator;
+import net.minecraft.data.client.ModelIds;
+import net.minecraft.data.client.TextureMap;
+import net.minecraft.data.server.recipe.RecipeJsonProvider;
 import net.minecraft.item.Item;
-import net.minecraft.state.property.Properties;
+import net.minecraft.registry.RegistryWrapper;
 import net.minecraft.util.DyeColor;
 import net.minecraft.util.Identifier;
-import net.minecraft.util.math.Direction;
-import net.minecraft.util.shape.VoxelShape;
-import net.minecraft.util.shape.VoxelShapes;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.logging.log4j.util.TriConsumer;
 
 import java.io.IOException;
-import java.util.Arrays;
-import java.util.Map;
-import java.util.Optional;
+import java.util.*;
+import java.util.concurrent.CompletableFuture;
+import java.util.function.Consumer;
 import java.util.stream.Collectors;
 
 public class LETDataGenerator implements DataGeneratorEntrypoint {
@@ -43,7 +38,9 @@ public class LETDataGenerator implements DataGeneratorEntrypoint {
 
         pack.addProvider(Language::new);
         pack.addProvider(Model::new);
+        pack.addProvider(Recipe::new);
         pack.addProvider(BlockLootTable::new);
+        pack.addProvider(BlockTag::new);
     }
 
     private static class Language extends FabricLanguageProvider {
@@ -92,7 +89,7 @@ public class LETDataGenerator implements DataGeneratorEntrypoint {
         @Override
         public void generateBlockStateModels(BlockStateModelGenerator blockStateModelGenerator) {
             // Use specified generators for blocks
-            Arrays.stream(LETRegistries.Blocks.Type.values())
+            Arrays.stream(Registries.Blocks.Type.values())
                     .forEach(type -> type.getBlockItemMap()
                             .forEach((block, item) -> blockStateModelGenerator.blockStateCollector.accept(
                                     ((LampBlock) block).generateBlockStates(type).apply(blockStateModelGenerator, block)
@@ -103,11 +100,27 @@ public class LETDataGenerator implements DataGeneratorEntrypoint {
         @Override
         public void generateItemModels(ItemModelGenerator itemModelGenerator) {
             // Use generic block ids for items
-            Arrays.stream(LETRegistries.Blocks.Type.values()).forEach(type ->
+            Arrays.stream(Registries.Blocks.Type.values()).forEach(type ->
                     type.getBlockItemMap().forEach((block, blockItem) -> uploadModelWithParent.accept(
                             itemModelGenerator, type.getIdPack().blockId(), blockItem
                     ))
             );
+        }
+    }
+
+    private static class Recipe extends FabricRecipeProvider {
+        public Recipe(FabricDataOutput output) {
+            super(output);
+        }
+
+        /**
+         * Implement this method and then use the range of methods in {@link net.minecraft.data.server.recipe.RecipeProvider}
+         * or from one of the recipe json factories such as {@link net.minecraft.data.server.recipe.ShapedRecipeJsonBuilder}
+         * or {@link net.minecraft.data.server.recipe.ShapelessRecipeJsonBuilder}.
+         */
+        @Override
+        public void generate(Consumer<RecipeJsonProvider> exporter) {
+
         }
     }
 
@@ -125,9 +138,46 @@ public class LETDataGenerator implements DataGeneratorEntrypoint {
         @Override
         public void generate() {
             // Let blocks drop themselves
-            Arrays.stream(LETRegistries.Blocks.Type.values()).forEach(type ->
+            Arrays.stream(Registries.Blocks.Type.values()).forEach(type ->
                     type.getBlockItemMap().forEach(this::addDrop)
             );
+        }
+    }
+
+    private static class BlockTag extends FabricTagProvider.BlockTagProvider {
+        public BlockTag(FabricDataOutput output, CompletableFuture<RegistryWrapper.WrapperLookup> registriesFuture) {
+            super(output, registriesFuture);
+        }
+
+        /**
+         * Implement this method and then use {@link FabricTagProvider#getOrCreateTagBuilder} to get and register new tag builders.
+         */
+        @Override
+        protected void configure(RegistryWrapper.WrapperLookup wrapperLookup) {
+            addAll(getOrCreateTagBuilder(Registries.BlockTags.DIODES),
+                    Registries.Blocks.Type.LANTERN_SMALL,
+                    Registries.Blocks.Type.LANTERN,
+                    Registries.Blocks.Type.LANTERN_LARGE,
+
+                    Registries.Blocks.Type.ALARM_SMALL,
+                    Registries.Blocks.Type.ALARM,
+                    Registries.Blocks.Type.ALARM_LARGE
+            );
+
+            addAll(getOrCreateTagBuilder(Registries.BlockTags.TRIODES),
+                    Registries.Blocks.Type.CLEAR,
+                    Registries.Blocks.Type.SLAB,
+                    Registries.Blocks.Type.CEILING
+            );
+
+            addAll(getOrCreateTagBuilder(Registries.BlockTags.DIMMABLES), Registries.Blocks.Type.values());
+        }
+
+        private void addAll(FabricTagBuilder builder, Registries.Blocks.Type... type) {
+            Arrays.stream(type)
+                .map(Registries.Blocks.Type::getBlockItemMap)
+                .map(HashMap::keySet)
+                .forEach(values -> values.forEach(builder::add));
         }
     }
 }

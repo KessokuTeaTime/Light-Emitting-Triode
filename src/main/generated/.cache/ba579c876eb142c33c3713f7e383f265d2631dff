@@ -1,4 +1,4 @@
-// 1.20	2023-09-23T14:29:57.251298	Light Emitting Triode/Block Loot Tables
+// 1.20	2023-09-23T15:14:30.392617	Light Emitting Triode/Block Loot Tables
 139a9de27de615b8688f28723963bcefd8da794a data/let/loot_tables/blocks/slab_pink.json
 2f059bdeca77f72e6f4e4d264f5c84badc9db4c4 data/let/loot_tables/blocks/lantern_light_gray.json
 44d28a450be884d2d17c2f43e16d10914c479b85 data/let/loot_tables/blocks/alarm_large_blue.json
@@ -43,8 +43,8 @@ aea52f827037d4a501e0e3df017fb7fd7f7beabb data/let/loot_tables/blocks/lantern_lar
 a7b84c3d4eeb6c793ff4b1f133b57cc291e5f3c7 data/let/loot_tables/blocks/alarm_large_light_gray.json
 8e3e24f39e9c0b2419c421d119ad52ee5d8ad5cc data/let/loot_tables/blocks/lantern_small_green.json
 451a3a8af01a43d742471c21cfe0d4dbdb500977 data/let/loot_tables/blocks/lantern_small_gray.json
-511cd8b2ebceedea5bf72c94d5a2e52a21b767e0 data/let/loot_tables/blocks/lantern_large_gray.json
 e2e133b746e265d0f316a4970b30c36eb9a758da data/let/loot_tables/blocks/alarm_light_blue.json
+511cd8b2ebceedea5bf72c94d5a2e52a21b767e0 data/let/loot_tables/blocks/lantern_large_gray.json
 e3afaee7df1a1b83bc598ae8a98a3eed5ea1325d data/let/loot_tables/blocks/alarm_small_gray.json
 17394c86ebae65b61ec4a2725d8631061a3464c1 data/let/loot_tables/blocks/slab_light_blue.json
 f690fb0ed0b401b3aeb701cb3afc0b009ae5344a data/let/loot_tables/blocks/clear_brown.json
@@ -60,11 +60,11 @@ a24fb38fe64397b542a8111a62b0c63a1a1583e4 data/let/loot_tables/blocks/ceiling_bla
 c22bcb331869399d03951d0e1d308d21a98c9e7e data/let/loot_tables/blocks/lantern_small_purple.json
 a171954db05f46b4e036dba0878b1eca2a2c725a data/let/loot_tables/blocks/slab_magenta.json
 f3ab12b3e71d450e8c6f611411cd6734ab5cb5be data/let/loot_tables/blocks/alarm_large_pink.json
-25b2eea5142af66309aeae4261c10ef672bbe199 data/let/loot_tables/blocks/lantern_pink.json
 bc1dc1a915e0b7831314fde7005838e4dbc2da9a data/let/loot_tables/blocks/alarm_brown.json
+25b2eea5142af66309aeae4261c10ef672bbe199 data/let/loot_tables/blocks/lantern_pink.json
 91098d532e69d28aad5ad265b652d747342e333d data/let/loot_tables/blocks/alarm_small_lime.json
-0bdf6b0d14b3b534e8a07714775050b1d344747d data/let/loot_tables/blocks/alarm_small_light_gray.json
 49c1e17aa80bb244b1d932f849df5e80ca2926f2 data/let/loot_tables/blocks/ceiling_blue.json
+0bdf6b0d14b3b534e8a07714775050b1d344747d data/let/loot_tables/blocks/alarm_small_light_gray.json
 86c0c40031cae95d8c763fc7d985885c7667d189 data/let/loot_tables/blocks/lantern_small_brown.json
 9bc9cb455ca3d1153b922d37cc61a001a9945288 data/let/loot_tables/blocks/alarm_small_white.json
 13c1813ee6df40292769d70a8edc708893500f00 data/let/loot_tables/blocks/alarm_large_gray.json

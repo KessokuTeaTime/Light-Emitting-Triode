@@ -1,6 +1,7 @@
 package band.kessokuteatime.lightemittingtriode.content.block;
 
-import band.kessokuteatime.lightemittingtriode.content.LETRegistries;
+import band.kessokuteatime.lightemittingtriode.LET;
+import band.kessokuteatime.lightemittingtriode.content.Registries;
 import band.kessokuteatime.lightemittingtriode.content.Variant;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockState;
@@ -11,7 +12,6 @@ import net.minecraft.fluid.Fluids;
 import net.minecraft.item.ItemPlacementContext;
 import net.minecraft.item.ItemStack;
 import net.minecraft.state.StateManager;
-import net.minecraft.state.property.BooleanProperty;
 import net.minecraft.state.property.Properties;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.Direction;
@@ -27,39 +27,37 @@ import java.util.Objects;
 import java.util.function.BiFunction;
 
 public class SlabFacingLampBlock extends FacingLampBlock {
-    public static final BooleanProperty FULL = BooleanProperty.of("full");
-
     public SlabFacingLampBlock(Variant.Wrapper wrapper) {
         super(wrapper);
         setDefaultState(
                 getDefaultState()
-                        .with(FULL, false)
+                        .with(LET.Properties.FULL, false)
         );
     }
 
     @Override
-    public BiFunction<BlockStateModelGenerator, Block, BlockStateSupplier> generateBlockStates(LETRegistries.Blocks.Type type) {
+    public BiFunction<BlockStateModelGenerator, Block, BlockStateSupplier> generateBlockStates(Registries.Blocks.Type type) {
         return (blockStateModelGenerator, block) -> VariantsBlockStateSupplier
                 .create(block, BlockStateVariant.create().put(VariantSettings.MODEL, type.getIdPack().blockId()))
-                .coordinate(BlockStateModelGenerator.createBooleanModelMap(FULL,
-                        LETRegistries.Blocks.Type.CLEAR.getIdPack().blockId(),
+                .coordinate(BlockStateModelGenerator.createBooleanModelMap(LET.Properties.FULL,
+                        Registries.Blocks.Type.CLEAR.getIdPack().blockId(),
                         type.getIdPack().blockId()))
                 .coordinate(blockStateModelGenerator.createUpDefaultFacingVariantMap());
     }
 
     @Override
     public boolean hasSidedTransparency(BlockState state) {
-        return !state.get(FULL);
+        return !state.get(LET.Properties.FULL);
     }
 
     @Override
     protected void appendProperties(StateManager.Builder<Block, BlockState> builder) {
-        super.appendProperties(builder.add(FULL));
+        super.appendProperties(builder.add(LET.Properties.FULL));
     }
 
     @Override
     public VoxelShape getOutlineShape(BlockState state, BlockView world, BlockPos pos, ShapeContext context) {
-        return state.get(FULL)
+        return state.get(LET.Properties.FULL)
                 ? VoxelShapes.fullCube()
                 : super.getOutlineShape(state, world, pos, context);
     }
@@ -70,13 +68,13 @@ public class SlabFacingLampBlock extends FacingLampBlock {
         BlockState dryState = context.getWorld().getBlockState(pos);
         if (dryState.isOf(this))
             return dryState
-                    .with(FULL, true)
+                    .with(LET.Properties.FULL, true)
                     .with(Properties.WATERLOGGED, false);
 
         FluidState fluidState = context.getWorld().getFluidState(pos);
 
         return Objects.requireNonNull(super.getPlacementState(context))
-                .with(FULL, false)
+                .with(LET.Properties.FULL, false)
                 .with(Properties.WATERLOGGED, fluidState.getFluid() == Fluids.WATER);
     }
 
@@ -84,7 +82,7 @@ public class SlabFacingLampBlock extends FacingLampBlock {
     public boolean canReplace(BlockState state, ItemPlacementContext context) {
         ItemStack stack = context.getStack();
 
-        if (state.get(FULL) ||!stack.isOf(asItem())) return false;
+        if (state.get(LET.Properties.FULL) ||!stack.isOf(asItem())) return false;
 
         if (context.canReplaceExisting()) {
             boolean

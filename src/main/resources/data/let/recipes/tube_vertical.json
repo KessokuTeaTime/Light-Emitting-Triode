@@ -5,14 +5,14 @@
   ],
   "key": {
     "1": {
-      "item": "minecraft:iron_nugget"
+      "item": "minecraft:quartz"
     },
     "2": {
-      "item": "minecraft:quartz"
+      "item": "minecraft:iron_bars"
     }
   },
   "result": {
-    "item": "let:let",
-    "count": 4
+    "item": "let:tube",
+    "count": 6
   }
 }

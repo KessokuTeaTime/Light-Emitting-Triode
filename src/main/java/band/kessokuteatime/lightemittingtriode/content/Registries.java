@@ -1,8 +1,7 @@
 package band.kessokuteatime.lightemittingtriode.content;
 
 import band.kessokuteatime.lightemittingtriode.LET;
-import band.kessokuteatime.lightemittingtriode.content.block.LampBlock;
-import band.kessokuteatime.lightemittingtriode.content.item.ColoredBlockItem;
+import band.kessokuteatime.lightemittingtriode.content.item.ShadeItem;
 import net.fabricmc.fabric.api.blockrenderlayer.v1.BlockRenderLayerMap;
 import net.fabricmc.fabric.api.client.rendering.v1.ColorProviderRegistry;
 import net.fabricmc.fabric.api.itemgroup.v1.FabricItemGroup;
@@ -10,8 +9,9 @@ import net.fabricmc.fabric.api.itemgroup.v1.ItemGroupEvents;
 import net.minecraft.block.Block;
 import net.minecraft.client.render.RenderLayer;
 import net.minecraft.item.*;
-import net.minecraft.registry.Registries;
 import net.minecraft.registry.Registry;
+import net.minecraft.registry.RegistryKeys;
+import net.minecraft.registry.tag.TagKey;
 import net.minecraft.state.property.Properties;
 import net.minecraft.util.DyeColor;
 import net.minecraft.util.Identifier;
@@ -21,18 +21,18 @@ import java.util.HashMap;
 import java.util.function.Consumer;
 import java.util.function.Function;
 
-public class LETRegistries {
+public class Registries {
     private static <B extends Block> B registerBlock(Identifier id, B block) {
-        return Registry.register(Registries.BLOCK, id, block);
+        return Registry.register(net.minecraft.registry.Registries.BLOCK, id, block);
     }
 
     private static <I extends Item> I registerItem(Identifier id, I item) {
-        return Registry.register(Registries.ITEM, id, item);
+        return Registry.register(net.minecraft.registry.Registries.ITEM, id, item);
     }
 
     public static class ItemGroups {
         public static final ItemGroup GENERAL = Registry.register(
-                Registries.ITEM_GROUP,
+                net.minecraft.registry.Registries.ITEM_GROUP,
                 LET.id("general"),
                 FabricItemGroup.builder()
                         .icon(Items.LET::getDefaultStack)
@@ -41,9 +41,9 @@ public class LETRegistries {
         );
 
         public static void establish() {
-            Registries.ITEM_GROUP.getKey(GENERAL).ifPresent(key ->
+            net.minecraft.registry.Registries.ITEM_GROUP.getKey(GENERAL).ifPresent(key ->
                     ItemGroupEvents.modifyEntriesEvent(key).register(entries -> {
-                        fill(entries, Items.BULB, Items.LED, Items.LET, Items.SHADE);
+                        fill(entries, Items.SHADE, Items.BULB, Items.LED, Items.LET, Items.TUBE);
 
                         Arrays.stream(Blocks.Type.values())
                                 .map(Blocks.Type::getBlockItemMap)
@@ -172,12 +172,23 @@ public class LETRegistries {
 
         public static final Item SHADE = registerItem(
                 band.kessokuteatime.lightemittingtriode.LET.id("shade"),
+                new ShadeItem(new Item.Settings())
+        );
+
+        public static final Item TUBE = registerItem(
+                band.kessokuteatime.lightemittingtriode.LET.id("tube"),
                 new Item(new Item.Settings())
         );
 
         public static void register() {
 
         }
+    }
+
+    public static class BlockTags {
+        public static final TagKey<Block> DIODES = TagKey.of(RegistryKeys.BLOCK, LET.id("diodes"));
+        public static final TagKey<Block> TRIODES = TagKey.of(RegistryKeys.BLOCK, LET.id("triodes"));
+        public static final TagKey<Block> DIMMABLES = TagKey.of(RegistryKeys.BLOCK, LET.id("dimmables"));
     }
 
     public static void register() {
