@@ -1,20 +1,30 @@
 {
-  "multipart": [
-    {
-      "apply": {
-        "model": "let:block/slab"
-      },
-      "when": {
-        "lit": "false"
-      }
+  "variants": {
+    "facing=down": {
+      "model": "let:block/slab",
+      "x": 180
     },
-    {
-      "apply": {
-        "model": "let:block/slab"
-      },
-      "when": {
-        "lit": "true"
-      }
+    "facing=east": {
+      "model": "let:block/slab",
+      "x": 90,
+      "y": 90
+    },
+    "facing=north": {
+      "model": "let:block/slab",
+      "x": 90
+    },
+    "facing=south": {
+      "model": "let:block/slab",
+      "x": 90,
+      "y": 180
+    },
+    "facing=up": {
+      "model": "let:block/slab"
+    },
+    "facing=west": {
+      "model": "let:block/slab",
+      "x": 90,
+      "y": 270
     }
-  ]
+  }
 }

@@ -51,32 +51,28 @@ public class VoxelShapingTool {
 
         String pattern = from.asString() + to.asString();
 
-        switch (pattern) {
-            case "xy":
-            case "yx": {
-                min = new Vec3d(min.getY(), min.getX(), min.getZ());
-                max = new Vec3d(max.getY(), max.getX(), max.getZ());
-            }
-            case "xz":
-            case "zx": {
-                min = new Vec3d(min.getZ(), min.getY(), min.getX());
-                max = new Vec3d(max.getZ(), max.getY(), max.getX());
-            }
-            case "yz":
-            case "zy": {
-                min = new Vec3d(min.getX(), min.getZ(), min.getY());
-                max = new Vec3d(max.getX(), max.getZ(), max.getY());
-            }
-        }
+        return switch (pattern) {
+            case "xy", "yx" ->VoxelShapes.cuboid(
+                    min.getY(), min.getX(), min.getZ(),
+                    max.getY(), max.getX(), max.getZ()
+            );
 
-        return VoxelShapes.cuboid(
-                min.getX(), min.getY(), min.getZ(),
-                max.getX(), max.getY(), max.getZ()
-        );
+            case "xz", "zx" -> VoxelShapes.cuboid(
+                    min.getZ(), min.getY(), min.getX(),
+                    max.getZ(), max.getY(), max.getX()
+            );
+
+            case "yz", "zy" -> VoxelShapes.cuboid(
+                    min.getX(), min.getZ(), min.getY(),
+                    max.getX(), max.getZ(), max.getY()
+            );
+
+            default -> voxelShape;
+        };
     }
 
-    public static VoxelShape rotateVoxelShape(VoxelShape voxelShape, Direction.Axis from, Direction.Axis to, boolean mirror) {
-        VoxelShape rotatedVoxelShape = swapVoxelShapeAxis(voxelShape, from, to);
-        return mirror ? mirrorVoxelShape(rotatedVoxelShape, to) : rotatedVoxelShape;
+    public static VoxelShape rotateVoxelShape(VoxelShape voxelShape, Direction from, Direction to) {
+        VoxelShape rotatedVoxelShape = swapVoxelShapeAxis(voxelShape, from.getAxis(), to.getAxis());
+        return from.getDirection() != to.getDirection() ? mirrorVoxelShape(rotatedVoxelShape, to.getAxis()) : rotatedVoxelShape;
     }
 }

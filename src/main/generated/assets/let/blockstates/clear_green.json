@@ -1,20 +1,7 @@
 {
-  "multipart": [
-    {
-      "apply": {
-        "model": "let:block/clear"
-      },
-      "when": {
-        "lit": "false"
-      }
-    },
-    {
-      "apply": {
-        "model": "let:block/clear"
-      },
-      "when": {
-        "lit": "true"
-      }
+  "variants": {
+    "": {
+      "model": "let:block/clear"
     }
-  ]
+  }
 }

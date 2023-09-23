@@ -1,20 +1,30 @@
 {
-  "multipart": [
-    {
-      "apply": {
-        "model": "let:block/alarm_large"
-      },
-      "when": {
-        "lit": "false"
-      }
+  "variants": {
+    "facing=down": {
+      "model": "let:block/alarm_large",
+      "x": 180
     },
-    {
-      "apply": {
-        "model": "let:block/alarm_large"
-      },
-      "when": {
-        "lit": "true"
-      }
+    "facing=east": {
+      "model": "let:block/alarm_large",
+      "x": 90,
+      "y": 90
+    },
+    "facing=north": {
+      "model": "let:block/alarm_large",
+      "x": 90
+    },
+    "facing=south": {
+      "model": "let:block/alarm_large",
+      "x": 90,
+      "y": 180
+    },
+    "facing=up": {
+      "model": "let:block/alarm_large"
+    },
+    "facing=west": {
+      "model": "let:block/alarm_large",
+      "x": 90,
+      "y": 270
     }
-  ]
+  }
 }

@@ -2,10 +2,13 @@ package band.kessokuteatime.lightemittingtriode.content;
 
 import band.kessokuteatime.lightemittingtriode.LET;
 import band.kessokuteatime.lightemittingtriode.VoxelShapingTool;
-import band.kessokuteatime.lightemittingtriode.content.block.DirectionalLampBlock;
+import band.kessokuteatime.lightemittingtriode.content.block.FacingLampBlock;
 import band.kessokuteatime.lightemittingtriode.content.block.LampBlock;
-import band.kessokuteatime.lightemittingtriode.content.block.SlabLampBlock;
+import band.kessokuteatime.lightemittingtriode.content.block.SlabFacingLampBlock;
+import band.kessokuteatime.lightemittingtriode.content.item.ColoredBlockItem;
 import net.minecraft.block.Block;
+import net.minecraft.item.BlockItem;
+import net.minecraft.item.Item;
 import net.minecraft.util.DyeColor;
 import net.minecraft.util.Identifier;
 import net.minecraft.util.math.BlockPos;
@@ -17,28 +20,34 @@ import net.minecraft.util.shape.VoxelShapes;
 import org.jetbrains.annotations.Nullable;
 
 import java.util.Optional;
+import java.util.function.BiFunction;
 import java.util.function.Function;
 
 public enum Variant {
     CEILING("ceiling", 10,
             size -> VoxelShapingTool.fromBottomCenter(16, 1),
-            LampBlock::new
+            FacingLampBlock::new,
+            (block, dyeColor) -> new ColoredBlockItem(block, new Item.Settings(), dyeColor)
     ),
     SLAB("slab", 10,
             size -> VoxelShapingTool.fromBottomCenter(16, 8),
-            SlabLampBlock::new
+            SlabFacingLampBlock::new,
+            (block, dyeColor) -> new ColoredBlockItem(block, new Item.Settings(), dyeColor)
     ),
     CLEAR("clear", 7,
             size -> VoxelShapes.fullCube(),
-            DirectionalLampBlock::new
+            LampBlock::new,
+            (block, dyeColor) -> new ColoredBlockItem(block, new Item.Settings(), dyeColor)
     ),
     LANTERN("lantern", 5,
             size -> VoxelShapingTool.fromBottomCenter(4 + 2 * size, 6 + size),
-            DirectionalLampBlock::new
+            FacingLampBlock::new,
+            (block, dyeColor) -> new ColoredBlockItem(block, new Item.Settings(), dyeColor)
     ),
     ALARM("alarm", 3,
             size -> VoxelShapingTool.fromBottomCenter(10 + 2 * size, 1),
-            DirectionalLampBlock::new
+            FacingLampBlock::new,
+            (block, dyeColor) -> new ColoredBlockItem(block, new Item.Settings(), dyeColor)
     );
 
     public static Vec3d placeParticle(BlockPos blockPos, VoxelShape voxelShape, Random random, double factor) {
@@ -110,6 +119,10 @@ public enum Variant {
             return variant().getBlock(this);
         }
 
+        public BlockItem blockItem(Block block) {
+            return variant().getBlockItem(block, dyeColor());
+        }
+
         public Vec3d placeParticle(BlockPos blockPos, Random random, double factor) {
             return Variant.placeParticle(blockPos, voxelShape(), random, factor);
         }
@@ -141,16 +154,19 @@ public enum Variant {
     final int luminance;
     final Function<Integer, VoxelShape> voxelShapeProvider;
     final Function<Wrapper, Block> blockProvider;
+    final BiFunction<Block, DyeColor, BlockItem> blockItemProvider;
 
     Variant(
             String id, int luminance,
             Function<Integer, VoxelShape> voxelShapeProvider,
-            Function<Wrapper, Block> blockProvider
+            Function<Wrapper, Block> blockProvider,
+            BiFunction<Block, DyeColor, BlockItem> blockItemProvider
     ) {
         this.id = id;
         this.luminance = luminance;
         this.voxelShapeProvider = voxelShapeProvider;
         this.blockProvider = blockProvider;
+        this.blockItemProvider = blockItemProvider;
     }
 
     public IdPack with(Size size) {
@@ -175,5 +191,9 @@ public enum Variant {
 
     public Block getBlock(Wrapper wrapper) {
         return blockProvider.apply(wrapper);
+    }
+
+    public BlockItem getBlockItem(Block block, DyeColor dyeColor) {
+        return blockItemProvider.apply(block, dyeColor);
     }
 }

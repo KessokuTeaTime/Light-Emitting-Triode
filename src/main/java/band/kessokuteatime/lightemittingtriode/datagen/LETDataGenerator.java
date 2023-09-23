@@ -1,7 +1,9 @@
 package band.kessokuteatime.lightemittingtriode.datagen;
 
 import band.kessokuteatime.lightemittingtriode.LET;
+import band.kessokuteatime.lightemittingtriode.VoxelShapingTool;
 import band.kessokuteatime.lightemittingtriode.content.LETRegistries;
+import band.kessokuteatime.lightemittingtriode.content.block.LampBlock;
 import net.fabricmc.fabric.api.datagen.v1.DataGeneratorEntrypoint;
 import net.fabricmc.fabric.api.datagen.v1.FabricDataGenerator;
 import net.fabricmc.fabric.api.datagen.v1.FabricDataOutput;
@@ -13,6 +15,9 @@ import net.minecraft.item.Item;
 import net.minecraft.state.property.Properties;
 import net.minecraft.util.DyeColor;
 import net.minecraft.util.Identifier;
+import net.minecraft.util.math.Direction;
+import net.minecraft.util.shape.VoxelShape;
+import net.minecraft.util.shape.VoxelShapes;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.logging.log4j.util.TriConsumer;
 
@@ -78,13 +83,7 @@ public class LETDataGenerator implements DataGeneratorEntrypoint {
         public void generateBlockStateModels(BlockStateModelGenerator blockStateModelGenerator) {
             Arrays.stream(LETRegistries.Blocks.Type.values()).forEach(type ->
                     type.getBlockItemMap().forEach((block, item) -> blockStateModelGenerator.blockStateCollector.accept(
-                            MultipartBlockStateSupplier.create(block).with(
-                                    When.create().set(Properties.LIT, false),
-                                    BlockStateVariant.create().put(VariantSettings.MODEL, type.getIdPack().blockId())
-                            ).with(
-                                    new When.PropertyCondition().set(Properties.LIT, true),
-                                    BlockStateVariant.create().put(VariantSettings.MODEL, type.getIdPack().blockId())
-                            )
+                            ((LampBlock) block).generateBlockStates(type).apply(blockStateModelGenerator, block)
                     ))
             );
         }

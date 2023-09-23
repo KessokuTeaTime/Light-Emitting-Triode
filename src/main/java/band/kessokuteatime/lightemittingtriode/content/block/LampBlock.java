@@ -1,13 +1,10 @@
 package band.kessokuteatime.lightemittingtriode.content.block;
 
 import band.kessokuteatime.lightemittingtriode.LET;
+import band.kessokuteatime.lightemittingtriode.content.LETRegistries;
 import band.kessokuteatime.lightemittingtriode.content.Variant;
 import net.minecraft.block.*;
-import net.minecraft.fluid.Fluid;
-import net.minecraft.fluid.FluidState;
-import net.minecraft.fluid.Fluids;
-import net.minecraft.item.ItemPlacementContext;
-import net.minecraft.item.ItemStack;
+import net.minecraft.data.client.*;
 import net.minecraft.particle.DustParticleEffect;
 import net.minecraft.server.world.ServerWorld;
 import net.minecraft.sound.BlockSoundGroup;
@@ -20,13 +17,12 @@ import net.minecraft.util.math.random.Random;
 import net.minecraft.util.shape.VoxelShape;
 import net.minecraft.world.BlockView;
 import net.minecraft.world.World;
-import net.minecraft.world.WorldAccess;
-import org.jetbrains.annotations.Nullable;
 
-import java.util.Objects;
+import java.util.function.BiFunction;
+import java.util.function.Function;
 
 public class LampBlock extends AbstractGlassBlock implements Waterloggable {
-    private final Variant.Wrapper wrapper;
+    protected final Variant.Wrapper wrapper;
 
     public LampBlock(Variant.Wrapper wrapper) {
         super(
@@ -40,8 +36,12 @@ public class LampBlock extends AbstractGlassBlock implements Waterloggable {
         setDefaultState(
                 getDefaultState()
                         .with(Properties.LIT, false)
-                        .with(Properties.WATERLOGGED, false)
         );
+    }
+
+    public BiFunction<BlockStateModelGenerator, Block, BlockStateSupplier> generateBlockStates(LETRegistries.Blocks.Type type) {
+        return (blockStateModelGenerator, block) -> VariantsBlockStateSupplier
+                .create(block, BlockStateVariant.create().put(VariantSettings.MODEL, type.getIdPack().blockId()));
     }
 
     protected boolean hasPower(World world, BlockPos pos) {
@@ -55,23 +55,8 @@ public class LampBlock extends AbstractGlassBlock implements Waterloggable {
     }
 
     @Override
-    public boolean canFillWithFluid(BlockView world, BlockPos pos, BlockState state, Fluid fluid) {
-        return !isFullBlock() && Waterloggable.super.canFillWithFluid(world, pos, state, fluid);
-    }
-
-    @Override
-    public boolean tryFillWithFluid(WorldAccess world, BlockPos pos, BlockState state, FluidState fluidState) {
-        return !isFullBlock() && Waterloggable.super.tryFillWithFluid(world, pos, state, fluidState);
-    }
-
-    @Override
-    public ItemStack tryDrainFluid(WorldAccess world, BlockPos pos, BlockState state) {
-        return isFullBlock() ? ItemStack.EMPTY : Waterloggable.super.tryDrainFluid(world, pos, state);
-    }
-
-    @Override
     protected void appendProperties(StateManager.Builder<Block, BlockState> builder) {
-        builder.add(Properties.LIT, Properties.WATERLOGGED);
+        super.appendProperties(builder.add(Properties.LIT));
     }
 
     @Override
@@ -85,23 +70,6 @@ public class LampBlock extends AbstractGlassBlock implements Waterloggable {
 
         if (hasPower(world, pos))
             world.setBlockState(pos, state.with(Properties.LIT, true));
-    }
-
-    @Nullable
-    @Override
-    public BlockState getPlacementState(ItemPlacementContext ctx) {
-        return Objects.requireNonNull(super.getPlacementState(ctx))
-                .with(
-                        Properties.WATERLOGGED,
-                        !isFullBlock() && ctx.getWorld().getFluidState(ctx.getBlockPos()).getFluid() == Fluids.WATER
-                );
-    }
-
-    @Override
-    public FluidState getFluidState(BlockState state) {
-        return !isFullBlock() && state.get(Properties.WATERLOGGED)
-                ? Fluids.WATER.getStill(false)
-                : super.getFluidState(state);
     }
 
     @Override
@@ -118,14 +86,6 @@ public class LampBlock extends AbstractGlassBlock implements Waterloggable {
                     world.setBlockState(pos, state.cycle(Properties.LIT), 2);
             }
         }
-    }
-
-    @Override
-    public BlockState getStateForNeighborUpdate(BlockState state, Direction direction, BlockState neighborState, WorldAccess world, BlockPos pos, BlockPos neighborPos) {
-        if (state.get(Properties.WATERLOGGED))
-            world.scheduleFluidTick(pos, Fluids.WATER, Fluids.WATER.getTickRate(world));
-
-        return super.getStateForNeighborUpdate(state, direction, neighborState, world, pos, neighborPos);
     }
 
     @Override
