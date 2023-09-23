@@ -1,0 +1,48 @@
+{
+  "parent": "minecraft:recipes/root",
+  "criteria": {
+    "has_let": {
+      "conditions": {
+        "items": [
+          {
+            "items": [
+              "let:let"
+            ]
+          }
+        ]
+      },
+      "trigger": "minecraft:inventory_changed"
+    },
+    "has_slab_green": {
+      "conditions": {
+        "items": [
+          {
+            "items": [
+              "let:slab_green"
+            ]
+          }
+        ]
+      },
+      "trigger": "minecraft:inventory_changed"
+    },
+    "has_the_recipe": {
+      "conditions": {
+        "recipe": "let:upgrading/slab_green"
+      },
+      "trigger": "minecraft:recipe_unlocked"
+    }
+  },
+  "requirements": [
+    [
+      "has_slab_green",
+      "has_let",
+      "has_the_recipe"
+    ]
+  ],
+  "rewards": {
+    "recipes": [
+      "let:upgrading/slab_green"
+    ]
+  },
+  "sends_telemetry_event": false
+}

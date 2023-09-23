@@ -6,6 +6,7 @@ import band.kessokuteatime.lightemittingtriode.content.Variant;
 import net.minecraft.block.*;
 import net.minecraft.data.client.*;
 import net.minecraft.data.server.recipe.RecipeJsonProvider;
+import net.minecraft.data.server.recipe.RecipeProvider;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.ItemStack;
 import net.minecraft.particle.DustParticleEffect;
@@ -59,7 +60,8 @@ public class LampBlock extends AbstractGlassBlock implements Waterloggable {
 
     public Consumer<Consumer<RecipeJsonProvider>> recipeBuilders() {
         return exporter -> {
-            wrapper.craftingRecipeJsonBuilder().offerTo(exporter, wrapper.categorizedId("crafting"));
+            wrapper.craftingRecipeJsonBuilder().ifPresent(b -> b.offerTo(exporter, wrapper.categorizedId("crafting")));
+            wrapper.upgradingRecipeJsonBuilder().ifPresent(b -> b.offerTo(exporter, wrapper.categorizedId("upgrading")));
         };
     }
 

@@ -1,0 +1,13 @@
+{
+  "type": "minecraft:smithing_transform",
+  "addition": {
+    "item": "let:let"
+  },
+  "base": {
+    "item": "let:slab_gray"
+  },
+  "result": {
+    "item": "let:clear_gray"
+  },
+  "template": []
+}

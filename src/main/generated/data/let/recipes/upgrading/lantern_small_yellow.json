@@ -1,0 +1,13 @@
+{
+  "type": "minecraft:smithing_transform",
+  "addition": {
+    "item": "let:let"
+  },
+  "base": {
+    "item": "let:lantern_small_yellow"
+  },
+  "result": {
+    "item": "let:lantern_yellow"
+  },
+  "template": []
+}

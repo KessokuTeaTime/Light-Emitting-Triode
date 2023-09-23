@@ -1,0 +1,13 @@
+{
+  "type": "minecraft:smithing_transform",
+  "addition": {
+    "item": "let:let"
+  },
+  "base": {
+    "item": "let:ceiling_red"
+  },
+  "result": {
+    "item": "let:slab_red"
+  },
+  "template": []
+}
