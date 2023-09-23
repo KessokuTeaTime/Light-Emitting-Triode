@@ -1,6 +1,6 @@
 package band.kessokuteatime.lightemittingtriode;
 
-import band.kessokuteatime.lightemittingtriode.content.Registries;
+import band.kessokuteatime.lightemittingtriode.content.ModRegistries;
 import net.fabricmc.api.ModInitializer;
 import net.minecraft.state.property.BooleanProperty;
 import net.minecraft.text.MutableText;
@@ -54,6 +54,6 @@ public class LET implements ModInitializer {
 
     @Override
     public void onInitialize() {
-        Registries.register();
+        ModRegistries.register();
     }
 }

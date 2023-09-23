@@ -1,0 +1,24 @@
+{
+  "type": "minecraft:crafting_shapeless",
+  "category": "building",
+  "ingredients": [
+    {
+      "item": "let:let"
+    },
+    {
+      "item": "let:let"
+    },
+    {
+      "item": "let:let"
+    },
+    {
+      "item": "let:let"
+    },
+    {
+      "item": "minecraft:pink_dye"
+    }
+  ],
+  "result": {
+    "item": "let:clear_pink"
+  }
+}

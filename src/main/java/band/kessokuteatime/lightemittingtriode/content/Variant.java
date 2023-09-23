@@ -6,9 +6,15 @@ import band.kessokuteatime.lightemittingtriode.content.block.FacingLampBlock;
 import band.kessokuteatime.lightemittingtriode.content.block.LampBlock;
 import band.kessokuteatime.lightemittingtriode.content.block.SlabFacingLampBlock;
 import band.kessokuteatime.lightemittingtriode.content.item.ColoredBlockItem;
+import net.fabricmc.fabric.api.datagen.v1.provider.FabricRecipeProvider;
 import net.minecraft.block.Block;
+import net.minecraft.data.server.recipe.CraftingRecipeJsonBuilder;
+import net.minecraft.data.server.recipe.ShapelessRecipeJsonBuilder;
 import net.minecraft.item.BlockItem;
 import net.minecraft.item.Item;
+import net.minecraft.item.Items;
+import net.minecraft.recipe.book.RecipeCategory;
+import net.minecraft.registry.Registries;
 import net.minecraft.util.DyeColor;
 import net.minecraft.util.Identifier;
 import net.minecraft.util.math.BlockPos;
@@ -27,27 +33,97 @@ public enum Variant {
     CEILING("ceiling", 10,
             size -> VoxelShapingTool.fromBottomCenter(16, 1),
             FacingLampBlock::new,
-            (block, dyeColor) -> new ColoredBlockItem(block, new Item.Settings(), dyeColor)
+            (block, dyeColor) -> new ColoredBlockItem(block, new Item.Settings(), dyeColor),
+
+            wrapper -> ShapelessRecipeJsonBuilder.create(RecipeCategory.BUILDING_BLOCKS, wrapper.block())
+                    .input(ModRegistries.Items.LET)
+                    .input(wrapper.dye())
+                    .criterion(
+                            FabricRecipeProvider.hasItem(ModRegistries.Items.LET),
+                            FabricRecipeProvider.conditionsFromItem(ModRegistries.Items.LET)
+                    )
+                    .criterion(
+                            FabricRecipeProvider.hasItem(wrapper.dye()),
+                            FabricRecipeProvider.conditionsFromItem(wrapper.dye())
+                    )
     ),
     SLAB("slab", 10,
             size -> VoxelShapingTool.fromBottomCenter(16, 8),
             SlabFacingLampBlock::new,
-            (block, dyeColor) -> new ColoredBlockItem(block, new Item.Settings(), dyeColor)
+            (block, dyeColor) -> new ColoredBlockItem(block, new Item.Settings(), dyeColor),
+
+            wrapper -> ShapelessRecipeJsonBuilder.create(RecipeCategory.BUILDING_BLOCKS, wrapper.block())
+                    .input(ModRegistries.Items.LET, 2)
+                    .input(wrapper.dye())
+                    .criterion(
+                            FabricRecipeProvider.hasItem(ModRegistries.Items.LET),
+                            FabricRecipeProvider.conditionsFromItem(ModRegistries.Items.LET)
+                    )
+                    .criterion(
+                            FabricRecipeProvider.hasItem(wrapper.dye()),
+                            FabricRecipeProvider.conditionsFromItem(wrapper.dye())
+                    )
     ),
     CLEAR("clear", 7,
             size -> VoxelShapes.fullCube(),
             LampBlock::new,
-            (block, dyeColor) -> new ColoredBlockItem(block, new Item.Settings(), dyeColor)
+            (block, dyeColor) -> new ColoredBlockItem(block, new Item.Settings(), dyeColor),
+
+            wrapper -> ShapelessRecipeJsonBuilder.create(RecipeCategory.BUILDING_BLOCKS, wrapper.block())
+                    .input(ModRegistries.Items.LET, 4)
+                    .input(wrapper.dye())
+                    .criterion(
+                            FabricRecipeProvider.hasItem(ModRegistries.Items.LET),
+                            FabricRecipeProvider.conditionsFromItem(ModRegistries.Items.LET)
+                    )
+                    .criterion(
+                            FabricRecipeProvider.hasItem(wrapper.dye()),
+                            FabricRecipeProvider.conditionsFromItem(wrapper.dye())
+                    )
     ),
     LANTERN("lantern", 5,
             size -> VoxelShapingTool.fromBottomCenter(4 + 2 * size, 6 + size),
             FacingLampBlock::new,
-            (block, dyeColor) -> new ColoredBlockItem(block, new Item.Settings(), dyeColor)
+            (block, dyeColor) -> new ColoredBlockItem(block, new Item.Settings(), dyeColor),
+
+            wrapper -> ShapelessRecipeJsonBuilder.create(RecipeCategory.BUILDING_BLOCKS, wrapper.block())
+                    .input(Items.IRON_NUGGET)
+                    .input(ModRegistries.Items.LED, 1 + wrapper.fixed().size().getSize())
+                    .input(wrapper.dye())
+                    .criterion(
+                            FabricRecipeProvider.hasItem(Items.IRON_NUGGET),
+                            FabricRecipeProvider.conditionsFromItem(Items.IRON_NUGGET)
+                    )
+                    .criterion(
+                            FabricRecipeProvider.hasItem(ModRegistries.Items.LED),
+                            FabricRecipeProvider.conditionsFromItem(ModRegistries.Items.LED)
+                    )
+                    .criterion(
+                            FabricRecipeProvider.hasItem(wrapper.dye()),
+                            FabricRecipeProvider.conditionsFromItem(wrapper.dye())
+                    )
     ),
     ALARM("alarm", 3,
             size -> VoxelShapingTool.fromBottomCenter(10 + 2 * size, 1),
             FacingLampBlock::new,
-            (block, dyeColor) -> new ColoredBlockItem(block, new Item.Settings(), dyeColor)
+            (block, dyeColor) -> new ColoredBlockItem(block, new Item.Settings(), dyeColor),
+
+            wrapper -> ShapelessRecipeJsonBuilder.create(RecipeCategory.BUILDING_BLOCKS, wrapper.block())
+                    .input(Items.GOLD_NUGGET)
+                    .input(ModRegistries.Items.LED, 1 + wrapper.fixed().size().getSize())
+                    .input(wrapper.dye())
+                    .criterion(
+                            FabricRecipeProvider.hasItem(Items.GOLD_NUGGET),
+                            FabricRecipeProvider.conditionsFromItem(Items.GOLD_NUGGET)
+                    )
+                    .criterion(
+                            FabricRecipeProvider.hasItem(ModRegistries.Items.LED),
+                            FabricRecipeProvider.conditionsFromItem(ModRegistries.Items.LED)
+                    )
+                    .criterion(
+                            FabricRecipeProvider.hasItem(wrapper.dye()),
+                            FabricRecipeProvider.conditionsFromItem(wrapper.dye())
+                    )
     );
 
     public static Vec3d placeParticle(BlockPos blockPos, VoxelShape voxelShape, Random random, double factor) {
@@ -78,21 +154,29 @@ public enum Variant {
         ));
     }
 
-    public record IdPack(Variant variant, Size size) {
-        private String idString() {
+    public record Fixed(Variant variant, Size size) {
+        private String genericIdString() {
             return variant().getId() + size().getId().map(p -> "_" + p).orElse("");
         }
 
-        public Identifier blockId() {
-            return LET.id("block", idString());
+        public Identifier genericId() {
+            return LET.id("block", genericIdString());
         }
     }
 
-    public record Wrapper(Variant variant, Size size, DyeColor dyeColor) {
+    public record Wrapper(Fixed fixed, DyeColor dyeColor) {
+        public String idString() {
+            return fixed().variant().getId()
+                    + fixed().size().getId().map(p -> "_" + p).orElse("")
+                    + "_" + dyeColor().getName();
+        }
+
         public Identifier id() {
-            return LET.id(variant().getId()
-                    + size().getId().map(p -> "_" + p).orElse("")
-                    + "_" + dyeColor().getName());
+            return LET.id(idString());
+        }
+
+        public Identifier categorizedId(String category) {
+            return LET.id(category, idString());
         }
 
         public int color() {
@@ -107,24 +191,40 @@ public enum Variant {
             };
         }
 
+        public Vec3d placeParticle(BlockPos blockPos, Random random, double factor) {
+            return Variant.placeParticle(blockPos, voxelShape(), random, factor);
+        }
+
         public int luminance() {
-            return variant().getLuminance(size().getSize());
+            return fixed().variant().getLuminance(fixed().size().getSize());
         }
 
         public VoxelShape voxelShape() {
-            return variant().getVoxelShape(size().getSize());
+            return fixed().variant().getVoxelShape(fixed().size().getSize());
+        }
+
+        public Block createBlock() {
+            return fixed().variant().getBlock(this);
+        }
+
+        public BlockItem createBlockItem(Block block) {
+            return fixed().variant().getBlockItem(block, dyeColor());
         }
 
         public Block block() {
-            return variant().getBlock(this);
+            return Registries.BLOCK.get(id());
         }
 
-        public BlockItem blockItem(Block block) {
-            return variant().getBlockItem(block, dyeColor());
+        public BlockItem blockItem() {
+            return (BlockItem) Registries.ITEM.get(id());
         }
 
-        public Vec3d placeParticle(BlockPos blockPos, Random random, double factor) {
-            return Variant.placeParticle(blockPos, voxelShape(), random, factor);
+        public Item dye() {
+            return Registries.ITEM.get(new Identifier(dyeColor().getName() + "_dye"));
+        }
+
+        public CraftingRecipeJsonBuilder craftingRecipeJsonBuilder() {
+            return fixed().variant().craftingRecipeJsonBuilder(this);
         }
     }
 
@@ -155,26 +255,29 @@ public enum Variant {
     final Function<Integer, VoxelShape> voxelShapeProvider;
     final Function<Wrapper, Block> blockProvider;
     final BiFunction<Block, DyeColor, BlockItem> blockItemProvider;
+    final Function<Wrapper, CraftingRecipeJsonBuilder> craftingRecipeJsonBuilder;
 
     Variant(
             String id, int luminance,
             Function<Integer, VoxelShape> voxelShapeProvider,
             Function<Wrapper, Block> blockProvider,
-            BiFunction<Block, DyeColor, BlockItem> blockItemProvider
+            BiFunction<Block, DyeColor, BlockItem> blockItemProvider,
+            Function<Wrapper, CraftingRecipeJsonBuilder> craftingRecipeJsonBuilder
     ) {
         this.id = id;
         this.luminance = luminance;
         this.voxelShapeProvider = voxelShapeProvider;
         this.blockProvider = blockProvider;
         this.blockItemProvider = blockItemProvider;
+        this.craftingRecipeJsonBuilder = craftingRecipeJsonBuilder;
     }
 
-    public IdPack with(Size size) {
-        return new IdPack(this, size);
+    public Fixed with(Size size) {
+        return new Fixed(this, size);
     }
 
     public Wrapper with(Size size, DyeColor dyeColor) {
-        return new Wrapper(this, size, dyeColor);
+        return new Wrapper(new Fixed(this, size), dyeColor);
     }
 
     public String getId() {
@@ -195,5 +298,9 @@ public enum Variant {
 
     public BlockItem getBlockItem(Block block, DyeColor dyeColor) {
         return blockItemProvider.apply(block, dyeColor);
+    }
+
+    public CraftingRecipeJsonBuilder craftingRecipeJsonBuilder(Wrapper wrapper) {
+        return craftingRecipeJsonBuilder.apply(wrapper);
     }
 }

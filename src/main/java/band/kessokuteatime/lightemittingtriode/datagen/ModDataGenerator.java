@@ -1,7 +1,7 @@
 package band.kessokuteatime.lightemittingtriode.datagen;
 
 import band.kessokuteatime.lightemittingtriode.LET;
-import band.kessokuteatime.lightemittingtriode.content.Registries;
+import band.kessokuteatime.lightemittingtriode.content.ModRegistries;
 import band.kessokuteatime.lightemittingtriode.content.block.LampBlock;
 import net.fabricmc.fabric.api.datagen.v1.DataGeneratorEntrypoint;
 import net.fabricmc.fabric.api.datagen.v1.FabricDataGenerator;
@@ -26,7 +26,7 @@ import java.util.concurrent.CompletableFuture;
 import java.util.function.Consumer;
 import java.util.stream.Collectors;
 
-public class LETDataGenerator implements DataGeneratorEntrypoint {
+public class ModDataGenerator implements DataGeneratorEntrypoint {
     /**
      * Register {@link DataProvider} with the {@link FabricDataGenerator} during this entrypoint.
      *
@@ -89,7 +89,7 @@ public class LETDataGenerator implements DataGeneratorEntrypoint {
         @Override
         public void generateBlockStateModels(BlockStateModelGenerator blockStateModelGenerator) {
             // Use specified generators for blocks
-            Arrays.stream(Registries.Blocks.Type.values())
+            Arrays.stream(ModRegistries.Blocks.Type.values())
                     .forEach(type -> type.getBlockItemMap()
                             .forEach((block, item) -> blockStateModelGenerator.blockStateCollector.accept(
                                     ((LampBlock) block).generateBlockStates(type).apply(blockStateModelGenerator, block)
@@ -100,9 +100,9 @@ public class LETDataGenerator implements DataGeneratorEntrypoint {
         @Override
         public void generateItemModels(ItemModelGenerator itemModelGenerator) {
             // Use generic block ids for items
-            Arrays.stream(Registries.Blocks.Type.values()).forEach(type ->
+            Arrays.stream(ModRegistries.Blocks.Type.values()).forEach(type ->
                     type.getBlockItemMap().forEach((block, blockItem) -> uploadModelWithParent.accept(
-                            itemModelGenerator, type.getIdPack().blockId(), blockItem
+                            itemModelGenerator, type.getIdPack().genericId(), blockItem
                     ))
             );
         }
@@ -120,7 +120,10 @@ public class LETDataGenerator implements DataGeneratorEntrypoint {
          */
         @Override
         public void generate(Consumer<RecipeJsonProvider> exporter) {
-
+            Arrays.stream(ModRegistries.Blocks.Type.values())
+                    .forEach(type -> type.getBlockItemMap()
+                            .keySet().forEach(block -> ((LampBlock) block).recipeBuilders().accept(exporter))
+                    );
         }
     }
 
@@ -138,7 +141,7 @@ public class LETDataGenerator implements DataGeneratorEntrypoint {
         @Override
         public void generate() {
             // Let blocks drop themselves
-            Arrays.stream(Registries.Blocks.Type.values()).forEach(type ->
+            Arrays.stream(ModRegistries.Blocks.Type.values()).forEach(type ->
                     type.getBlockItemMap().forEach(this::addDrop)
             );
         }
@@ -154,28 +157,28 @@ public class LETDataGenerator implements DataGeneratorEntrypoint {
          */
         @Override
         protected void configure(RegistryWrapper.WrapperLookup wrapperLookup) {
-            addAll(getOrCreateTagBuilder(Registries.BlockTags.DIODES),
-                    Registries.Blocks.Type.LANTERN_SMALL,
-                    Registries.Blocks.Type.LANTERN,
-                    Registries.Blocks.Type.LANTERN_LARGE,
+            addAll(getOrCreateTagBuilder(ModRegistries.BlockTags.DIODES),
+                    ModRegistries.Blocks.Type.LANTERN_SMALL,
+                    ModRegistries.Blocks.Type.LANTERN,
+                    ModRegistries.Blocks.Type.LANTERN_LARGE,
 
-                    Registries.Blocks.Type.ALARM_SMALL,
-                    Registries.Blocks.Type.ALARM,
-                    Registries.Blocks.Type.ALARM_LARGE
+                    ModRegistries.Blocks.Type.ALARM_SMALL,
+                    ModRegistries.Blocks.Type.ALARM,
+                    ModRegistries.Blocks.Type.ALARM_LARGE
             );
 
-            addAll(getOrCreateTagBuilder(Registries.BlockTags.TRIODES),
-                    Registries.Blocks.Type.CLEAR,
-                    Registries.Blocks.Type.SLAB,
-                    Registries.Blocks.Type.CEILING
+            addAll(getOrCreateTagBuilder(ModRegistries.BlockTags.TRIODES),
+                    ModRegistries.Blocks.Type.CLEAR,
+                    ModRegistries.Blocks.Type.SLAB,
+                    ModRegistries.Blocks.Type.CEILING
             );
 
-            addAll(getOrCreateTagBuilder(Registries.BlockTags.DIMMABLES), Registries.Blocks.Type.values());
+            addAll(getOrCreateTagBuilder(ModRegistries.BlockTags.DIMMABLES), ModRegistries.Blocks.Type.values());
         }
 
-        private void addAll(FabricTagBuilder builder, Registries.Blocks.Type... type) {
+        private void addAll(FabricTagBuilder builder, ModRegistries.Blocks.Type... type) {
             Arrays.stream(type)
-                .map(Registries.Blocks.Type::getBlockItemMap)
+                .map(ModRegistries.Blocks.Type::getBlockItemMap)
                 .map(HashMap::keySet)
                 .forEach(values -> values.forEach(builder::add));
         }

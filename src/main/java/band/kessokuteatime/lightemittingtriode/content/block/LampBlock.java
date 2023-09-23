@@ -1,13 +1,13 @@
 package band.kessokuteatime.lightemittingtriode.content.block;
 
 import band.kessokuteatime.lightemittingtriode.LET;
-import band.kessokuteatime.lightemittingtriode.content.Registries;
+import band.kessokuteatime.lightemittingtriode.content.ModRegistries;
 import band.kessokuteatime.lightemittingtriode.content.Variant;
 import net.minecraft.block.*;
 import net.minecraft.data.client.*;
+import net.minecraft.data.server.recipe.RecipeJsonProvider;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.ItemStack;
-import net.minecraft.item.Items;
 import net.minecraft.particle.DustParticleEffect;
 import net.minecraft.registry.tag.ItemTags;
 import net.minecraft.server.world.ServerWorld;
@@ -27,6 +27,7 @@ import net.minecraft.world.BlockView;
 import net.minecraft.world.World;
 
 import java.util.function.BiFunction;
+import java.util.function.Consumer;
 
 public class LampBlock extends AbstractGlassBlock implements Waterloggable {
     protected final Variant.Wrapper wrapper;
@@ -51,9 +52,15 @@ public class LampBlock extends AbstractGlassBlock implements Waterloggable {
         );
     }
 
-    public BiFunction<BlockStateModelGenerator, Block, BlockStateSupplier> generateBlockStates(Registries.Blocks.Type type) {
+    public BiFunction<BlockStateModelGenerator, Block, BlockStateSupplier> generateBlockStates(ModRegistries.Blocks.Type type) {
         return (blockStateModelGenerator, block) -> VariantsBlockStateSupplier
-                .create(block, BlockStateVariant.create().put(VariantSettings.MODEL, type.getIdPack().blockId()));
+                .create(block, BlockStateVariant.create().put(VariantSettings.MODEL, type.getIdPack().genericId()));
+    }
+
+    public Consumer<Consumer<RecipeJsonProvider>> recipeBuilders() {
+        return exporter -> {
+            wrapper.craftingRecipeJsonBuilder().offerTo(exporter, wrapper.categorizedId("crafting"));
+        };
     }
 
     protected boolean hasPower(World world, BlockPos pos) {

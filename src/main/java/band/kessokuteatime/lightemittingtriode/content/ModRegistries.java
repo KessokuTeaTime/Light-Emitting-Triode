@@ -21,7 +21,7 @@ import java.util.HashMap;
 import java.util.function.Consumer;
 import java.util.function.Function;
 
-public class Registries {
+public class ModRegistries {
     private static <B extends Block> B registerBlock(Identifier id, B block) {
         return Registry.register(net.minecraft.registry.Registries.BLOCK, id, block);
     }
@@ -78,19 +78,19 @@ public class Registries {
             ALARM_LARGE(Variant.ALARM.with(Variant.Size.LARGE));
 
             final HashMap<Block, BlockItem> blockItemMap;
-            final Variant.IdPack idPack;
+            final Variant.Fixed fixed;
 
-            Type(Variant.IdPack idPack) {
+            Type(Variant.Fixed fixed) {
                 this.blockItemMap = new HashMap<>();
-                this.idPack = idPack;
+                this.fixed = fixed;
             }
 
             public HashMap<Block, BlockItem> getBlockItemMap() {
                 return blockItemMap;
             }
 
-            public Variant.IdPack getIdPack() {
-                return idPack;
+            public Variant.Fixed getIdPack() {
+                return fixed;
             }
         }
 
@@ -137,8 +137,8 @@ public class Registries {
                     Variant.Wrapper wrapper = wrapperSupplier.apply(dyeColor);
                     Identifier id = wrapper.id();
 
-                    Block block = wrapper.block();
-                    Item item = wrapper.blockItem(block);
+                    Block block = wrapper.createBlock();
+                    Item item = wrapper.createBlockItem(block);
 
                     // Store registered contents
                     hashMap.put(registerBlock(id, block), (BlockItem) registerItem(id, item));

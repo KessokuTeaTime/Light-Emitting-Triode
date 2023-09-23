@@ -22,7 +22,7 @@
       "band.kessokuteatime.lightemittingtriode.LET"
     ],
     "fabric-datagen": [
-      "band.kessokuteatime.lightemittingtriode.datagen.LETDataGenerator"
+      "band.kessokuteatime.lightemittingtriode.datagen.ModDataGenerator"
     ]
   },
   "mixins": [
