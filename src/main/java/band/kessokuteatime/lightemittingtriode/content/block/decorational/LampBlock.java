@@ -1,18 +1,15 @@
 package band.kessokuteatime.lightemittingtriode.content.block.decorational;
 
 import band.kessokuteatime.lightemittingtriode.LightEmittingTriode;
-import band.kessokuteatime.lightemittingtriode.content.ModRegistries;
 import band.kessokuteatime.lightemittingtriode.content.Variant;
 import band.kessokuteatime.lightemittingtriode.content.block.base.AbstractWaterLoggableLampBlock;
-import band.kessokuteatime.lightemittingtriode.content.block.base.OfAnotherColor;
-import net.minecraft.block.*;
+import band.kessokuteatime.lightemittingtriode.content.block.base.Dimmable;
+import band.kessokuteatime.lightemittingtriode.content.block.base.Dyable;
+import net.minecraft.block.Block;
+import net.minecraft.block.BlockState;
+import net.minecraft.block.ShapeContext;
 import net.minecraft.entity.player.PlayerEntity;
-import net.minecraft.item.ItemStack;
-import net.minecraft.registry.tag.ItemTags;
 import net.minecraft.server.world.ServerWorld;
-import net.minecraft.sound.BlockSoundGroup;
-import net.minecraft.sound.SoundCategory;
-import net.minecraft.sound.SoundEvents;
 import net.minecraft.state.StateManager;
 import net.minecraft.state.property.Properties;
 import net.minecraft.util.ActionResult;
@@ -24,21 +21,18 @@ import net.minecraft.util.math.random.Random;
 import net.minecraft.util.shape.VoxelShape;
 import net.minecraft.world.BlockView;
 import net.minecraft.world.World;
-import net.minecraft.world.event.GameEvent;
+import net.minecraft.world.WorldAccess;
 
-public class LampBlock extends AbstractWaterLoggableLampBlock {
+public class LampBlock extends AbstractWaterLoggableLampBlock implements Dimmable, Dyable {
     public LampBlock(Variant.Wrapper wrapper) {
-        super(
-                AbstractBlock.Settings.copy(Blocks.GLASS)
-                        .sounds(BlockSoundGroup.AMETHYST_BLOCK)
-                        .luminance(state ->
-                                state.get(Properties.LIT) && !state.get(LightEmittingTriode.Properties.DIM)
-                                        ? wrapper.luminance()
-                                        : 0
-                        )
-                        .emissiveLighting((state, world, pos) -> state.get(Properties.LIT)),
-                wrapper
-        );
+        super(wrapper.wrapSettings(s -> s
+                .luminance(state ->
+                        state.get(Properties.LIT) && !state.get(LightEmittingTriode.Properties.DIM)
+                                ? wrapper.luminance()
+                                : 0
+                )
+                .emissiveLighting((state, world, pos) -> state.get(Properties.LIT))
+        ));
 
         setDefaultState(
                 getDefaultState()
@@ -82,36 +76,15 @@ public class LampBlock extends AbstractWaterLoggableLampBlock {
     }
 
     @Override
+    public void onBroken(WorldAccess world, BlockPos pos, BlockState state) {
+        Dimmable.super.onBroken(world, pos, state);
+        super.onBroken(world, pos, state);
+    }
+
+    @Override
     public ActionResult onUse(BlockState state, World world, BlockPos pos, PlayerEntity player, Hand hand, BlockHitResult hit) {
-        ItemStack stack = player.getStackInHand(hand);
-
-        if (state.get(LightEmittingTriode.Properties.DIM) && LightEmittingTriode.isValidTool(stack)) {
-            world.setBlockState(pos, state.with(LightEmittingTriode.Properties.DIM, false));
-            world.playSound(player, pos, SoundEvents.BLOCK_AMETHYST_CLUSTER_PLACE, SoundCategory.BLOCKS, 1.0F, 1.0F);
-
-            if (!player.isCreative())
-                stack.damage(1, player, p -> p.sendToolBreakStatus(hand));
-
-            return ActionResult.SUCCESS;
-        }
-
-        if (LightEmittingTriode.isValidDye(stack)) {
-            DyeColor dyeColor = LightEmittingTriode.getDyeColorFromDye(stack.getItem(), wrapper().dyeColor());
-            if (dyeColor == wrapper().dyeColor()) return ActionResult.PASS;
-
-            BlockState newState = ofAnotherColor(state, dyeColor);
-            world.playSound(player, pos, SoundEvents.ITEM_DYE_USE, SoundCategory.BLOCKS, 1.0F, 1.0F);
-
-            if (!world.isClient()) {
-                world.setBlockState(pos, newState, Block.NOTIFY_ALL | Block.REDRAW_ON_MAIN_THREAD);
-                world.emitGameEvent(GameEvent.BLOCK_CHANGE, pos, GameEvent.Emitter.of(player, newState));
-
-                if (!player.isCreative())
-                    stack.decrement(1);
-            }
-
-            return ActionResult.success(world.isClient);
-        }
+        Dimmable.super.onUse(state, world, pos, player, hand);
+        Dyable.super.onUse(state, world, pos, player, hand, wrapper().dyeColor());
 
         return super.onUse(state, world, pos, player, hand, hit);
     }

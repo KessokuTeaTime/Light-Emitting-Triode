@@ -2,6 +2,8 @@ package band.kessokuteatime.lightemittingtriode.content;
 
 import band.kessokuteatime.lightemittingtriode.LightEmittingTriode;
 import band.kessokuteatime.lightemittingtriode.content.block.base.AbstractLampBlock;
+import band.kessokuteatime.lightemittingtriode.content.block.base.Dimmable;
+import band.kessokuteatime.lightemittingtriode.content.block.base.Dyable;
 import band.kessokuteatime.lightemittingtriode.content.item.ShadeItem;
 import net.fabricmc.fabric.api.blockrenderlayer.v1.BlockRenderLayerMap;
 import net.fabricmc.fabric.api.client.rendering.v1.ColorProviderRegistry;
@@ -15,11 +17,10 @@ import net.minecraft.registry.RegistryKeys;
 import net.minecraft.registry.tag.TagKey;
 import net.minecraft.util.DyeColor;
 import net.minecraft.util.Identifier;
+import org.jetbrains.annotations.Nullable;
 
+import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.HashMap;
-import java.util.LinkedHashMap;
-import java.util.Map;
 
 public class ModRegistries {
     private static <B extends Block> B registerBlock(Identifier id, B block) {
@@ -47,8 +48,10 @@ public class ModRegistries {
 
                         // Guard the items' order
                         Arrays.stream(Blocks.Type.values())
-                                .map(Blocks.Type::blockItemMap)
-                                .forEach(map -> map.forEach((block, blockItem) -> entries.add(blockItem)));
+                                .map(Blocks.Type::wrappers)
+                                .flatMap(ArrayList::stream)
+                                .map(Variant.Wrapper::blockItem)
+                                .forEach(entries::add);
                     })
             );
         }
@@ -82,28 +85,20 @@ public class ModRegistries {
 
             DETECTOR(Variant.DETECTOR.with(Variant.Size.NORMAL));
 
-            final LinkedHashMap<Block, BlockItem> blockItemMap;
+            final ArrayList<Variant.Wrapper> wrappers;
             final Variant.Basis basis;
 
             Type(Variant.Basis basis) {
-                this.blockItemMap = new LinkedHashMap<>();
+                this.wrappers = new ArrayList<>();
                 this.basis = basis;
             }
 
-            public LinkedHashMap<Block, BlockItem> blockItemMap() {
-                return blockItemMap;
+            public ArrayList<Variant.Wrapper> wrappers() {
+                return wrappers;
             }
 
             public Variant.Basis basis() {
                 return basis;
-            }
-
-            public Map.Entry<Block, BlockItem> findEntryWithDyeColor(DyeColor dyeColor) {
-                return blockItemMap().entrySet().stream()
-                        .filter(entry -> AbstractLampBlock.class.isAssignableFrom(entry.getKey().getClass()))
-                        .filter(entry -> ((AbstractLampBlock) entry.getKey()).dyeColor() == dyeColor)
-                        .findFirst()
-                        .orElseThrow();
             }
         }
 
@@ -133,23 +128,23 @@ public class ModRegistries {
                 Type... types
         ) {
             for (Type type : types) {
-                type.blockItemMap().clear();
+                type.wrappers().clear();
 
                 for (DyeColor dyeColor : DyeColor.values()) {
                     Variant.Wrapper wrapper = type.basis().with(dyeColor);
                     Identifier id = wrapper.id();
 
-                    Block block = wrapper.createBlock();
-                    Item item = wrapper.createBlockItem(block);
+                    Block block = registerBlock(id, wrapper.createBlock());
+                    Item item = registerItem(id, wrapper.createBlockItem(block));
 
-                    // Store registered contents
-                    type.blockItemMap().put(registerBlock(id, block), (BlockItem) registerItem(id, item));
+                    // Store the wrapper
+                    type.wrappers().add(wrapper);
 
                     // Register tints
                     ColorProviderRegistry.BLOCK.register((state, world, pos, tintIndex) -> wrapper.colorOverlay(
                             ((AbstractLampBlock) state.getBlock()).isLit(state), tintIndex
                     ), block);
-                    ColorProviderRegistry.ITEM.register((stack, tintIndex) -> wrapper.colorOverlay(false, 1), item);
+                    ColorProviderRegistry.ITEM.register((stack, tintIndex) -> wrapper.colorOverlay(false, 2), item);
 
                     // Make translucent
                     BlockRenderLayerMap.INSTANCE.putBlock(block, RenderLayer.getTranslucent());
@@ -185,14 +180,30 @@ public class ModRegistries {
         );
 
         public static void register() {
-
         }
     }
 
-    public static class BlockTags {
-        public static final TagKey<Block> DIODES = TagKey.of(RegistryKeys.BLOCK, LightEmittingTriode.id("diodes"));
-        public static final TagKey<Block> TRIODES = TagKey.of(RegistryKeys.BLOCK, LightEmittingTriode.id("triodes"));
-        public static final TagKey<Block> DIMMABLES = TagKey.of(RegistryKeys.BLOCK, LightEmittingTriode.id("dimmables"));
+    public enum BlockTag {
+        DIODES(TagKey.of(RegistryKeys.BLOCK, LightEmittingTriode.id("diodes")), null),
+        TRIODES(TagKey.of(RegistryKeys.BLOCK, LightEmittingTriode.id("triodes")), null),
+        DIMMABLES(TagKey.of(RegistryKeys.BLOCK, LightEmittingTriode.id("dimmable")), Dimmable.class),
+        DYABLES(TagKey.of(RegistryKeys.BLOCK, LightEmittingTriode.id("dyable")), Dyable.class);
+
+        final TagKey<Block> tag;
+        @Nullable final Class<?> requiredInterface;
+
+        BlockTag(net.minecraft.registry.tag.TagKey<Block> tag, @Nullable Class<?> requiredInterface) {
+            this.tag = tag;
+            this.requiredInterface = requiredInterface;
+        }
+
+        public TagKey<Block> getTag() {
+            return tag;
+        }
+
+        public boolean contains(Block block) {
+            return requiredInterface == null || requiredInterface.isAssignableFrom(block.getClass());
+        }
     }
 
     public static void register() {

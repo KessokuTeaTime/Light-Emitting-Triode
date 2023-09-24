@@ -11,9 +11,8 @@ import band.kessokuteatime.lightemittingtriode.content.block.functional.SwitchLa
 import band.kessokuteatime.lightemittingtriode.content.item.ColoredBlockItem;
 import band.kessokuteatime.lightemittingtriode.content.item.InventoryColoredBlockItem;
 import net.fabricmc.fabric.api.datagen.v1.provider.FabricRecipeProvider;
-import net.minecraft.block.Block;
-import net.minecraft.block.BlockState;
-import net.minecraft.block.ShapeContext;
+import net.minecraft.block.*;
+import net.minecraft.block.piston.PistonBehavior;
 import net.minecraft.data.server.recipe.*;
 import net.minecraft.item.BlockItem;
 import net.minecraft.item.Item;
@@ -21,6 +20,8 @@ import net.minecraft.item.Items;
 import net.minecraft.recipe.Ingredient;
 import net.minecraft.recipe.book.RecipeCategory;
 import net.minecraft.registry.Registries;
+import net.minecraft.registry.tag.TagKey;
+import net.minecraft.sound.BlockSoundGroup;
 import net.minecraft.util.DyeColor;
 import net.minecraft.util.Identifier;
 import net.minecraft.util.math.BlockPos;
@@ -33,17 +34,18 @@ import net.minecraft.world.BlockView;
 import org.jetbrains.annotations.Nullable;
 
 import java.util.*;
-import java.util.function.BiFunction;
-import java.util.function.Consumer;
-import java.util.function.Function;
-import java.util.function.IntFunction;
+import java.util.function.*;
 import java.util.stream.Collectors;
 
 public enum Variant {
     CLEAR("clear", size -> 15,
             size -> VoxelShapes.fullCube(),
+
             LampBlock::new,
             (block, dyeColor) -> new ColoredBlockItem(block, new Item.Settings(), dyeColor),
+            () -> AbstractBlock.Settings.copy(Blocks.GLASS)
+                    .sounds(BlockSoundGroup.AMETHYST_BLOCK),
+            () -> List.of(ModRegistries.BlockTag.TRIODES, ModRegistries.BlockTag.DIMMABLES, ModRegistries.BlockTag.DYABLES),
 
             wrapper -> ShapelessRecipeJsonBuilder.create(RecipeCategory.BUILDING_BLOCKS, wrapper.block())
                     .input(ModRegistries.Items.LET, 4)
@@ -59,6 +61,9 @@ public enum Variant {
             size -> VoxelShaper.fromBottomCenter(16, 8),
             SlabFacingLampBlock::new,
             (block, dyeColor) -> new ColoredBlockItem(block, new Item.Settings(), dyeColor),
+            () -> AbstractBlock.Settings.copy(Blocks.GLASS)
+                    .sounds(BlockSoundGroup.AMETHYST_BLOCK),
+            () -> List.of(ModRegistries.BlockTag.TRIODES, ModRegistries.BlockTag.DIMMABLES, ModRegistries.BlockTag.DYABLES),
 
             wrapper -> ShapelessRecipeJsonBuilder.create(RecipeCategory.BUILDING_BLOCKS, wrapper.block())
                     .input(ModRegistries.Items.LET, 2)
@@ -83,6 +88,10 @@ public enum Variant {
             size -> VoxelShaper.fromBottomCenter(16, 1),
             FacingLampBlock::new,
             (block, dyeColor) -> new ColoredBlockItem(block, new Item.Settings(), dyeColor),
+            () -> AbstractBlock.Settings.copy(Blocks.GLASS)
+                    .sounds(BlockSoundGroup.AMETHYST_BLOCK)
+                    .pistonBehavior(PistonBehavior.DESTROY),
+            () -> List.of(ModRegistries.BlockTag.TRIODES, ModRegistries.BlockTag.DIMMABLES, ModRegistries.BlockTag.DYABLES),
 
             wrapper -> ShapelessRecipeJsonBuilder.create(RecipeCategory.BUILDING_BLOCKS, wrapper.block())
                     .input(ModRegistries.Items.LET)
@@ -107,6 +116,10 @@ public enum Variant {
             size -> VoxelShaper.fromBottomCenter(4 + 2 * size, 6 + size),
             FacingLampBlock::new,
             (block, dyeColor) -> new ColoredBlockItem(block, new Item.Settings(), dyeColor),
+            () -> AbstractBlock.Settings.copy(Blocks.GLASS)
+                    .sounds(BlockSoundGroup.LANTERN)
+                    .pistonBehavior(PistonBehavior.DESTROY),
+            () -> List.of(ModRegistries.BlockTag.DIODES, ModRegistries.BlockTag.DIMMABLES, ModRegistries.BlockTag.DYABLES),
 
             wrapper -> ShapelessRecipeJsonBuilder.create(RecipeCategory.BUILDING_BLOCKS, wrapper.block())
                     .input(Items.IRON_NUGGET)
@@ -134,6 +147,10 @@ public enum Variant {
             size -> VoxelShaper.fromBottomCenter(10 + 2 * size, 1),
             FacingLampBlock::new,
             (block, dyeColor) -> new ColoredBlockItem(block, new Item.Settings(), dyeColor),
+            () -> AbstractBlock.Settings.copy(Blocks.GLASS)
+                    .sounds(BlockSoundGroup.CHAIN)
+                    .pistonBehavior(PistonBehavior.DESTROY),
+            () -> List.of(ModRegistries.BlockTag.DIODES, ModRegistries.BlockTag.DIMMABLES, ModRegistries.BlockTag.DYABLES),
 
             wrapper -> ShapelessRecipeJsonBuilder.create(RecipeCategory.BUILDING_BLOCKS, wrapper.block())
                     .input(Items.GOLD_NUGGET)
@@ -161,6 +178,10 @@ public enum Variant {
             size -> VoxelShaper.fromBottomCenter(8, 2),
             SwitchLampBlock::new,
             (block, dyeColor) -> new InventoryColoredBlockItem(block, new Item.Settings(), dyeColor),
+            () -> AbstractBlock.Settings.copy(Blocks.GLASS)
+                    .sounds(BlockSoundGroup.CHERRY_WOOD_HANGING_SIGN)
+                    .pistonBehavior(PistonBehavior.DESTROY),
+            List::of,
 
             wrapper -> ShapelessRecipeJsonBuilder.create(RecipeCategory.BUILDING_BLOCKS, wrapper.block())
                     .input(Items.QUARTZ)
@@ -179,6 +200,10 @@ public enum Variant {
             size -> Block.createCuboidShape(6, 0, 5, 10, 2, 11),
             wrapper -> new ButtonLampBlock(wrapper, 22),
             (block, dyeColor) -> new InventoryColoredBlockItem(block, new Item.Settings(), dyeColor),
+            () -> AbstractBlock.Settings.copy(Blocks.GLASS)
+                    .sounds(BlockSoundGroup.CHERRY_WOOD)
+                    .pistonBehavior(PistonBehavior.DESTROY),
+            List::of,
 
             wrapper -> ShapelessRecipeJsonBuilder.create(RecipeCategory.BUILDING_BLOCKS, wrapper.block())
                     .input(ModRegistries.Items.TUBE)
@@ -199,10 +224,14 @@ public enum Variant {
                     .criterion(FabricRecipeProvider.hasItem(Items.QUARTZ),
                             FabricRecipeProvider.conditionsFromItem(Items.QUARTZ))
     ),
-    DETECTOR("detector", size -> 1,
+    DETECTOR("detector", size -> 5,
             size -> VoxelShaper.fromBottomCenter(16, 1),
             DetectorLampBlock::new,
             (block, dyeColor) -> new ColoredBlockItem(block, new Item.Settings(), dyeColor),
+            () -> AbstractBlock.Settings.copy(Blocks.GLASS)
+                    .sounds(BlockSoundGroup.CHERRY_WOOD)
+                    .pistonBehavior(PistonBehavior.DESTROY),
+            () -> List.of(ModRegistries.BlockTag.DIMMABLES, ModRegistries.BlockTag.DYABLES),
 
             wrapper -> ShapelessRecipeJsonBuilder.create(RecipeCategory.BUILDING_BLOCKS, wrapper.block())
                     .input(ModRegistries.Items.TUBE, 2)
@@ -222,7 +251,15 @@ public enum Variant {
     );
 
     public record Basis(Variant variant, Size size) {
-        private String genericIdString(String... postfixes) {
+        public Basis variant(UnaryOperator<Variant> variantOperator) {
+            return new Basis(variantOperator.apply(variant()), size());
+        }
+
+        public Basis size(UnaryOperator<Size> sizeOperator) {
+            return new Basis(variant(), sizeOperator.apply(size()));
+        }
+
+        public String genericIdString(String... postfixes) {
             return variant().getId()
                     + size().getId().map(p -> "_" + p).orElse("")
                     + Arrays.stream(postfixes)
@@ -241,11 +278,30 @@ public enum Variant {
         }
     }
 
-    public record Wrapper(Basis basis, DyeColor dyeColor) {
+    public record Wrapper(Basis basis, DyeColor dyeColor, UnaryOperator<AbstractBlock.Settings> settingsWrapper) {
+        public Wrapper(Basis basis, DyeColor dyeColor) {
+            this(basis, dyeColor, settings -> settings);
+        }
+
+        public Wrapper basis(UnaryOperator<Basis> basisOperator) {
+            return new Wrapper(basisOperator.apply(basis()), dyeColor(), settingsWrapper());
+        }
+
+        public Wrapper dyeColor(DyeColor dyeColor) {
+            return new Wrapper(basis(), dyeColor, settingsWrapper());
+        }
+
+        public Wrapper wrapSettings(UnaryOperator<AbstractBlock.Settings> futureSettingsWrapper) {
+            return new Wrapper(
+                    basis(), dyeColor(),
+                    settings -> settingsWrapper().apply(futureSettingsWrapper.apply(settings))
+            );
+        }
+
         public ArrayList<Wrapper> wrappersOfOtherColors() {
             return Arrays.stream(DyeColor.values())
                     .filter(d -> d != dyeColor())
-                    .map(d -> new Wrapper(basis(), d))
+                    .map(this::dyeColor)
                     .collect(Collectors.toCollection(ArrayList::new));
         }
 
@@ -270,6 +326,18 @@ public enum Variant {
             return LightEmittingTriode.id(paths.toArray(new String[]{}));
         }
 
+        public AbstractBlock.Settings buildSettings() {
+            return settingsWrapper().apply(basis().variant().settingsSupplier().get());
+        }
+
+        public List<ModRegistries.BlockTag> getTags() {
+            return basis().variant().tagSupplier().get();
+        }
+
+        public boolean isIn(ModRegistries.BlockTag blockTag) {
+            return getTags().contains(blockTag) && blockTag.contains(block());
+        }
+
         public int color() {
             return LightEmittingTriode.getColorFromDyeColor(dyeColor());
         }
@@ -278,9 +346,11 @@ public enum Variant {
             return switch (tintIndex) {
                 default -> color();
                 // Outer
-                case 0 -> LightEmittingTriode.mapColorRange(color(), lit ? 0xAF : 0, lit ? 0 : 0xAB);
+                case 0 -> LightEmittingTriode.mapColorRange(color(), lit ? 0xAF : 0x00, lit ? 0x00 : 0xAB);
                 // Inner
-                case 1 -> LightEmittingTriode.mapColorRange(color(), lit ? 0x7A : 0x10, lit ? 0x10 : 0x6D);
+                case 1 -> LightEmittingTriode.mapColorRange(color(), lit ? 0x10 : 0x00, lit ? 0x00 : 0x10);
+                // Item
+                case 2 -> LightEmittingTriode.mapColorRange(color(), 0x20, 0x40);
             };
         }
 
@@ -297,11 +367,11 @@ public enum Variant {
         }
 
         public Block createBlock() {
-            return basis().variant().getBlock(this);
+            return basis().variant().createBlock(this);
         }
 
         public BlockItem createBlockItem(Block block) {
-            return basis().variant().getBlockItem(block, dyeColor());
+            return basis().variant().createBlockItem(block, dyeColor());
         }
 
         public Block block(Basis basis, DyeColor dyeColor) {
@@ -386,6 +456,8 @@ public enum Variant {
     final Function<Integer, VoxelShape> voxelShapeProvider;
     final Function<Wrapper, Block> blockProvider;
     final BiFunction<Block, DyeColor, BlockItem> blockItemProvider;
+    final Supplier<AbstractBlock.Settings> settingsSupplier;
+    final Supplier<List<ModRegistries.BlockTag>> tagSupplier;
     @Nullable final Function<Wrapper, CraftingRecipeJsonBuilder> craftingRecipeJsonBuilder;
     @Nullable final Function<Wrapper, SmithingTransformRecipeJsonBuilder> upgradingRecipeJsonBuilder;
     @Nullable final BiFunction<Ingredient, Wrapper, SmithingTransformRecipeJsonBuilder> recoloringRecipeJsonBuilder = (ingredient, wrapper) ->
@@ -405,6 +477,8 @@ public enum Variant {
             Function<Integer, VoxelShape> voxelShapeProvider,
             Function<Wrapper, Block> blockProvider,
             BiFunction<Block, DyeColor, BlockItem> blockItemProvider,
+            Supplier<AbstractBlock.Settings> settingsSupplier,
+            Supplier<List<ModRegistries.BlockTag>> tagSupplier,
             @Nullable Function<Wrapper, CraftingRecipeJsonBuilder> craftingRecipeJsonBuilder,
             @Nullable Function<Wrapper, SmithingTransformRecipeJsonBuilder> upgradingRecipeJsonBuilder
     ) {
@@ -413,6 +487,8 @@ public enum Variant {
         this.voxelShapeProvider = voxelShapeProvider;
         this.blockProvider = blockProvider;
         this.blockItemProvider = blockItemProvider;
+        this.settingsSupplier = settingsSupplier;
+        this.tagSupplier = tagSupplier;
         this.craftingRecipeJsonBuilder = craftingRecipeJsonBuilder;
         this.upgradingRecipeJsonBuilder = upgradingRecipeJsonBuilder;
     }
@@ -433,12 +509,20 @@ public enum Variant {
         return voxelShapeProvider.apply(size);
     }
 
-    public Block getBlock(Wrapper wrapper) {
+    public Block createBlock(Wrapper wrapper) {
         return blockProvider.apply(wrapper);
     }
 
-    public BlockItem getBlockItem(Block block, DyeColor dyeColor) {
+    public BlockItem createBlockItem(Block block, DyeColor dyeColor) {
         return blockItemProvider.apply(block, dyeColor);
+    }
+
+    public Supplier<AbstractBlock.Settings> settingsSupplier() {
+        return settingsSupplier;
+    }
+
+    public Supplier<List<ModRegistries.BlockTag>> tagSupplier() {
+        return tagSupplier;
     }
 
     public @Nullable CraftingRecipeJsonBuilder craftingRecipeJsonBuilder(Wrapper wrapper) {

@@ -77,21 +77,23 @@ public class ButtonLampBlock extends SpecialFacingPowerableLampBlock {
                 state.getOutlineShape(world, pos).getBoundingBox().offset(pos)
         ).stream().findFirst().orElse(null);
 
-        boolean entityNonNull = persistentProjectileEntity != null;
+        boolean hasEntity = persistentProjectileEntity != null;
+        System.out.println(hasEntity);
 
-        if (entityNonNull != state.get(Properties.POWERED)) {
-            world.setBlockState(pos, state.with(Properties.POWERED, entityNonNull), Block.NOTIFY_ALL);
+        if (hasEntity != state.get(Properties.POWERED)) {
+            world.setBlockState(pos, state.with(Properties.POWERED, hasEntity), Block.NOTIFY_ALL);
 
             updateNeighbors(state, world, pos);
-            playClickSound(null, world, pos, entityNonNull);
+            playClickSound(null, world, pos, hasEntity);
 
             world.emitGameEvent(
                     persistentProjectileEntity,
-                    entityNonNull ? GameEvent.BLOCK_ACTIVATE : GameEvent.BLOCK_DEACTIVATE,
+                    hasEntity ? GameEvent.BLOCK_ACTIVATE : GameEvent.BLOCK_DEACTIVATE,
                     pos
             );
         }
-        if (entityNonNull)
+
+        if (hasEntity)
             world.scheduleBlockTick(pos, this, pressTicks);
     }
 
@@ -114,8 +116,6 @@ public class ButtonLampBlock extends SpecialFacingPowerableLampBlock {
 
     @Override
     public void onEntityCollision(BlockState state, World world, BlockPos pos, Entity entity) {
-        super.onEntityCollision(state, world, pos, entity);
-
         if (!world.isClient() && !state.get(Properties.POWERED))
             tryPowerWithProjectiles(state, world, pos);
     }

@@ -17,8 +17,8 @@ import java.util.function.Consumer;
 public abstract class AbstractLampBlock extends AbstractGlassBlock implements WithCustomBlockRecipe, OfAnotherColor {
     protected final Variant.Wrapper wrapper;
 
-    protected AbstractLampBlock(Settings settings, Variant.Wrapper wrapper) {
-        super(settings);
+    protected AbstractLampBlock(Variant.Wrapper wrapper) {
+        super(wrapper.buildSettings());
         this.wrapper = wrapper;
     }
 

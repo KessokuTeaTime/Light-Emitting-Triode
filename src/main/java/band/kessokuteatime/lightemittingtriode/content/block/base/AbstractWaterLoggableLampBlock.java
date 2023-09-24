@@ -18,8 +18,8 @@ import org.jetbrains.annotations.Nullable;
 import java.util.Objects;
 
 public abstract class AbstractWaterLoggableLampBlock extends AbstractLampBlock implements Waterloggable {
-    protected AbstractWaterLoggableLampBlock(Settings settings, Variant.Wrapper wrapper) {
-        super(settings, wrapper);
+    protected AbstractWaterLoggableLampBlock(Variant.Wrapper wrapper) {
+        super(wrapper);
         setDefaultState(
                 getDefaultState()
                         .with(Properties.WATERLOGGED, false)

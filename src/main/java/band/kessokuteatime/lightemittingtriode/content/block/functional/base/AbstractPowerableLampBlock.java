@@ -6,6 +6,7 @@ import net.minecraft.block.AbstractBlock;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockState;
 import net.minecraft.block.Blocks;
+import net.minecraft.block.piston.PistonBehavior;
 import net.minecraft.sound.BlockSoundGroup;
 import net.minecraft.state.StateManager;
 import net.minecraft.state.property.Properties;
@@ -17,13 +18,11 @@ import net.minecraft.world.World;
 
 public abstract class AbstractPowerableLampBlock extends AbstractWaterLoggableLampBlock {
     protected AbstractPowerableLampBlock(Variant.Wrapper wrapper) {
-        super(
-                AbstractBlock.Settings.copy(Blocks.GLASS)
-                        .sounds(BlockSoundGroup.AMETHYST_BLOCK)
+        super(wrapper.wrapSettings(s -> s
                         .luminance(state -> state.get(Properties.POWERED) ? wrapper.luminance() : 0)
-                        .emissiveLighting((state, world, pos) -> state.get(Properties.POWERED)),
-                wrapper
-        );
+                        .emissiveLighting((state, world, pos) -> state.get(Properties.POWERED))
+        ));
+
         setDefaultState(
                 getDefaultState()
                         .with(Properties.POWERED, false)

@@ -26,7 +26,7 @@ public class ShadeItem extends Item {
         BlockState state = world.getBlockState(pos);
         ItemStack stack = context.getStack();
 
-        if (!state.get(LightEmittingTriode.Properties.DIM) && state.isIn(ModRegistries.BlockTags.DIMMABLES)) {
+        if (ModRegistries.BlockTag.DIMMABLES.contains(state.getBlock()) && !state.get(LightEmittingTriode.Properties.DIM)) {
             world.setBlockState(pos, state.with(LightEmittingTriode.Properties.DIM, true));
             world.playSound(player, pos, SoundEvents.BLOCK_FIRE_EXTINGUISH, SoundCategory.BLOCKS, 1.0F, 1.0F);
 
