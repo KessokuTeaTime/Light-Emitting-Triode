@@ -78,7 +78,6 @@ public class ButtonLampBlock extends SpecialFacingPowerableLampBlock {
         ).stream().findFirst().orElse(null);
 
         boolean hasEntity = persistentProjectileEntity != null;
-        System.out.println(hasEntity);
 
         if (hasEntity != state.get(Properties.POWERED)) {
             world.setBlockState(pos, state.with(Properties.POWERED, hasEntity), Block.NOTIFY_ALL);
