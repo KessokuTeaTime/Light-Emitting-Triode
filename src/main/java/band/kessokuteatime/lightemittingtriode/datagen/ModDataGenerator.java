@@ -1,8 +1,7 @@
 package band.kessokuteatime.lightemittingtriode.datagen;
 
-import band.kessokuteatime.lightemittingtriode.LET;
+import band.kessokuteatime.lightemittingtriode.LightEmittingTriode;
 import band.kessokuteatime.lightemittingtriode.content.ModRegistries;
-import band.kessokuteatime.lightemittingtriode.content.block.base.AbstractLampBlock;
 import band.kessokuteatime.lightemittingtriode.content.block.base.WithCustomBlockModel;
 import band.kessokuteatime.lightemittingtriode.content.block.base.WithCustomBlockRecipe;
 import band.kessokuteatime.lightemittingtriode.content.item.base.WithCustomItemParentModelId;
@@ -64,7 +63,7 @@ public class ModDataGenerator implements DataGeneratorEntrypoint {
 
             // Add English translations for colors
             Arrays.stream(DyeColor.values()).forEach(dyeColor ->
-                    translationBuilder.add(LET.idString("color", dyeColor.getName()), formatDyeColor(dyeColor))
+                    translationBuilder.add(LightEmittingTriode.idString("color", dyeColor.getName()), formatDyeColor(dyeColor))
             );
         }
 

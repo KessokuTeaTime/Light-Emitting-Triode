@@ -87,10 +87,37 @@ public class VoxelShaper {
         return from.getDirection() != to.getDirection() ? mirror(rotatedVoxelShape, to.getAxis()) : rotatedVoxelShape;
     }
 
-    public static VoxelShape scaleHeight(VoxelShape voxelShape, double factor) {
-        return VoxelShapes.cuboid(
-                voxelShape.getMin(Direction.Axis.X), voxelShape.getMin(Direction.Axis.Y) * factor, voxelShape.getMin(Direction.Axis.Z),
-                voxelShape.getMax(Direction.Axis.X), voxelShape.getMax(Direction.Axis.Y) * factor, voxelShape.getMax(Direction.Axis.Z)
+    public static VoxelShape scaleOnDirection(VoxelShape voxelShape, Direction direction, double factor) {
+        Vec3d min = new Vec3d(
+                voxelShape.getMin(Direction.Axis.X),
+                voxelShape.getMin(Direction.Axis.Y),
+                voxelShape.getMin(Direction.Axis.Z)
+        ), max = new Vec3d(
+                voxelShape.getMax(Direction.Axis.X),
+                voxelShape.getMax(Direction.Axis.Y),
+                voxelShape.getMax(Direction.Axis.Z)
         );
+
+        return switch (direction.getAxis()) {
+            case X -> VoxelShapes.cuboid(
+                    scaleWithSign(min.getX(), factor, direction.getDirection()), min.getY(), min.getZ(),
+                    scaleWithSign(max.getX(), factor, direction.getDirection()), max.getY(), max.getZ()
+            );
+            case Y -> VoxelShapes.cuboid(
+                    min.getX(), scaleWithSign(min.getY(), factor, direction.getDirection()), min.getZ(),
+                    max.getX(), scaleWithSign(max.getY(), factor, direction.getDirection()), max.getZ()
+            );
+            case Z -> VoxelShapes.cuboid(
+                    min.getX(), min.getY(), scaleWithSign(min.getZ(), factor, direction.getDirection()),
+                    max.getX(), max.getY(), scaleWithSign(max.getZ(), factor, direction.getDirection())
+            );
+        };
+    }
+
+    private static double scaleWithSign(double value, double factor, Direction.AxisDirection sign) {
+        return switch (sign) {
+            case POSITIVE -> value * factor;
+            case NEGATIVE -> 1 - (1 - value) * factor;
+        };
     }
 }

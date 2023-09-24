@@ -1,6 +1,6 @@
 package band.kessokuteatime.lightemittingtriode.content.block.decorational;
 
-import band.kessokuteatime.lightemittingtriode.LET;
+import band.kessokuteatime.lightemittingtriode.LightEmittingTriode;
 import band.kessokuteatime.lightemittingtriode.content.ModRegistries;
 import band.kessokuteatime.lightemittingtriode.content.Variant;
 import net.minecraft.block.Block;
@@ -13,9 +13,9 @@ import net.minecraft.item.ItemPlacementContext;
 import net.minecraft.item.ItemStack;
 import net.minecraft.state.StateManager;
 import net.minecraft.state.property.Properties;
+import net.minecraft.util.DyeColor;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.Direction;
-import net.minecraft.util.math.Vec3d;
 import net.minecraft.util.shape.VoxelShape;
 import net.minecraft.util.shape.VoxelShapes;
 import net.minecraft.world.BlockView;
@@ -24,8 +24,6 @@ import net.minecraft.world.WorldView;
 import org.jetbrains.annotations.Nullable;
 
 import java.util.Objects;
-import java.util.Set;
-import java.util.WeakHashMap;
 import java.util.function.BiFunction;
 
 public class SlabFacingLampBlock extends FacingLampBlock {
@@ -33,7 +31,7 @@ public class SlabFacingLampBlock extends FacingLampBlock {
         super(wrapper);
         setDefaultState(
                 getDefaultState()
-                        .with(LET.Properties.FULL, false)
+                        .with(LightEmittingTriode.Properties.FULL, false)
         );
     }
 
@@ -41,25 +39,31 @@ public class SlabFacingLampBlock extends FacingLampBlock {
     public BiFunction<BlockStateModelGenerator, Block, BlockStateSupplier> generateBlockModel(ModRegistries.Blocks.Type type) {
         return (blockStateModelGenerator, block) -> VariantsBlockStateSupplier
                 .create(block, BlockStateVariant.create().put(VariantSettings.MODEL, type.basis().genericId()))
-                .coordinate(BlockStateModelGenerator.createBooleanModelMap(LET.Properties.FULL,
+                .coordinate(BlockStateModelGenerator.createBooleanModelMap(LightEmittingTriode.Properties.FULL,
                         ModRegistries.Blocks.Type.CLEAR.basis().genericId(),
                         type.basis().genericId()))
                 .coordinate(blockStateModelGenerator.createUpDefaultFacingVariantMap());
     }
 
     @Override
+    public BlockState ofAnotherColor(BlockState state, DyeColor dyeColor) {
+        return super.ofAnotherColor(state, dyeColor)
+                .with(LightEmittingTriode.Properties.FULL, state.get(LightEmittingTriode.Properties.FULL));
+    }
+
+    @Override
     protected void appendProperties(StateManager.Builder<Block, BlockState> builder) {
-        super.appendProperties(builder.add(LET.Properties.FULL));
+        super.appendProperties(builder.add(LightEmittingTriode.Properties.FULL));
     }
 
     @Override
     public boolean hasSidedTransparency(BlockState state) {
-        return !state.get(LET.Properties.FULL);
+        return !state.get(LightEmittingTriode.Properties.FULL);
     }
 
     @Override
     public VoxelShape getOutlineShape(BlockState state, BlockView world, BlockPos pos, ShapeContext context) {
-        return state.get(LET.Properties.FULL)
+        return state.get(LightEmittingTriode.Properties.FULL)
                 ? VoxelShapes.fullCube()
                 : super.getOutlineShape(state, world, pos, context);
     }
@@ -70,13 +74,13 @@ public class SlabFacingLampBlock extends FacingLampBlock {
         BlockState dryState = context.getWorld().getBlockState(pos);
         if (dryState.isOf(this))
             return dryState
-                    .with(LET.Properties.FULL, true)
+                    .with(LightEmittingTriode.Properties.FULL, true)
                     .with(Properties.WATERLOGGED, false);
 
         FluidState fluidState = context.getWorld().getFluidState(pos);
 
         return Objects.requireNonNull(super.getPlacementState(context))
-                .with(LET.Properties.FULL, false)
+                .with(LightEmittingTriode.Properties.FULL, false)
                 .with(Properties.WATERLOGGED, fluidState.getFluid() == Fluids.WATER);
     }
 
@@ -84,7 +88,7 @@ public class SlabFacingLampBlock extends FacingLampBlock {
     public boolean canReplace(BlockState state, ItemPlacementContext context) {
         ItemStack stack = context.getStack();
 
-        if (state.get(LET.Properties.FULL) ||!stack.isOf(asItem())) return false;
+        if (state.get(LightEmittingTriode.Properties.FULL) ||!stack.isOf(asItem())) return false;
 
         if (context.canReplaceExisting()) {
             boolean

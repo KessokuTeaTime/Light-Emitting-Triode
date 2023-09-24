@@ -1,6 +1,6 @@
 {
 	"credit": "Made with Blockbench by KrLite",
-	"parent": "minecraft:block/block",
+	"parent": "minecraft:block/thin_block",
 	"textures": {
 		"particle": "let:block/clear",
 		"all": "let:block/clear"

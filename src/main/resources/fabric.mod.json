@@ -19,7 +19,7 @@
   "environment": "*",
   "entrypoints": {
     "main": [
-      "band.kessokuteatime.lightemittingtriode.LET"
+      "band.kessokuteatime.lightemittingtriode.LightEmittingTriode"
     ],
     "fabric-datagen": [
       "band.kessokuteatime.lightemittingtriode.datagen.ModDataGenerator"

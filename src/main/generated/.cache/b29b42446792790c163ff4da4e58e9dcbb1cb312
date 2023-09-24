@@ -1,4 +1,4 @@
-// 1.20	2023-09-24T09:26:03.374798	Light Emitting Triode/Tags for minecraft:block
-83095bdf81098880ae8835d1220d5d944d75b28e data/let/tags/blocks/triodes.json
-854105e3737b01012b6cea5d84acdf338ce08b1c data/let/tags/blocks/dimmables.json
-922a42457e9d7e0af2b0aefa1c2e238ac34f1eab data/let/tags/blocks/diodes.json
+// 1.20	2023-09-24T09:43:35.008195	Light Emitting Triode/Tags for minecraft:block
+5b449b62fb8cea4f8b9fcc8f40ecfd8320656594 data/let/tags/blocks/triodes.json
+a2c8e30dcff31b029223576357ad61469f3fcf84 data/let/tags/blocks/dimmables.json
+038e7e2f87f30e9dc1a5573358fa814e8d64e16c data/let/tags/blocks/diodes.json

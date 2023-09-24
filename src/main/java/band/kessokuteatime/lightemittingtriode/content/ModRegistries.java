@@ -1,6 +1,6 @@
 package band.kessokuteatime.lightemittingtriode.content;
 
-import band.kessokuteatime.lightemittingtriode.LET;
+import band.kessokuteatime.lightemittingtriode.LightEmittingTriode;
 import band.kessokuteatime.lightemittingtriode.content.block.base.AbstractLampBlock;
 import band.kessokuteatime.lightemittingtriode.content.item.ShadeItem;
 import net.fabricmc.fabric.api.blockrenderlayer.v1.BlockRenderLayerMap;
@@ -18,6 +18,8 @@ import net.minecraft.util.Identifier;
 
 import java.util.Arrays;
 import java.util.HashMap;
+import java.util.LinkedHashMap;
+import java.util.Map;
 
 public class ModRegistries {
     private static <B extends Block> B registerBlock(Identifier id, B block) {
@@ -31,10 +33,10 @@ public class ModRegistries {
     public static class ItemGroups {
         public static final ItemGroup GENERAL = Registry.register(
                 net.minecraft.registry.Registries.ITEM_GROUP,
-                LET.id("general"),
+                LightEmittingTriode.id("general"),
                 FabricItemGroup.builder()
                         .icon(Items.LET::getDefaultStack)
-                        .displayName(LET.translatable("itemGroup", "general"))
+                        .displayName(LightEmittingTriode.translatable("itemGroup", "general"))
                         .build()
         );
 
@@ -43,10 +45,10 @@ public class ModRegistries {
                     ItemGroupEvents.modifyEntriesEvent(key).register(entries -> {
                         fill(entries, Items.SHADE, Items.BULB, Items.LED, Items.LET, Items.TUBE);
 
+                        // Guard the items' order
                         Arrays.stream(Blocks.Type.values())
                                 .map(Blocks.Type::blockItemMap)
-                                .flatMap(map -> map.values().stream())
-                                .forEach(entries::add);
+                                .forEach(map -> map.forEach((block, blockItem) -> entries.add(blockItem)));
                     })
             );
         }
@@ -80,20 +82,28 @@ public class ModRegistries {
 
             DETECTOR(Variant.DETECTOR.with(Variant.Size.NORMAL));
 
-            final HashMap<Block, BlockItem> blockItemMap;
+            final LinkedHashMap<Block, BlockItem> blockItemMap;
             final Variant.Basis basis;
 
             Type(Variant.Basis basis) {
-                this.blockItemMap = new HashMap<>();
+                this.blockItemMap = new LinkedHashMap<>();
                 this.basis = basis;
             }
 
-            public HashMap<Block, BlockItem> blockItemMap() {
+            public LinkedHashMap<Block, BlockItem> blockItemMap() {
                 return blockItemMap;
             }
 
             public Variant.Basis basis() {
                 return basis;
+            }
+
+            public Map.Entry<Block, BlockItem> findEntryWithDyeColor(DyeColor dyeColor) {
+                return blockItemMap().entrySet().stream()
+                        .filter(entry -> AbstractLampBlock.class.isAssignableFrom(entry.getKey().getClass()))
+                        .filter(entry -> ((AbstractLampBlock) entry.getKey()).dyeColor() == dyeColor)
+                        .findFirst()
+                        .orElseThrow();
             }
         }
 
@@ -150,27 +160,27 @@ public class ModRegistries {
 
     public static class Items {
         public static final Item BULB = registerItem(
-                band.kessokuteatime.lightemittingtriode.LET.id("bulb"),
+                LightEmittingTriode.id("bulb"),
                 new Item(new Item.Settings())
         );
 
         public static final Item LED = registerItem(
-                band.kessokuteatime.lightemittingtriode.LET.id("led"),
+                LightEmittingTriode.id("led"),
                 new Item(new Item.Settings())
         );
 
         public static final Item LET = registerItem(
-                band.kessokuteatime.lightemittingtriode.LET.id("let"),
+                LightEmittingTriode.id("let"),
                 new Item(new Item.Settings())
         );
 
         public static final Item SHADE = registerItem(
-                band.kessokuteatime.lightemittingtriode.LET.id("shade"),
+                LightEmittingTriode.id("shade"),
                 new ShadeItem(new Item.Settings())
         );
 
         public static final Item TUBE = registerItem(
-                band.kessokuteatime.lightemittingtriode.LET.id("tube"),
+                LightEmittingTriode.id("tube"),
                 new Item(new Item.Settings())
         );
 
@@ -180,9 +190,9 @@ public class ModRegistries {
     }
 
     public static class BlockTags {
-        public static final TagKey<Block> DIODES = TagKey.of(RegistryKeys.BLOCK, LET.id("diodes"));
-        public static final TagKey<Block> TRIODES = TagKey.of(RegistryKeys.BLOCK, LET.id("triodes"));
-        public static final TagKey<Block> DIMMABLES = TagKey.of(RegistryKeys.BLOCK, LET.id("dimmables"));
+        public static final TagKey<Block> DIODES = TagKey.of(RegistryKeys.BLOCK, LightEmittingTriode.id("diodes"));
+        public static final TagKey<Block> TRIODES = TagKey.of(RegistryKeys.BLOCK, LightEmittingTriode.id("triodes"));
+        public static final TagKey<Block> DIMMABLES = TagKey.of(RegistryKeys.BLOCK, LightEmittingTriode.id("dimmables"));
     }
 
     public static void register() {

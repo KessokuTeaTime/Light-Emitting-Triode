@@ -1,6 +1,6 @@
 package band.kessokuteatime.lightemittingtriode.content.item;
 
-import band.kessokuteatime.lightemittingtriode.LET;
+import band.kessokuteatime.lightemittingtriode.LightEmittingTriode;
 import band.kessokuteatime.lightemittingtriode.content.ModRegistries;
 import net.minecraft.block.BlockState;
 import net.minecraft.entity.player.PlayerEntity;
@@ -26,8 +26,8 @@ public class ShadeItem extends Item {
         BlockState state = world.getBlockState(pos);
         ItemStack stack = context.getStack();
 
-        if (!state.get(LET.Properties.DIM) && state.isIn(ModRegistries.BlockTags.DIMMABLES)) {
-            world.setBlockState(pos, state.with(LET.Properties.DIM, true));
+        if (!state.get(LightEmittingTriode.Properties.DIM) && state.isIn(ModRegistries.BlockTags.DIMMABLES)) {
+            world.setBlockState(pos, state.with(LightEmittingTriode.Properties.DIM, true));
             world.playSound(player, pos, SoundEvents.BLOCK_FIRE_EXTINGUISH, SoundCategory.BLOCKS, 1.0F, 1.0F);
 
             if (player != null && !player.isCreative()) {

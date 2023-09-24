@@ -1,6 +1,6 @@
 package band.kessokuteatime.lightemittingtriode.content.item;
 
-import band.kessokuteatime.lightemittingtriode.LET;
+import band.kessokuteatime.lightemittingtriode.LightEmittingTriode;
 import band.kessokuteatime.lightemittingtriode.content.item.base.Colorable;
 import net.minecraft.block.Block;
 import net.minecraft.client.item.TooltipContext;
@@ -47,7 +47,7 @@ public class ColoredBlockItem extends BlockItem implements Colorable {
         super.appendTooltip(stack, world, tooltip, context);
 
         tooltip.add(
-                Text.literal("#" + Integer.toHexString(LET.getColorFromDye(dyeColor)).toUpperCase())
+                Text.literal("#" + Integer.toHexString(LightEmittingTriode.getColorFromDyeColor(dyeColor)).toUpperCase())
                         .formatted(Formatting.DARK_GRAY)
         );
     }

@@ -9,6 +9,7 @@ import net.minecraft.fluid.Fluids;
 import net.minecraft.item.ItemPlacementContext;
 import net.minecraft.state.StateManager;
 import net.minecraft.state.property.Properties;
+import net.minecraft.util.DyeColor;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.Direction;
 import net.minecraft.world.WorldAccess;
@@ -23,6 +24,12 @@ public abstract class AbstractWaterLoggableLampBlock extends AbstractLampBlock i
                 getDefaultState()
                         .with(Properties.WATERLOGGED, false)
         );
+    }
+
+    @Override
+    public BlockState ofAnotherColor(BlockState state, DyeColor dyeColor) {
+        return super.ofAnotherColor(state, dyeColor)
+                .with(Properties.WATERLOGGED, state.get(Properties.WATERLOGGED));
     }
 
     @Override

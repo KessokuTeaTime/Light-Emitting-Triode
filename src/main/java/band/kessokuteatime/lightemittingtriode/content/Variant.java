@@ -1,6 +1,6 @@
 package band.kessokuteatime.lightemittingtriode.content;
 
-import band.kessokuteatime.lightemittingtriode.LET;
+import band.kessokuteatime.lightemittingtriode.LightEmittingTriode;
 import band.kessokuteatime.lightemittingtriode.VoxelShaper;
 import band.kessokuteatime.lightemittingtriode.content.block.decorational.FacingLampBlock;
 import band.kessokuteatime.lightemittingtriode.content.block.decorational.LampBlock;
@@ -12,6 +12,8 @@ import band.kessokuteatime.lightemittingtriode.content.item.ColoredBlockItem;
 import band.kessokuteatime.lightemittingtriode.content.item.InventoryColoredBlockItem;
 import net.fabricmc.fabric.api.datagen.v1.provider.FabricRecipeProvider;
 import net.minecraft.block.Block;
+import net.minecraft.block.BlockState;
+import net.minecraft.block.ShapeContext;
 import net.minecraft.data.server.recipe.*;
 import net.minecraft.item.BlockItem;
 import net.minecraft.item.Item;
@@ -22,12 +24,12 @@ import net.minecraft.registry.Registries;
 import net.minecraft.util.DyeColor;
 import net.minecraft.util.Identifier;
 import net.minecraft.util.math.BlockPos;
-import net.minecraft.util.math.Direction;
 import net.minecraft.util.math.MathHelper;
 import net.minecraft.util.math.Vec3d;
 import net.minecraft.util.math.random.Random;
 import net.minecraft.util.shape.VoxelShape;
 import net.minecraft.util.shape.VoxelShapes;
+import net.minecraft.world.BlockView;
 import org.jetbrains.annotations.Nullable;
 
 import java.util.*;
@@ -219,34 +221,6 @@ public enum Variant {
             null
     );
 
-    public static Vec3d placeParticle(BlockPos blockPos, VoxelShape voxelShape, Random random, double factor) {
-        Vec3d offset = new Vec3d(
-                (random.nextDouble() * 2 - 1) * factor,
-                (random.nextDouble() * 2 - 1) * factor,
-                (random.nextDouble() * 2 - 1) * factor
-        );
-
-        Vec3d localSize = new Vec3d(
-                voxelShape.getMax(Direction.Axis.X) - voxelShape.getMin(Direction.Axis.X),
-                voxelShape.getMax(Direction.Axis.Y) - voxelShape.getMin(Direction.Axis.Y),
-                voxelShape.getMax(Direction.Axis.Z) - voxelShape.getMin(Direction.Axis.Z)
-        );
-
-        Vec3d localCenter = new Vec3d(
-                (voxelShape.getMin(Direction.Axis.X) + voxelShape.getMax(Direction.Axis.X)) / 2,
-                (voxelShape.getMin(Direction.Axis.Y) + voxelShape.getMax(Direction.Axis.Y)) / 2,
-                (voxelShape.getMin(Direction.Axis.Z) + voxelShape.getMax(Direction.Axis.Z)) / 2
-        );
-
-        Vec3d pos = new Vec3d(blockPos.getX(), blockPos.getY(), blockPos.getZ());
-
-        return pos.add(localCenter.add(
-                localSize.getX() * offset.getX(),
-                localSize.getY() * offset.getY(),
-                localSize.getZ() * offset.getZ()
-        ));
-    }
-
     public record Basis(Variant variant, Size size) {
         private String genericIdString(String... postfixes) {
             return variant().getId()
@@ -259,7 +233,7 @@ public enum Variant {
         }
 
         public Identifier genericId(String... postfixes) {
-            return LET.id("block", genericIdString(postfixes));
+            return LightEmittingTriode.id("block", genericIdString(postfixes));
         }
 
         public Wrapper with(DyeColor dyeColor) {
@@ -286,30 +260,32 @@ public enum Variant {
         }
 
         public Identifier id() {
-            return LET.id(idString());
+            return LightEmittingTriode.id(idString());
         }
 
         public Identifier categorizedId(String... categories) {
             ArrayList<String> paths = new ArrayList<>(List.of(categories));
             paths.add(idString());
 
-            return LET.id(paths.toArray(new String[]{}));
+            return LightEmittingTriode.id(paths.toArray(new String[]{}));
         }
 
         public int color() {
-            return LET.getColorFromDye(dyeColor());
+            return LightEmittingTriode.getColorFromDyeColor(dyeColor());
         }
 
         public int colorOverlay(boolean lit, int tintIndex) {
             return switch (tintIndex) {
-                case 0 -> LET.mapColorRange(color(), lit ? 0xE4 : 0, lit ? 0 : 0xD2);
-                case 1 -> LET.mapColorRange(color(), lit ? 0x80 : 0x10, lit ? 0x10 : 0x80);
                 default -> color();
+                // Outer
+                case 0 -> LightEmittingTriode.mapColorRange(color(), lit ? 0xAF : 0, lit ? 0 : 0xAB);
+                // Inner
+                case 1 -> LightEmittingTriode.mapColorRange(color(), lit ? 0x7A : 0x10, lit ? 0x10 : 0x6D);
             };
         }
 
-        public Vec3d placeParticle(BlockPos blockPos, Random random, double factor) {
-            return Variant.placeParticle(blockPos, voxelShape(), random, factor);
+        public Vec3d generateSurfaceParticlePos(BlockState state, BlockView world, BlockPos pos, ShapeContext context, Random random, double factor) {
+            return LightEmittingTriode.generateSurfaceParticlePos(pos, block().getOutlineShape(state, world, pos, context), random, factor);
         }
 
         public int luminance() {
@@ -329,7 +305,7 @@ public enum Variant {
         }
 
         public Block block(Basis basis, DyeColor dyeColor) {
-            return Registries.BLOCK.get(LET.id(idString(basis, dyeColor)));
+            return Registries.BLOCK.get(LightEmittingTriode.id(idString(basis, dyeColor)));
         }
 
         public Block block() {
@@ -337,7 +313,7 @@ public enum Variant {
         }
 
         public BlockItem blockItem(Basis basis, DyeColor dyeColor) {
-            return (BlockItem) Registries.ITEM.get(LET.id(idString(basis, dyeColor)));
+            return (BlockItem) Registries.ITEM.get(LightEmittingTriode.id(idString(basis, dyeColor)));
         }
 
         public BlockItem blockItem() {

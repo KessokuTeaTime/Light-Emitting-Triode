@@ -12,6 +12,7 @@ import net.minecraft.state.StateManager;
 import net.minecraft.state.property.Properties;
 import net.minecraft.util.BlockMirror;
 import net.minecraft.util.BlockRotation;
+import net.minecraft.util.DyeColor;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.Direction;
 import net.minecraft.util.shape.VoxelShape;
@@ -23,7 +24,7 @@ import org.jetbrains.annotations.Nullable;
 
 import java.util.function.BiFunction;
 
-public class SpecialFacingPowerableLampBlock extends AbstractPowerableLampBlock implements WithCustomBlockModel {
+public class SpecialFacingPowerableLampBlock extends AbstractPowerableLampBlock implements WithCustomBlockModel, PoweredBlockModelModifiers {
     public SpecialFacingPowerableLampBlock(Variant.Wrapper wrapper) {
         super(wrapper);
         setDefaultState(
@@ -37,24 +38,23 @@ public class SpecialFacingPowerableLampBlock extends AbstractPowerableLampBlock 
         return switch (state.get(Properties.WALL_MOUNT_LOCATION)) {
             case CEILING -> Direction.DOWN;
             case FLOOR -> Direction.UP;
-            default -> state.get(Properties.HORIZONTAL_FACING);
+            case WALL -> state.get(Properties.HORIZONTAL_FACING);
         };
     }
 
-    protected String[] poweredBlockStatePrefixes() {
-        return new String[]{};
-    };
-
-    protected String[] poweredBlockStatePostfixes() {
+    @Override
+    public String[] poweredBlockStateSuffixes() {
         return new String[]{ "pressed" };
-    };
+    }
 
     @Override
     public BiFunction<BlockStateModelGenerator, Block, BlockStateSupplier> generateBlockModel(ModRegistries.Blocks.Type type) {
         return (blockStateModelGenerator, block) -> VariantsBlockStateSupplier.create(block)
                 .coordinate(BlockStateVariantMap.create(Properties.POWERED)
-                        .register(false, BlockStateVariant.create().put(VariantSettings.MODEL, wrapper().basis().genericId(poweredBlockStatePrefixes())))
-                        .register(true, BlockStateVariant.create().put(VariantSettings.MODEL, wrapper().basis().genericId(poweredBlockStatePostfixes()))))
+                        .register(false, BlockStateVariant.create()
+                                .put(VariantSettings.MODEL, wrapper().basis().genericId(poweredBlockStatePrefixes())))
+                        .register(true, BlockStateVariant.create()
+                                .put(VariantSettings.MODEL, wrapper().basis().genericId(poweredBlockStateSuffixes()))))
                 .coordinate(BlockStateVariantMap.create(Properties.WALL_MOUNT_LOCATION, Properties.HORIZONTAL_FACING)
                         .register(WallMountLocation.FLOOR, Direction.EAST, BlockStateVariant.create()
                                 .put(VariantSettings.Y, VariantSettings.Rotation.R90))
@@ -88,6 +88,13 @@ public class SpecialFacingPowerableLampBlock extends AbstractPowerableLampBlock 
     }
 
     @Override
+    public BlockState ofAnotherColor(BlockState state, DyeColor dyeColor) {
+        return super.ofAnotherColor(state, dyeColor)
+                .with(Properties.WALL_MOUNT_LOCATION, state.get(Properties.WALL_MOUNT_LOCATION))
+                .with(Properties.HORIZONTAL_FACING, state.get(Properties.HORIZONTAL_FACING));
+    }
+
+    @Override
     protected void appendProperties(StateManager.Builder<Block, BlockState> builder) {
         super.appendProperties(builder.add(Properties.WALL_MOUNT_LOCATION, Properties.HORIZONTAL_FACING));
     }
@@ -97,14 +104,26 @@ public class SpecialFacingPowerableLampBlock extends AbstractPowerableLampBlock 
         Direction direction = state.get(Properties.HORIZONTAL_FACING);
 
         return switch (state.get(Properties.WALL_MOUNT_LOCATION)) {
-            case WALL -> VoxelShaper.rotate(wrapper().voxelShape(), Direction.UP, direction);
+            case WALL -> {
+                VoxelShape rotated = VoxelShaper.rotate(
+                        wrapper().voxelShape(),
+                        Direction.UP, direction
+                );
+
+                yield direction.getAxis() == Direction.Axis.X
+                        ? rotated
+                        : VoxelShaper.swapAroundAxis(rotated, Direction.Axis.Z);
+            }
             case FLOOR -> direction.getAxis() == Direction.Axis.X
                     ? wrapper().voxelShape()
                     : VoxelShaper.swapAroundAxis(wrapper().voxelShape(), Direction.Axis.Y);
-            case CEILING -> direction.getAxis() == Direction.Axis.X
-                    ? VoxelShaper.rotate(wrapper().voxelShape(), Direction.UP, Direction.DOWN)
-                    : VoxelShaper.swapAroundAxis(
-                    VoxelShaper.rotate(wrapper().voxelShape(), Direction.UP, Direction.DOWN), Direction.Axis.Y);
+            case CEILING -> {
+                VoxelShape rotated = VoxelShaper.rotate(wrapper().voxelShape(), Direction.UP, Direction.DOWN);
+
+                yield direction.getAxis() == Direction.Axis.X
+                        ? rotated
+                        : VoxelShaper.swapAroundAxis(rotated, Direction.Axis.Y);
+            }
         };
     }
 

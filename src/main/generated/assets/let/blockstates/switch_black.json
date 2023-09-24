@@ -1,28 +1,54 @@
 {
   "variants": {
-    "facing=down": {
+    "facing=down,powered=false": {
       "model": "let:block/switch",
       "x": 180
     },
-    "facing=east": {
+    "facing=down,powered=true": {
+      "model": "let:block/switch_powered",
+      "x": 180
+    },
+    "facing=east,powered=false": {
       "model": "let:block/switch",
       "x": 90,
       "y": 90
     },
-    "facing=north": {
+    "facing=east,powered=true": {
+      "model": "let:block/switch_powered",
+      "x": 90,
+      "y": 90
+    },
+    "facing=north,powered=false": {
       "model": "let:block/switch",
       "x": 90
     },
-    "facing=south": {
+    "facing=north,powered=true": {
+      "model": "let:block/switch_powered",
+      "x": 90
+    },
+    "facing=south,powered=false": {
       "model": "let:block/switch",
       "x": 90,
       "y": 180
     },
-    "facing=up": {
+    "facing=south,powered=true": {
+      "model": "let:block/switch_powered",
+      "x": 90,
+      "y": 180
+    },
+    "facing=up,powered=false": {
       "model": "let:block/switch"
     },
-    "facing=west": {
+    "facing=up,powered=true": {
+      "model": "let:block/switch_powered"
+    },
+    "facing=west,powered=false": {
       "model": "let:block/switch",
+      "x": 90,
+      "y": 270
+    },
+    "facing=west,powered=true": {
+      "model": "let:block/switch_powered",
       "x": 90,
       "y": 270
     }

@@ -11,12 +11,14 @@ import net.minecraft.block.Block;
 import net.minecraft.block.BlockState;
 import net.minecraft.block.Blocks;
 import net.minecraft.block.ShapeContext;
+import net.minecraft.block.enums.WallMountLocation;
 import net.minecraft.data.client.*;
 import net.minecraft.item.ItemPlacementContext;
 import net.minecraft.state.StateManager;
 import net.minecraft.state.property.Properties;
 import net.minecraft.util.BlockMirror;
 import net.minecraft.util.BlockRotation;
+import net.minecraft.util.DyeColor;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.Direction;
 import net.minecraft.util.shape.VoxelShape;
@@ -29,7 +31,7 @@ import org.jetbrains.annotations.Nullable;
 import java.util.Objects;
 import java.util.function.BiFunction;
 
-public class FacingPowerableLampBlock extends AbstractPowerableLampBlock implements Facing, WithCustomBlockModel {
+public class FacingPowerableLampBlock extends AbstractPowerableLampBlock implements Facing, WithCustomBlockModel, PoweredBlockModelModifiers {
     protected FacingPowerableLampBlock(Variant.Wrapper wrapper) {
         super(wrapper);
         setDefaultState(
@@ -40,9 +42,19 @@ public class FacingPowerableLampBlock extends AbstractPowerableLampBlock impleme
 
     @Override
     public BiFunction<BlockStateModelGenerator, Block, BlockStateSupplier> generateBlockModel(ModRegistries.Blocks.Type type) {
-        return (blockStateModelGenerator, block) -> VariantsBlockStateSupplier
-                .create(block, BlockStateVariant.create().put(VariantSettings.MODEL, type.basis().genericId()))
+        return (blockStateModelGenerator, block) -> VariantsBlockStateSupplier.create(block)
+                .coordinate(BlockStateVariantMap.create(Properties.POWERED)
+                        .register(false, BlockStateVariant.create()
+                                .put(VariantSettings.MODEL, wrapper().basis().genericId(poweredBlockStatePrefixes())))
+                        .register(true, BlockStateVariant.create()
+                                .put(VariantSettings.MODEL, wrapper().basis().genericId(poweredBlockStateSuffixes()))))
                 .coordinate(blockStateModelGenerator.createUpDefaultFacingVariantMap());
+    }
+
+    @Override
+    public BlockState ofAnotherColor(BlockState state, DyeColor dyeColor) {
+        return super.ofAnotherColor(state, dyeColor)
+                .with(Properties.FACING, state.get(Properties.FACING));
     }
 
     protected VoxelShape getVoxelShape(Direction direction) {

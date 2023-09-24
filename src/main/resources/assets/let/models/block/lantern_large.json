@@ -1,6 +1,6 @@
 {
 	"credit": "Made with Blockbench by KrLite",
-	"parent": "minecraft:block/block",
+	"parent": "minecraft:block/thin_block",
 	"textures": {
 		"0": "let:block/lantern",
 		"1": "let:block/gradient_map",

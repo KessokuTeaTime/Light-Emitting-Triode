@@ -34,8 +34,9 @@ public class ButtonLampBlock extends SpecialFacingPowerableLampBlock {
 
     @Override
     public VoxelShape getOutlineShape(BlockState state, BlockView world, BlockPos pos, ShapeContext context) {
-        return VoxelShaper.scaleHeight(
+        return VoxelShaper.scaleOnDirection(
                 super.getOutlineShape(state, world, pos, context),
+                getDirection(state),
                 state.get(Properties.POWERED) ? 0.5 : 1
         );
     }

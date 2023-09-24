@@ -5,7 +5,6 @@ import band.kessokuteatime.lightemittingtriode.content.Variant;
 import band.kessokuteatime.lightemittingtriode.content.block.functional.base.FacingPowerableLampBlock;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockState;
-import net.minecraft.block.LeverBlock;
 import net.minecraft.block.ShapeContext;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.particle.DustParticleEffect;
@@ -31,8 +30,9 @@ public class SwitchLampBlock extends FacingPowerableLampBlock {
 
     @Override
     public VoxelShape getOutlineShape(BlockState state, BlockView world, BlockPos pos, ShapeContext context) {
-        return VoxelShaper.scaleHeight(
+        return VoxelShaper.scaleOnDirection(
                 super.getOutlineShape(state, world, pos, context),
+                state.get(Properties.FACING),
                 state.get(Properties.POWERED) ? 0.5 : 1
         );
     }
@@ -42,7 +42,7 @@ public class SwitchLampBlock extends FacingPowerableLampBlock {
         if (world.isClient()) {
             state = state.cycle(Properties.POWERED);
             if (state.get(Properties.POWERED))
-                spawnParticles(state, world, pos, 1);
+                spawnParticles(state, world, pos, 1.0F);
 
             return ActionResult.SUCCESS;
         }

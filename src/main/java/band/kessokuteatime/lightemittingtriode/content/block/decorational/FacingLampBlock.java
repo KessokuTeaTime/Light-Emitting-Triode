@@ -15,6 +15,7 @@ import net.minecraft.state.StateManager;
 import net.minecraft.state.property.Properties;
 import net.minecraft.util.BlockMirror;
 import net.minecraft.util.BlockRotation;
+import net.minecraft.util.DyeColor;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.Direction;
 import net.minecraft.util.shape.VoxelShape;
@@ -41,6 +42,12 @@ public class FacingLampBlock extends LampBlock implements Facing, WithCustomBloc
         return (blockStateModelGenerator, block) -> VariantsBlockStateSupplier
                 .create(block, BlockStateVariant.create().put(VariantSettings.MODEL, type.basis().genericId()))
                 .coordinate(blockStateModelGenerator.createUpDefaultFacingVariantMap());
+    }
+
+    @Override
+    public BlockState ofAnotherColor(BlockState state, DyeColor dyeColor) {
+        return super.ofAnotherColor(state, dyeColor)
+                .with(Properties.FACING, state.get(Properties.FACING));
     }
 
     protected VoxelShape getVoxelShape(Direction direction) {

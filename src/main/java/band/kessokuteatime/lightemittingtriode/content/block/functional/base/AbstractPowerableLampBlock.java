@@ -9,6 +9,7 @@ import net.minecraft.block.Blocks;
 import net.minecraft.sound.BlockSoundGroup;
 import net.minecraft.state.StateManager;
 import net.minecraft.state.property.Properties;
+import net.minecraft.util.DyeColor;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.Direction;
 import net.minecraft.world.BlockView;
@@ -27,6 +28,12 @@ public abstract class AbstractPowerableLampBlock extends AbstractWaterLoggableLa
                 getDefaultState()
                         .with(Properties.POWERED, false)
         );
+    }
+
+    @Override
+    public BlockState ofAnotherColor(BlockState state, DyeColor dyeColor) {
+        return super.ofAnotherColor(state, dyeColor)
+                .with(Properties.POWERED, state.get(Properties.POWERED));
     }
 
     @Override
