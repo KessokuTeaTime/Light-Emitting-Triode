@@ -12,6 +12,7 @@ import net.minecraft.state.property.Properties;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.Direction;
 import net.minecraft.world.BlockView;
+import net.minecraft.world.World;
 
 public abstract class AbstractPowerableLampBlock extends AbstractWaterLoggableLampBlock {
     protected AbstractPowerableLampBlock(Variant.Wrapper wrapper) {
@@ -39,12 +40,28 @@ public abstract class AbstractPowerableLampBlock extends AbstractWaterLoggableLa
     }
 
     @Override
+    public boolean emitsRedstonePower(BlockState state) {
+        return true;
+    }
+
+    @Override
     public int getWeakRedstonePower(BlockState state, BlockView world, BlockPos pos, Direction direction) {
-        return getWeakRedstonePower(state, world, pos, direction);
+        return getStrongRedstonePower(state, world, pos, direction);
     }
 
     @Override
     public int getStrongRedstonePower(BlockState state, BlockView world, BlockPos pos, Direction direction) {
         return state.get(Properties.POWERED) ? 15 : 0;
+    }
+
+    protected abstract void updateNeighbors(BlockState state, World world, BlockPos pos);
+
+    @Override
+    public void onStateReplaced(BlockState state, World world, BlockPos pos, BlockState newState, boolean moved) {
+        if (moved || state.isOf(newState.getBlock())) return;
+        if (state.get(Properties.POWERED))
+            updateNeighbors(state, world, pos);
+
+        super.onStateReplaced(state, world, pos, newState, moved);
     }
 }

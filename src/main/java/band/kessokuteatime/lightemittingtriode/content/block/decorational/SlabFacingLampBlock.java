@@ -38,7 +38,7 @@ public class SlabFacingLampBlock extends FacingLampBlock {
     }
 
     @Override
-    public BiFunction<BlockStateModelGenerator, Block, BlockStateSupplier> generateBlockStates(ModRegistries.Blocks.Type type) {
+    public BiFunction<BlockStateModelGenerator, Block, BlockStateSupplier> generateBlockModel(ModRegistries.Blocks.Type type) {
         return (blockStateModelGenerator, block) -> VariantsBlockStateSupplier
                 .create(block, BlockStateVariant.create().put(VariantSettings.MODEL, type.basis().genericId()))
                 .coordinate(BlockStateModelGenerator.createBooleanModelMap(LET.Properties.FULL,

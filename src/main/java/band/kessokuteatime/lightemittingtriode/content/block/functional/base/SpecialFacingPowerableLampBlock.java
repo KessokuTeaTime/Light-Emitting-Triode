@@ -1,9 +1,12 @@
 package band.kessokuteatime.lightemittingtriode.content.block.functional.base;
 
 import band.kessokuteatime.lightemittingtriode.VoxelShaper;
+import band.kessokuteatime.lightemittingtriode.content.ModRegistries;
 import band.kessokuteatime.lightemittingtriode.content.Variant;
+import band.kessokuteatime.lightemittingtriode.content.block.base.WithCustomBlockModel;
 import net.minecraft.block.*;
 import net.minecraft.block.enums.WallMountLocation;
+import net.minecraft.data.client.*;
 import net.minecraft.item.ItemPlacementContext;
 import net.minecraft.state.StateManager;
 import net.minecraft.state.property.Properties;
@@ -13,12 +16,15 @@ import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.Direction;
 import net.minecraft.util.shape.VoxelShape;
 import net.minecraft.world.BlockView;
+import net.minecraft.world.World;
 import net.minecraft.world.WorldAccess;
 import net.minecraft.world.WorldView;
 import org.jetbrains.annotations.Nullable;
 
-public abstract class AbstractSpecialFacingPowerableLampBlock extends AbstractPowerableLampBlock {
-    public AbstractSpecialFacingPowerableLampBlock(Variant.Wrapper wrapper) {
+import java.util.function.BiFunction;
+
+public class SpecialFacingPowerableLampBlock extends AbstractPowerableLampBlock implements WithCustomBlockModel {
+    public SpecialFacingPowerableLampBlock(Variant.Wrapper wrapper) {
         super(wrapper);
         setDefaultState(
                 getDefaultState()
@@ -35,6 +41,52 @@ public abstract class AbstractSpecialFacingPowerableLampBlock extends AbstractPo
         };
     }
 
+    protected String[] poweredBlockStatePrefixes() {
+        return new String[]{};
+    };
+
+    protected String[] poweredBlockStatePostfixes() {
+        return new String[]{ "pressed" };
+    };
+
+    @Override
+    public BiFunction<BlockStateModelGenerator, Block, BlockStateSupplier> generateBlockModel(ModRegistries.Blocks.Type type) {
+        return (blockStateModelGenerator, block) -> VariantsBlockStateSupplier.create(block)
+                .coordinate(BlockStateVariantMap.create(Properties.POWERED)
+                        .register(false, BlockStateVariant.create().put(VariantSettings.MODEL, wrapper().basis().genericId(poweredBlockStatePrefixes())))
+                        .register(true, BlockStateVariant.create().put(VariantSettings.MODEL, wrapper().basis().genericId(poweredBlockStatePostfixes()))))
+                .coordinate(BlockStateVariantMap.create(Properties.WALL_MOUNT_LOCATION, Properties.HORIZONTAL_FACING)
+                        .register(WallMountLocation.FLOOR, Direction.EAST, BlockStateVariant.create()
+                                .put(VariantSettings.Y, VariantSettings.Rotation.R90))
+                        .register(WallMountLocation.FLOOR, Direction.WEST, BlockStateVariant.create()
+                                .put(VariantSettings.Y, VariantSettings.Rotation.R270))
+                        .register(WallMountLocation.FLOOR, Direction.SOUTH, BlockStateVariant.create()
+                                .put(VariantSettings.Y, VariantSettings.Rotation.R180))
+                        .register(WallMountLocation.FLOOR, Direction.NORTH, BlockStateVariant.create())
+                        .register(WallMountLocation.WALL, Direction.EAST, BlockStateVariant.create()
+                                .put(VariantSettings.Y, VariantSettings.Rotation.R90)
+                                .put(VariantSettings.X, VariantSettings.Rotation.R90))
+                        .register(WallMountLocation.WALL, Direction.WEST, BlockStateVariant.create()
+                                .put(VariantSettings.Y, VariantSettings.Rotation.R270)
+                                .put(VariantSettings.X, VariantSettings.Rotation.R90))
+                        .register(WallMountLocation.WALL, Direction.SOUTH, BlockStateVariant.create()
+                                .put(VariantSettings.Y, VariantSettings.Rotation.R180)
+                                .put(VariantSettings.X, VariantSettings.Rotation.R90))
+                        .register(WallMountLocation.WALL, Direction.NORTH, BlockStateVariant.create()
+                                .put(VariantSettings.X, VariantSettings.Rotation.R90))
+                        .register(WallMountLocation.CEILING, Direction.EAST, BlockStateVariant.create()
+                                .put(VariantSettings.Y, VariantSettings.Rotation.R270)
+                                .put(VariantSettings.X, VariantSettings.Rotation.R180))
+                        .register(WallMountLocation.CEILING, Direction.WEST, BlockStateVariant.create()
+                                .put(VariantSettings.Y, VariantSettings.Rotation.R90)
+                                .put(VariantSettings.X, VariantSettings.Rotation.R180))
+                        .register(WallMountLocation.CEILING, Direction.SOUTH, BlockStateVariant.create()
+                                .put(VariantSettings.X, VariantSettings.Rotation.R180))
+                        .register(WallMountLocation.CEILING, Direction.NORTH, BlockStateVariant.create()
+                                .put(VariantSettings.Y, VariantSettings.Rotation.R180)
+                                .put(VariantSettings.X, VariantSettings.Rotation.R180)));
+    }
+
     @Override
     protected void appendProperties(StateManager.Builder<Block, BlockState> builder) {
         super.appendProperties(builder.add(Properties.WALL_MOUNT_LOCATION, Properties.HORIZONTAL_FACING));
@@ -43,9 +95,8 @@ public abstract class AbstractSpecialFacingPowerableLampBlock extends AbstractPo
     @Override
     public VoxelShape getOutlineShape(BlockState state, BlockView world, BlockPos pos, ShapeContext context) {
         Direction direction = state.get(Properties.HORIZONTAL_FACING);
-        boolean powered = state.get(Properties.POWERED);
 
-        return VoxelShaper.scaleHeight(switch (state.get(Properties.WALL_MOUNT_LOCATION)) {
+        return switch (state.get(Properties.WALL_MOUNT_LOCATION)) {
             case WALL -> VoxelShaper.rotate(wrapper().voxelShape(), Direction.UP, direction);
             case FLOOR -> direction.getAxis() == Direction.Axis.X
                     ? wrapper().voxelShape()
@@ -54,7 +105,7 @@ public abstract class AbstractSpecialFacingPowerableLampBlock extends AbstractPo
                     ? VoxelShaper.rotate(wrapper().voxelShape(), Direction.UP, Direction.DOWN)
                     : VoxelShaper.swapAroundAxis(
                     VoxelShaper.rotate(wrapper().voxelShape(), Direction.UP, Direction.DOWN), Direction.Axis.Y);
-        }, powered ? 0.5 : 1);
+        };
     }
 
     @Override
@@ -93,6 +144,11 @@ public abstract class AbstractSpecialFacingPowerableLampBlock extends AbstractPo
     @Override
     public int getStrongRedstonePower(BlockState state, BlockView world, BlockPos pos, Direction direction) {
         return state.get(Properties.POWERED) && getDirection(state) == direction ? 15 : 0;
+    }
+
+    protected void updateNeighbors(BlockState state, World world, BlockPos pos) {
+        world.updateNeighborsAlways(pos, this);
+        world.updateNeighborsAlways(pos.offset(getDirection(state).getOpposite()), this);
     }
 
     @Override

@@ -4,6 +4,7 @@ import band.kessokuteatime.lightemittingtriode.LET;
 import band.kessokuteatime.lightemittingtriode.content.ModRegistries;
 import band.kessokuteatime.lightemittingtriode.content.Variant;
 import band.kessokuteatime.lightemittingtriode.content.block.base.AbstractWaterLoggableLampBlock;
+import band.kessokuteatime.lightemittingtriode.content.block.base.WithCustomBlockModel;
 import net.minecraft.block.*;
 import net.minecraft.data.client.*;
 import net.minecraft.entity.player.PlayerEntity;
@@ -45,12 +46,6 @@ public class LampBlock extends AbstractWaterLoggableLampBlock {
                         .with(Properties.LIT, false)
                         .with(LET.Properties.DIM, false)
         );
-    }
-
-    @Override
-    public BiFunction<BlockStateModelGenerator, Block, BlockStateSupplier> generateBlockStates(ModRegistries.Blocks.Type type) {
-        return (blockStateModelGenerator, block) -> VariantsBlockStateSupplier
-                .create(block, BlockStateVariant.create().put(VariantSettings.MODEL, type.basis().genericId()));
     }
 
     @Override

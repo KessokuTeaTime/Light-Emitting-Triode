@@ -3,16 +3,15 @@ package band.kessokuteatime.lightemittingtriode.datagen;
 import band.kessokuteatime.lightemittingtriode.LET;
 import band.kessokuteatime.lightemittingtriode.content.ModRegistries;
 import band.kessokuteatime.lightemittingtriode.content.block.base.AbstractLampBlock;
-import band.kessokuteatime.lightemittingtriode.content.item.base.WithCustomItemModelId;
+import band.kessokuteatime.lightemittingtriode.content.block.base.WithCustomBlockModel;
+import band.kessokuteatime.lightemittingtriode.content.block.base.WithCustomBlockRecipe;
+import band.kessokuteatime.lightemittingtriode.content.item.base.WithCustomItemParentModelId;
 import net.fabricmc.fabric.api.datagen.v1.DataGeneratorEntrypoint;
 import net.fabricmc.fabric.api.datagen.v1.FabricDataGenerator;
 import net.fabricmc.fabric.api.datagen.v1.FabricDataOutput;
 import net.fabricmc.fabric.api.datagen.v1.provider.*;
 import net.minecraft.data.DataProvider;
-import net.minecraft.data.client.BlockStateModelGenerator;
-import net.minecraft.data.client.ItemModelGenerator;
-import net.minecraft.data.client.ModelIds;
-import net.minecraft.data.client.TextureMap;
+import net.minecraft.data.client.*;
 import net.minecraft.data.server.recipe.RecipeJsonProvider;
 import net.minecraft.item.Item;
 import net.minecraft.registry.RegistryWrapper;
@@ -92,7 +91,9 @@ public class ModDataGenerator implements DataGeneratorEntrypoint {
             Arrays.stream(ModRegistries.Blocks.Type.values())
                     .forEach(type -> type.blockItemMap()
                             .forEach((block, item) -> blockStateModelGenerator.blockStateCollector.accept(
-                                    ((AbstractLampBlock) block).generateBlockStates(type).apply(blockStateModelGenerator, block)
+                                    WithCustomBlockModel.class.isAssignableFrom(block.getClass())
+                                            ? ((WithCustomBlockModel) block).generateBlockModel(type).apply(blockStateModelGenerator, block)
+                                            : VariantsBlockStateSupplier.create(block, BlockStateVariant.create().put(VariantSettings.MODEL, type.basis().genericId()))
                             ))
                     );
         }
@@ -102,8 +103,8 @@ public class ModDataGenerator implements DataGeneratorEntrypoint {
             Arrays.stream(ModRegistries.Blocks.Type.values()).forEach(type ->
                     type.blockItemMap().forEach((block, blockItem) -> uploadModelWithParent.accept(
                             itemModelGenerator,
-                            WithCustomItemModelId.class.isAssignableFrom(blockItem.getClass())
-                                    ? ((WithCustomItemModelId) blockItem).getItemModelId(type.basis())
+                            WithCustomItemParentModelId.class.isAssignableFrom(blockItem.getClass())
+                                    ? ((WithCustomItemParentModelId) blockItem).getItemModelId(type.basis())
                                     : type.basis().genericId(),
                             blockItem
                     ))
@@ -125,7 +126,9 @@ public class ModDataGenerator implements DataGeneratorEntrypoint {
         public void generate(Consumer<RecipeJsonProvider> exporter) {
             Arrays.stream(ModRegistries.Blocks.Type.values())
                     .forEach(type -> type.blockItemMap()
-                            .keySet().forEach(block -> ((AbstractLampBlock) block).recipeBuilders().accept(exporter))
+                            .keySet().stream()
+                            .filter(block -> WithCustomBlockRecipe.class.isAssignableFrom(block.getClass()))
+                            .forEach(block -> ((WithCustomBlockRecipe) block).generateRecipe().accept(exporter))
                     );
         }
     }

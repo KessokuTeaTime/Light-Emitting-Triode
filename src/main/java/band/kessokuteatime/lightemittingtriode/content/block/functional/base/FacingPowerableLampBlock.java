@@ -1,8 +1,11 @@
-package band.kessokuteatime.lightemittingtriode.content.block.functional;
+package band.kessokuteatime.lightemittingtriode.content.block.functional.base;
 
 import band.kessokuteatime.lightemittingtriode.VoxelShaper;
 import band.kessokuteatime.lightemittingtriode.content.ModRegistries;
 import band.kessokuteatime.lightemittingtriode.content.Variant;
+import band.kessokuteatime.lightemittingtriode.content.block.base.Facing;
+import band.kessokuteatime.lightemittingtriode.content.block.base.WithCustomBlockModel;
+import band.kessokuteatime.lightemittingtriode.content.block.decorational.FacingLampBlock;
 import band.kessokuteatime.lightemittingtriode.content.block.functional.base.AbstractPowerableLampBlock;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockState;
@@ -18,6 +21,7 @@ import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.Direction;
 import net.minecraft.util.shape.VoxelShape;
 import net.minecraft.world.BlockView;
+import net.minecraft.world.World;
 import net.minecraft.world.WorldAccess;
 import net.minecraft.world.WorldView;
 import org.jetbrains.annotations.Nullable;
@@ -25,7 +29,7 @@ import org.jetbrains.annotations.Nullable;
 import java.util.Objects;
 import java.util.function.BiFunction;
 
-public class FacingPowerableLampBlock extends AbstractPowerableLampBlock {
+public class FacingPowerableLampBlock extends AbstractPowerableLampBlock implements Facing, WithCustomBlockModel {
     protected FacingPowerableLampBlock(Variant.Wrapper wrapper) {
         super(wrapper);
         setDefaultState(
@@ -35,7 +39,7 @@ public class FacingPowerableLampBlock extends AbstractPowerableLampBlock {
     }
 
     @Override
-    public BiFunction<BlockStateModelGenerator, Block, BlockStateSupplier> generateBlockStates(ModRegistries.Blocks.Type type) {
+    public BiFunction<BlockStateModelGenerator, Block, BlockStateSupplier> generateBlockModel(ModRegistries.Blocks.Type type) {
         return (blockStateModelGenerator, block) -> VariantsBlockStateSupplier
                 .create(block, BlockStateVariant.create().put(VariantSettings.MODEL, type.basis().genericId()))
                 .coordinate(blockStateModelGenerator.createUpDefaultFacingVariantMap());
@@ -88,13 +92,16 @@ public class FacingPowerableLampBlock extends AbstractPowerableLampBlock {
 
     @Override
     public boolean canPlaceAt(BlockState state, WorldView world, BlockPos pos) {
-        return switch (state.get(Properties.FACING)) {
-            case DOWN -> Block.sideCoversSmallSquare(world, pos.up(), Direction.DOWN);
-            case UP -> Block.sideCoversSmallSquare(world, pos.down(), Direction.UP);
-            case NORTH -> Block.sideCoversSmallSquare(world, pos.south(), Direction.NORTH);
-            case SOUTH -> Block.sideCoversSmallSquare(world, pos.north(), Direction.SOUTH);
-            case WEST -> Block.sideCoversSmallSquare(world, pos.east(), Direction.WEST);
-            case EAST -> Block.sideCoversSmallSquare(world, pos.west(), Direction.EAST);
-        };
+        return canPlaceAt(state.get(Properties.FACING), world, pos);
+    }
+
+    @Override
+    public int getStrongRedstonePower(BlockState state, BlockView world, BlockPos pos, Direction direction) {
+        return state.get(Properties.POWERED) && state.get(Properties.FACING) == direction ? 15 : 0;
+    }
+
+    protected void updateNeighbors(BlockState state, World world, BlockPos pos) {
+        world.updateNeighborsAlways(pos, this);
+        world.updateNeighborsAlways(pos.offset(state.get(Properties.FACING).getOpposite()), this);
     }
 }

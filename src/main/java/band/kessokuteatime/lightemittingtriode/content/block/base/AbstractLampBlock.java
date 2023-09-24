@@ -18,7 +18,7 @@ import net.minecraft.world.World;
 import java.util.function.BiFunction;
 import java.util.function.Consumer;
 
-public abstract class AbstractLampBlock extends AbstractGlassBlock {
+public abstract class AbstractLampBlock extends AbstractGlassBlock implements WithCustomBlockRecipe {
     protected final Variant.Wrapper wrapper;
 
     protected AbstractLampBlock(Settings settings, Variant.Wrapper wrapper) {
@@ -30,7 +30,8 @@ public abstract class AbstractLampBlock extends AbstractGlassBlock {
         return wrapper;
     }
 
-    public Consumer<Consumer<RecipeJsonProvider>> recipeBuilders() {
+    @Override
+    public Consumer<Consumer<RecipeJsonProvider>> generateRecipe() {
         return exporter -> {
             wrapper().useCraftingRecipeJsonBuilder().accept(exporter);
             wrapper().useUpgradingRecipeJsonBuilder().accept(exporter);
@@ -39,8 +40,6 @@ public abstract class AbstractLampBlock extends AbstractGlassBlock {
     }
 
     public abstract boolean isLit(BlockState state);
-
-    public abstract BiFunction<BlockStateModelGenerator, Block, BlockStateSupplier> generateBlockStates(ModRegistries.Blocks.Type type);
 
     @Override
     public void randomDisplayTick(BlockState state, World world, BlockPos pos, Random random) {

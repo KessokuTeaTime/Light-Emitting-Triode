@@ -3,6 +3,8 @@ package band.kessokuteatime.lightemittingtriode.content.block.decorational;
 import band.kessokuteatime.lightemittingtriode.VoxelShaper;
 import band.kessokuteatime.lightemittingtriode.content.ModRegistries;
 import band.kessokuteatime.lightemittingtriode.content.Variant;
+import band.kessokuteatime.lightemittingtriode.content.block.base.Facing;
+import band.kessokuteatime.lightemittingtriode.content.block.base.WithCustomBlockModel;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockState;
 import net.minecraft.block.Blocks;
@@ -17,6 +19,7 @@ import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.Direction;
 import net.minecraft.util.shape.VoxelShape;
 import net.minecraft.world.BlockView;
+import net.minecraft.world.World;
 import net.minecraft.world.WorldAccess;
 import net.minecraft.world.WorldView;
 import org.jetbrains.annotations.Nullable;
@@ -24,7 +27,7 @@ import org.jetbrains.annotations.Nullable;
 import java.util.Objects;
 import java.util.function.BiFunction;
 
-public class FacingLampBlock extends LampBlock {
+public class FacingLampBlock extends LampBlock implements Facing, WithCustomBlockModel {
     public FacingLampBlock(Variant.Wrapper wrapper) {
         super(wrapper);
         setDefaultState(
@@ -34,7 +37,7 @@ public class FacingLampBlock extends LampBlock {
     }
 
     @Override
-    public BiFunction<BlockStateModelGenerator, Block, BlockStateSupplier> generateBlockStates(ModRegistries.Blocks.Type type) {
+    public BiFunction<BlockStateModelGenerator, Block, BlockStateSupplier> generateBlockModel(ModRegistries.Blocks.Type type) {
         return (blockStateModelGenerator, block) -> VariantsBlockStateSupplier
                 .create(block, BlockStateVariant.create().put(VariantSettings.MODEL, type.basis().genericId()))
                 .coordinate(blockStateModelGenerator.createUpDefaultFacingVariantMap());
@@ -87,13 +90,6 @@ public class FacingLampBlock extends LampBlock {
 
     @Override
     public boolean canPlaceAt(BlockState state, WorldView world, BlockPos pos) {
-        return switch (state.get(Properties.FACING)) {
-            case DOWN -> Block.sideCoversSmallSquare(world, pos.up(), Direction.DOWN);
-            case UP -> Block.sideCoversSmallSquare(world, pos.down(), Direction.UP);
-            case NORTH -> Block.sideCoversSmallSquare(world, pos.south(), Direction.NORTH);
-            case SOUTH -> Block.sideCoversSmallSquare(world, pos.north(), Direction.SOUTH);
-            case WEST -> Block.sideCoversSmallSquare(world, pos.east(), Direction.WEST);
-            case EAST -> Block.sideCoversSmallSquare(world, pos.west(), Direction.EAST);
-        };
+        return canPlaceAt(state.get(Properties.FACING), world, pos);
     }
 }

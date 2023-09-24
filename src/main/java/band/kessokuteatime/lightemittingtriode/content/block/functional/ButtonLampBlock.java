@@ -1,11 +1,9 @@
 package band.kessokuteatime.lightemittingtriode.content.block.functional;
 
-import band.kessokuteatime.lightemittingtriode.content.ModRegistries;
+import band.kessokuteatime.lightemittingtriode.VoxelShaper;
 import band.kessokuteatime.lightemittingtriode.content.Variant;
-import band.kessokuteatime.lightemittingtriode.content.block.functional.base.AbstractSpecialFacingPowerableLampBlock;
+import band.kessokuteatime.lightemittingtriode.content.block.functional.base.SpecialFacingPowerableLampBlock;
 import net.minecraft.block.*;
-import net.minecraft.block.enums.WallMountLocation;
-import net.minecraft.data.client.*;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.entity.projectile.PersistentProjectileEntity;
@@ -18,16 +16,15 @@ import net.minecraft.util.ActionResult;
 import net.minecraft.util.Hand;
 import net.minecraft.util.hit.BlockHitResult;
 import net.minecraft.util.math.BlockPos;
-import net.minecraft.util.math.Direction;
 import net.minecraft.util.math.random.Random;
+import net.minecraft.util.shape.VoxelShape;
+import net.minecraft.world.BlockView;
 import net.minecraft.world.World;
 import net.minecraft.world.WorldAccess;
 import net.minecraft.world.event.GameEvent;
 import org.jetbrains.annotations.Nullable;
 
-import java.util.function.BiFunction;
-
-public class ButtonLampBlock extends AbstractSpecialFacingPowerableLampBlock {
+public class ButtonLampBlock extends SpecialFacingPowerableLampBlock {
     private final int pressTicks;
 
     public ButtonLampBlock(Variant.Wrapper wrapper, int pressTicks) {
@@ -36,46 +33,11 @@ public class ButtonLampBlock extends AbstractSpecialFacingPowerableLampBlock {
     }
 
     @Override
-    public Variant.Wrapper wrapper() {
-        return wrapper;
-    }
-
-    @Override
-    public BiFunction<BlockStateModelGenerator, Block, BlockStateSupplier> generateBlockStates(ModRegistries.Blocks.Type type) {
-        return (blockStateModelGenerator, block) -> VariantsBlockStateSupplier.create(block)
-                .coordinate(BlockStateVariantMap.create(Properties.POWERED)
-                        .register(false, BlockStateVariant.create().put(VariantSettings.MODEL, wrapper().basis().genericId()))
-                        .register(true, BlockStateVariant.create().put(VariantSettings.MODEL, wrapper().basis().genericId("pressed"))))
-                .coordinate(BlockStateVariantMap.create(Properties.WALL_MOUNT_LOCATION, Properties.HORIZONTAL_FACING)
-                        .register(WallMountLocation.FLOOR, Direction.EAST, BlockStateVariant.create()
-                                .put(VariantSettings.Y, VariantSettings.Rotation.R90))
-                        .register(WallMountLocation.FLOOR, Direction.WEST, BlockStateVariant.create()
-                                .put(VariantSettings.Y, VariantSettings.Rotation.R270))
-                        .register(WallMountLocation.FLOOR, Direction.SOUTH, BlockStateVariant.create()
-                                .put(VariantSettings.Y, VariantSettings.Rotation.R180))
-                        .register(WallMountLocation.FLOOR, Direction.NORTH, BlockStateVariant.create())
-                        .register(WallMountLocation.WALL, Direction.EAST, BlockStateVariant.create()
-                                .put(VariantSettings.Y, VariantSettings.Rotation.R90)
-                                .put(VariantSettings.X, VariantSettings.Rotation.R90))
-                        .register(WallMountLocation.WALL, Direction.WEST, BlockStateVariant.create()
-                                .put(VariantSettings.Y, VariantSettings.Rotation.R270)
-                                .put(VariantSettings.X, VariantSettings.Rotation.R90))
-                        .register(WallMountLocation.WALL, Direction.SOUTH, BlockStateVariant.create()
-                                .put(VariantSettings.Y, VariantSettings.Rotation.R180)
-                                .put(VariantSettings.X, VariantSettings.Rotation.R90))
-                        .register(WallMountLocation.WALL, Direction.NORTH, BlockStateVariant.create()
-                                .put(VariantSettings.X, VariantSettings.Rotation.R90))
-                        .register(WallMountLocation.CEILING, Direction.EAST, BlockStateVariant.create()
-                                .put(VariantSettings.Y, VariantSettings.Rotation.R270)
-                                .put(VariantSettings.X, VariantSettings.Rotation.R180))
-                        .register(WallMountLocation.CEILING, Direction.WEST, BlockStateVariant.create()
-                                .put(VariantSettings.Y, VariantSettings.Rotation.R90)
-                                .put(VariantSettings.X, VariantSettings.Rotation.R180))
-                        .register(WallMountLocation.CEILING, Direction.SOUTH, BlockStateVariant.create()
-                                .put(VariantSettings.X, VariantSettings.Rotation.R180))
-                        .register(WallMountLocation.CEILING, Direction.NORTH, BlockStateVariant.create()
-                                .put(VariantSettings.Y, VariantSettings.Rotation.R180)
-                                .put(VariantSettings.X, VariantSettings.Rotation.R180)));
+    public VoxelShape getOutlineShape(BlockState state, BlockView world, BlockPos pos, ShapeContext context) {
+        return VoxelShaper.scaleHeight(
+                super.getOutlineShape(state, world, pos, context),
+                state.get(Properties.POWERED) ? 0.5 : 1
+        );
     }
 
     @Override
@@ -132,11 +94,6 @@ public class ButtonLampBlock extends AbstractSpecialFacingPowerableLampBlock {
             world.scheduleBlockTick(pos, this, pressTicks);
     }
 
-    private void updateNeighbors(BlockState state, World world, BlockPos pos) {
-        world.updateNeighborsAlways(pos, this);
-        world.updateNeighborsAlways(pos.offset(getDirection(state).getOpposite()), this);
-    }
-
     @Override
     public void onStateReplaced(BlockState state, World world, BlockPos pos, BlockState newState, boolean moved) {
         if (moved || state.isOf(newState.getBlock())) return;
@@ -144,11 +101,6 @@ public class ButtonLampBlock extends AbstractSpecialFacingPowerableLampBlock {
             updateNeighbors(state, world, pos);
 
         super.onStateReplaced(state, world, pos, newState, false);
-    }
-
-    @Override
-    public boolean emitsRedstonePower(BlockState state) {
-        return true;
     }
 
     @Override
