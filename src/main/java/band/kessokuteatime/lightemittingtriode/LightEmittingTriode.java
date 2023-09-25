@@ -36,8 +36,8 @@ public class LightEmittingTriode implements ModInitializer {
 
     public static String tooltipKey(boolean featured, String... paths) {
         if (featured) {
-            ArrayList<String> featuredPaths = new ArrayList<>(List.of("feature"));
-            featuredPaths.addAll(List.of(paths));
+            List<String> featuredPaths = new ArrayList<>(List.of(paths));
+            featuredPaths.add(0, "feature");
 
             paths = featuredPaths.toArray(String[]::new);
         }

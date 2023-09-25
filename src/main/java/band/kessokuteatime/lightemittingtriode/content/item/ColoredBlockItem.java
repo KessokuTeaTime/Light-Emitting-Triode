@@ -48,7 +48,7 @@ public class ColoredBlockItem extends BlockItem implements ColorableItem {
     public void appendTooltip(ItemStack stack, @Nullable World world, List<Text> tooltip, TooltipContext context) {
         super.appendTooltip(stack, world, tooltip, context);
 
-        tooltip.add(getColorTag());
-        wrapper().basis().variant().getTooltips().forEach(modTooltip -> tooltip.add(modTooltip.text()));
+        wrapper().basis().variant().getTooltips()
+                .forEach(modTooltip -> modTooltip.addMultilineTooltip(tooltip::add));
     }
 }

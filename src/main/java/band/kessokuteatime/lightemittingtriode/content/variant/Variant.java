@@ -34,7 +34,10 @@ public enum Variant {
             LampBlock::new,
             ColoredBlockItem::new,
 
-            List.of(ModTooltip.DYABLE, ModTooltip.DIMMABLE),
+            List.of(
+                    ModTooltip.EMPTY,
+                    ModTooltip.DYABLE, ModTooltip.DIMMABLE
+            ),
 
             new DataProvider(
                     () -> AbstractBlock.Settings.copy(Blocks.GLASS)
@@ -57,7 +60,10 @@ public enum Variant {
             SlabFacingLampBlock::new,
             ColoredBlockItem::new,
 
-            List.of(ModTooltip.DYABLE, ModTooltip.DIMMABLE),
+            List.of(
+                    ModTooltip.EMPTY,
+                    ModTooltip.DYABLE, ModTooltip.DIMMABLE
+            ),
 
             new DataProvider(
                     () -> AbstractBlock.Settings.copy(Blocks.GLASS)
@@ -89,7 +95,10 @@ public enum Variant {
             FacingLampBlock::new,
             ColoredBlockItem::new,
 
-            List.of(ModTooltip.DYABLE, ModTooltip.DIMMABLE),
+            List.of(
+                    ModTooltip.EMPTY,
+                    ModTooltip.DYABLE, ModTooltip.DIMMABLE
+            ),
 
             new DataProvider(
                     () -> AbstractBlock.Settings.copy(Blocks.GLASS)
@@ -122,7 +131,10 @@ public enum Variant {
             FacingLampBlock::new,
             ColoredBlockItem::new,
 
-            List.of(ModTooltip.DYABLE, ModTooltip.DIMMABLE),
+            List.of(
+                    ModTooltip.EMPTY,
+                    ModTooltip.DYABLE, ModTooltip.DIMMABLE
+            ),
 
             new DataProvider(
                     () -> AbstractBlock.Settings.copy(Blocks.GLASS)
@@ -158,7 +170,10 @@ public enum Variant {
             FacingLampBlock::new,
             ColoredBlockItem::new,
 
-            List.of(ModTooltip.DYABLE, ModTooltip.DIMMABLE),
+            List.of(
+                    ModTooltip.EMPTY,
+                    ModTooltip.DYABLE, ModTooltip.DIMMABLE
+            ),
 
             new DataProvider(
                     () -> AbstractBlock.Settings.copy(Blocks.GLASS)
@@ -194,7 +209,10 @@ public enum Variant {
             SwitchLampBlock::new,
             InventoryColoredBlockItem::new,
 
-            List.of(),
+            List.of(
+                    ModTooltip.EMPTY,
+                    ModTooltip.EMITS_LIGHT
+            ),
 
             new DataProvider(
                     () -> AbstractBlock.Settings.copy(Blocks.GLASS)
@@ -221,7 +239,10 @@ public enum Variant {
             wrapper -> new ButtonLampBlock(wrapper, 22),
             InventoryColoredBlockItem::new,
 
-            List.of(),
+            List.of(
+                    ModTooltip.EMPTY,
+                    ModTooltip.EMITS_LIGHT
+            ),
 
             new DataProvider(
                     () -> AbstractBlock.Settings.copy(Blocks.GLASS)
@@ -254,7 +275,11 @@ public enum Variant {
             DetectorLampBlock::new,
             ColoredBlockItem::new,
 
-            List.of(ModTooltip.DYABLE, ModTooltip.DIMMABLE),
+            List.of(
+                    ModTooltip.DETECTOR,
+                    ModTooltip.EMPTY,
+                    ModTooltip.EMITS_LIGHT, ModTooltip.DYABLE, ModTooltip.DIMMABLE
+            ),
 
             new DataProvider(
                     () -> AbstractBlock.Settings.copy(Blocks.GLASS)

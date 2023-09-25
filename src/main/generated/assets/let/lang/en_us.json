@@ -33,7 +33,10 @@
   "item.let.shade": "Shade",
   "item.let.tube": "Tube",
   "itemGroup.let.general": "Light Emitting Triode",
-  "tooltip.let.dimmable": "§7Can be dimmed by §fshades",
-  "tooltip.let.dyable": "§7Can be colored by §fdyes",
-  "tooltip.let.shade": "§7Can dim light sources\n§7Can be scraped off using tools"
+  "tooltip.let.detector": "§7Detects nearby entities",
+  "tooltip.let.empty": "",
+  "tooltip.let.feature.dimmable": "§8- Can be dimmed by §7shades",
+  "tooltip.let.feature.dyable": "§8- Can be colored by §7dyes",
+  "tooltip.let.feature.emits_light": "§8- Emits light when triggered",
+  "tooltip.let.shade": "§7Use on light sources to make\n§7them dim, while can be scraped\n§7off using tools"
 }

@@ -1,16 +1,21 @@
 package band.kessokuteatime.lightemittingtriode.content.variant;
 
 import band.kessokuteatime.lightemittingtriode.LightEmittingTriode;
+import band.kessokuteatime.lightemittingtriode.content.item.base.extension.WithMultilineTooltip;
 import net.minecraft.text.MutableText;
 import net.minecraft.text.Text;
 
-public enum ModTooltip {
+import java.util.function.Consumer;
+
+public enum ModTooltip implements WithMultilineTooltip {
+    EMPTY(false, "empty"),
+
     DYABLE(true, "dyable"),
     DIMMABLE(true, "dimmable"),
+    EMITS_LIGHT(true, "emits_light"),
 
     SHADE(false, "shade"),
-    SWITCH(false, "switch"),
-    BUTTON(false, "button");
+    DETECTOR(false, "detector");
 
     final String translationKey;
 
@@ -24,5 +29,9 @@ public enum ModTooltip {
 
     public MutableText text(Object... args) {
         return Text.translatable(getTranslationKey(), args);
+    }
+
+    public void addMultilineTooltip(Consumer<Text> tooltipContextBuilder, Object... args) {
+        addMultilineTooltip(tooltipContextBuilder, text(args));
     }
 }

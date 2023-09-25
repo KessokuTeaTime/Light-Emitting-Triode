@@ -3,6 +3,7 @@ package band.kessokuteatime.lightemittingtriode.content.item;
 import band.kessokuteatime.lightemittingtriode.LightEmittingTriode;
 import band.kessokuteatime.lightemittingtriode.content.ModRegistries;
 import band.kessokuteatime.lightemittingtriode.content.item.base.extension.WithMultilineTooltip;
+import band.kessokuteatime.lightemittingtriode.content.variant.ModTooltip;
 import net.minecraft.block.BlockState;
 import net.minecraft.client.item.TooltipContext;
 import net.minecraft.entity.player.PlayerEntity;
@@ -28,10 +29,7 @@ public class ShadeItem extends Item implements WithMultilineTooltip {
     public void appendTooltip(ItemStack stack, @Nullable World world, List<Text> tooltip, TooltipContext context) {
         super.appendTooltip(stack, world, tooltip, context);
 
-        addMultilineTooltip(
-                tooltip::add,
-                Text.translatable(LightEmittingTriode.idString("tooltip", "shade"))
-        );
+        ModTooltip.SHADE.addMultilineTooltip(tooltip::add);
     }
 
     @Override

@@ -1,10 +1,13 @@
 package band.kessokuteatime.lightemittingtriode.content.item.base;
 
 import band.kessokuteatime.lightemittingtriode.LightEmittingTriode;
+import band.kessokuteatime.lightemittingtriode.content.item.base.extension.WithInjectedTooltip;
 import net.minecraft.text.Text;
 import net.minecraft.util.DyeColor;
 
-public interface ColorableItem {
+import java.util.List;
+
+public interface ColorableItem extends WithInjectedTooltip {
     DyeColor getDyeColor();
 
     String getParentTranslationKey();
@@ -14,7 +17,7 @@ public interface ColorableItem {
     }
 
     default int getDisplayBackgroundColor() {
-        return LightEmittingTriode.mapColorRange(getDyeColor().getSignColor(), 0x55, 0xA2);
+        return LightEmittingTriode.mapColorRange(getDyeColor().getSignColor(), 0x55, 0x8A);
     }
 
     default Text getName() {
@@ -26,13 +29,15 @@ public interface ColorableItem {
     }
 
     default Text getColorTag() {
-        return Text.literal(
-                "#" +
-                        Integer.toHexString(LightEmittingTriode.getColorFromDyeColor(getDyeColor())).toUpperCase()
-                )
+        return Text.literal(String.format("#%06X", LightEmittingTriode.getColorFromDyeColor(getDyeColor())))
                 .styled(style -> style
                         .withItalic(true)
                         .withColor(getDisplayBackgroundColor())
                 );
+    }
+
+    @Override
+    default List<Text> getInjectedTooltips() {
+        return List.of(getColorTag());
     }
 }

@@ -6,6 +6,7 @@
   "mixins": [
   ],
   "client": [
+    "CreativeInventoryScreenMixin"
   ],
   "injectors": {
     "defaultRequire": 0
