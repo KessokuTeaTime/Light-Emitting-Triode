@@ -2,7 +2,7 @@ package band.kessokuteatime.lightemittingtriode.content.block.decorational;
 
 import band.kessokuteatime.lightemittingtriode.LightEmittingTriode;
 import band.kessokuteatime.lightemittingtriode.content.ModRegistries;
-import band.kessokuteatime.lightemittingtriode.content.Variant;
+import band.kessokuteatime.lightemittingtriode.content.variant.Wrapper;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockState;
 import net.minecraft.block.ShapeContext;
@@ -27,7 +27,7 @@ import java.util.Objects;
 import java.util.function.BiFunction;
 
 public class SlabFacingLampBlock extends FacingLampBlock {
-    public SlabFacingLampBlock(Variant.Wrapper wrapper) {
+    public SlabFacingLampBlock(Wrapper wrapper) {
         super(wrapper);
         setDefaultState(
                 getDefaultState()

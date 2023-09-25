@@ -2,9 +2,11 @@ package band.kessokuteatime.lightemittingtriode.content;
 
 import band.kessokuteatime.lightemittingtriode.LightEmittingTriode;
 import band.kessokuteatime.lightemittingtriode.content.block.base.AbstractLampBlock;
-import band.kessokuteatime.lightemittingtriode.content.block.base.Dimmable;
-import band.kessokuteatime.lightemittingtriode.content.block.base.Dyable;
+import band.kessokuteatime.lightemittingtriode.content.block.base.tag.Dimmable;
+import band.kessokuteatime.lightemittingtriode.content.block.base.tag.Dyable;
 import band.kessokuteatime.lightemittingtriode.content.item.ShadeItem;
+import band.kessokuteatime.lightemittingtriode.content.variant.Variant;
+import band.kessokuteatime.lightemittingtriode.content.variant.Wrapper;
 import net.fabricmc.fabric.api.blockrenderlayer.v1.BlockRenderLayerMap;
 import net.fabricmc.fabric.api.client.rendering.v1.ColorProviderRegistry;
 import net.fabricmc.fabric.api.itemgroup.v1.FabricItemGroup;
@@ -50,7 +52,7 @@ public class ModRegistries {
                         Arrays.stream(Blocks.Type.values())
                                 .map(Blocks.Type::wrappers)
                                 .flatMap(ArrayList::stream)
-                                .map(Variant.Wrapper::blockItem)
+                                .map(Wrapper::blockItem)
                                 .forEach(entries::add);
                     })
             );
@@ -85,57 +87,37 @@ public class ModRegistries {
 
             DETECTOR(Variant.DETECTOR.with(Variant.Size.NORMAL));
 
-            final ArrayList<Variant.Wrapper> wrappers;
-            final Variant.Basis basis;
+            final ArrayList<Wrapper> wrappers;
+            final Wrapper.Basis basis;
 
-            Type(Variant.Basis basis) {
+            Type(Wrapper.Basis basis) {
                 this.wrappers = new ArrayList<>();
                 this.basis = basis;
             }
 
-            public ArrayList<Variant.Wrapper> wrappers() {
+            public ArrayList<Wrapper> wrappers() {
                 return wrappers;
             }
 
-            public Variant.Basis basis() {
+            public Wrapper.Basis basis() {
                 return basis;
             }
         }
 
         public static void register() {
-            registerColorVariantsForTypes(
-                    Type.CLEAR,
-                    Type.SLAB,
-
-                    Type.CEILING,
-
-                    Type.LANTERN_SMALL,
-                    Type.LANTERN,
-                    Type.LANTERN_LARGE,
-
-                    Type.ALARM_SMALL,
-                    Type.ALARM,
-                    Type.ALARM_LARGE,
-
-                    Type.SWITCH,
-                    Type.BUTTON,
-
-                    Type.DETECTOR
-            );
+            registerColorVariantsForTypes(Type.values());
         }
 
-        public static void registerColorVariantsForTypes(
-                Type... types
-        ) {
+        public static void registerColorVariantsForTypes(Type... types) {
             for (Type type : types) {
                 type.wrappers().clear();
 
                 for (DyeColor dyeColor : DyeColor.values()) {
-                    Variant.Wrapper wrapper = type.basis().with(dyeColor);
+                    Wrapper wrapper = type.basis().with(dyeColor);
                     Identifier id = wrapper.id();
 
                     Block block = registerBlock(id, wrapper.createBlock());
-                    Item item = registerItem(id, wrapper.createBlockItem(block));
+                    Item item = registerItem(id, wrapper.createBlockItem());
 
                     // Store the wrapper
                     type.wrappers().add(wrapper);

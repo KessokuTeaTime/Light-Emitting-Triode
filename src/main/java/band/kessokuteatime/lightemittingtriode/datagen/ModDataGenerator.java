@@ -2,10 +2,10 @@ package band.kessokuteatime.lightemittingtriode.datagen;
 
 import band.kessokuteatime.lightemittingtriode.LightEmittingTriode;
 import band.kessokuteatime.lightemittingtriode.content.ModRegistries;
-import band.kessokuteatime.lightemittingtriode.content.Variant;
-import band.kessokuteatime.lightemittingtriode.content.block.base.WithCustomBlockModel;
-import band.kessokuteatime.lightemittingtriode.content.block.base.WithCustomBlockRecipe;
-import band.kessokuteatime.lightemittingtriode.content.item.base.WithCustomItemParentModelId;
+import band.kessokuteatime.lightemittingtriode.content.block.base.extension.WithCustomBlockModel;
+import band.kessokuteatime.lightemittingtriode.content.block.base.extension.WithCustomBlockRecipe;
+import band.kessokuteatime.lightemittingtriode.content.item.base.extension.WithCustomItemParentModelId;
+import band.kessokuteatime.lightemittingtriode.content.variant.Wrapper;
 import net.fabricmc.fabric.api.datagen.v1.DataGeneratorEntrypoint;
 import net.fabricmc.fabric.api.datagen.v1.FabricDataGenerator;
 import net.fabricmc.fabric.api.datagen.v1.FabricDataOutput;
@@ -90,7 +90,7 @@ public class ModDataGenerator implements DataGeneratorEntrypoint {
         public void generateBlockStateModels(BlockStateModelGenerator blockStateModelGenerator) {
             Arrays.stream(ModRegistries.Blocks.Type.values())
                     .forEach(type -> type.wrappers().stream()
-                            .map(Variant.Wrapper::block)
+                            .map(Wrapper::block)
                             .forEach(block -> blockStateModelGenerator.blockStateCollector.accept(
                                     WithCustomBlockModel.class.isAssignableFrom(block.getClass())
                                             ? ((WithCustomBlockModel) block).generateBlockModel(type).apply(blockStateModelGenerator, block)
@@ -128,7 +128,7 @@ public class ModDataGenerator implements DataGeneratorEntrypoint {
         public void generate(Consumer<RecipeJsonProvider> exporter) {
             Arrays.stream(ModRegistries.Blocks.Type.values())
                     .forEach(type -> type.wrappers().stream()
-                            .map(Variant.Wrapper::block)
+                            .map(Wrapper::block)
                             .filter(block -> WithCustomBlockRecipe.class.isAssignableFrom(block.getClass()))
                             .forEach(block -> ((WithCustomBlockRecipe) block).generateRecipe().accept(exporter))
                     );
@@ -171,7 +171,7 @@ public class ModDataGenerator implements DataGeneratorEntrypoint {
                             .map(ModRegistries.Blocks.Type::wrappers)
                             .flatMap(ArrayList::stream)
                             .filter(wrapper -> wrapper.isIn(tag))
-                            .toArray(Variant.Wrapper[]::new)
+                            .toArray(Wrapper[]::new)
             ));
         }
 
@@ -179,12 +179,12 @@ public class ModDataGenerator implements DataGeneratorEntrypoint {
             addAll(builder, Arrays.stream(types)
                     .map(ModRegistries.Blocks.Type::wrappers)
                     .flatMap(ArrayList::stream)
-                    .toArray(Variant.Wrapper[]::new));
+                    .toArray(Wrapper[]::new));
         }
 
-        private void addAll(FabricTagBuilder builder, Variant.Wrapper... wrappers) {
+        private void addAll(FabricTagBuilder builder, Wrapper... wrappers) {
             Arrays.stream(wrappers)
-                    .map(Variant.Wrapper::block)
+                    .map(Wrapper::block)
                     .forEach(builder::add);
         }
     }

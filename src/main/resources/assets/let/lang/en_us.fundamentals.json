@@ -23,5 +23,8 @@
     "block.let.switch": "%s Switch",
     "block.let.button": "%s Button",
 
-    "block.let.detector": "%s Detector"
+    "block.let.detector": "%s Detector",
+
+    "tooltip.let.dyable": "§7Can be colored by dyes",
+    "tooltip.let.dimmable": "§7Can be dimmed by the shade"
 }

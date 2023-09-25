@@ -1,8 +1,8 @@
 package band.kessokuteatime.lightemittingtriode.content.block.functional;
 
 import band.kessokuteatime.lightemittingtriode.VoxelShaper;
-import band.kessokuteatime.lightemittingtriode.content.Variant;
 import band.kessokuteatime.lightemittingtriode.content.block.functional.base.FacingPowerableLampBlock;
+import band.kessokuteatime.lightemittingtriode.content.variant.Wrapper;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockState;
 import net.minecraft.block.ShapeContext;
@@ -24,7 +24,7 @@ import net.minecraft.world.WorldAccess;
 import net.minecraft.world.event.GameEvent;
 
 public class SwitchLampBlock extends FacingPowerableLampBlock {
-    public SwitchLampBlock(Variant.Wrapper wrapper) {
+    public SwitchLampBlock(Wrapper wrapper) {
         super(wrapper);
     }
 

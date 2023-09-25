@@ -1,10 +1,11 @@
 package band.kessokuteatime.lightemittingtriode.content.block.decorational;
 
 import band.kessokuteatime.lightemittingtriode.LightEmittingTriode;
-import band.kessokuteatime.lightemittingtriode.content.Variant;
 import band.kessokuteatime.lightemittingtriode.content.block.base.AbstractWaterLoggableLampBlock;
-import band.kessokuteatime.lightemittingtriode.content.block.base.Dimmable;
-import band.kessokuteatime.lightemittingtriode.content.block.base.Dyable;
+import band.kessokuteatime.lightemittingtriode.content.base.ChainedActions;
+import band.kessokuteatime.lightemittingtriode.content.block.base.tag.Dimmable;
+import band.kessokuteatime.lightemittingtriode.content.block.base.tag.Dyable;
+import band.kessokuteatime.lightemittingtriode.content.variant.Wrapper;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockState;
 import net.minecraft.block.ShapeContext;
@@ -24,7 +25,7 @@ import net.minecraft.world.World;
 import net.minecraft.world.WorldAccess;
 
 public class LampBlock extends AbstractWaterLoggableLampBlock implements Dimmable, Dyable {
-    public LampBlock(Variant.Wrapper wrapper) {
+    public LampBlock(Wrapper wrapper) {
         super(wrapper.wrapSettings(s -> s
                 .luminance(state ->
                         state.get(Properties.LIT) && !state.get(LightEmittingTriode.Properties.DIM)
@@ -58,6 +59,11 @@ public class LampBlock extends AbstractWaterLoggableLampBlock implements Dimmabl
     }
 
     @Override
+    public DyeColor getDyableFallback() {
+        return wrapper().dyeColor();
+    }
+
+    @Override
     protected void appendProperties(StateManager.Builder<Block, BlockState> builder) {
         super.appendProperties(builder.add(Properties.LIT, LightEmittingTriode.Properties.DIM));
     }
@@ -76,17 +82,18 @@ public class LampBlock extends AbstractWaterLoggableLampBlock implements Dimmabl
     }
 
     @Override
-    public void onBroken(WorldAccess world, BlockPos pos, BlockState state) {
-        Dimmable.super.onBroken(world, pos, state);
+    public void onDimmableBroken(WorldAccess world, BlockPos pos, BlockState state) {
+        Dimmable.super.onDimmableBroken(world, pos, state);
         super.onBroken(world, pos, state);
     }
 
     @Override
     public ActionResult onUse(BlockState state, World world, BlockPos pos, PlayerEntity player, Hand hand, BlockHitResult hit) {
-        Dimmable.super.onUse(state, world, pos, player, hand);
-        Dyable.super.onUse(state, world, pos, player, hand, wrapper().dyeColor());
-
-        return super.onUse(state, world, pos, player, hand, hit);
+        return ChainedActions.chain(
+                state, world, pos, player, hand, hit,
+                super::onUse,
+                Dimmable.super::onUse, Dyable.super::onUse
+        );
     }
 
     @Override

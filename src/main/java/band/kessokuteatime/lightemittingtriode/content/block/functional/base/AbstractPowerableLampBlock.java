@@ -1,13 +1,9 @@
 package band.kessokuteatime.lightemittingtriode.content.block.functional.base;
 
-import band.kessokuteatime.lightemittingtriode.content.Variant;
 import band.kessokuteatime.lightemittingtriode.content.block.base.AbstractWaterLoggableLampBlock;
-import net.minecraft.block.AbstractBlock;
+import band.kessokuteatime.lightemittingtriode.content.variant.Wrapper;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockState;
-import net.minecraft.block.Blocks;
-import net.minecraft.block.piston.PistonBehavior;
-import net.minecraft.sound.BlockSoundGroup;
 import net.minecraft.state.StateManager;
 import net.minecraft.state.property.Properties;
 import net.minecraft.util.DyeColor;
@@ -17,7 +13,7 @@ import net.minecraft.world.BlockView;
 import net.minecraft.world.World;
 
 public abstract class AbstractPowerableLampBlock extends AbstractWaterLoggableLampBlock {
-    protected AbstractPowerableLampBlock(Variant.Wrapper wrapper) {
+    protected AbstractPowerableLampBlock(Wrapper wrapper) {
         super(wrapper.wrapSettings(s -> s
                         .luminance(state -> state.get(Properties.POWERED) ? wrapper.luminance() : 0)
                         .emissiveLighting((state, world, pos) -> state.get(Properties.POWERED))

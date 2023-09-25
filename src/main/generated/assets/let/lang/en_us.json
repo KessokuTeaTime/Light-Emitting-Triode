@@ -32,5 +32,7 @@
   "item.let.let": "Light Emitting Triode",
   "item.let.shade": "The Shade",
   "item.let.tube": "Tube",
-  "itemGroup.let.general": "Light Emitting Triode"
+  "itemGroup.let.general": "Light Emitting Triode",
+  "tooltip.let.dimmable": "§7Can be dimmed by the shade",
+  "tooltip.let.dyable": "§7Can be colored by dyes"
 }

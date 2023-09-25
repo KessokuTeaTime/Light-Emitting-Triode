@@ -2,16 +2,13 @@ package band.kessokuteatime.lightemittingtriode.content.block.functional.base;
 
 import band.kessokuteatime.lightemittingtriode.VoxelShaper;
 import band.kessokuteatime.lightemittingtriode.content.ModRegistries;
-import band.kessokuteatime.lightemittingtriode.content.Variant;
 import band.kessokuteatime.lightemittingtriode.content.block.base.Facing;
-import band.kessokuteatime.lightemittingtriode.content.block.base.WithCustomBlockModel;
-import band.kessokuteatime.lightemittingtriode.content.block.decorational.FacingLampBlock;
-import band.kessokuteatime.lightemittingtriode.content.block.functional.base.AbstractPowerableLampBlock;
+import band.kessokuteatime.lightemittingtriode.content.block.base.extension.WithCustomBlockModel;
+import band.kessokuteatime.lightemittingtriode.content.variant.Wrapper;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockState;
 import net.minecraft.block.Blocks;
 import net.minecraft.block.ShapeContext;
-import net.minecraft.block.enums.WallMountLocation;
 import net.minecraft.data.client.*;
 import net.minecraft.item.ItemPlacementContext;
 import net.minecraft.state.StateManager;
@@ -32,7 +29,7 @@ import java.util.Objects;
 import java.util.function.BiFunction;
 
 public class FacingPowerableLampBlock extends AbstractPowerableLampBlock implements Facing, WithCustomBlockModel, PoweredBlockModelModifiers {
-    protected FacingPowerableLampBlock(Variant.Wrapper wrapper) {
+    protected FacingPowerableLampBlock(Wrapper wrapper) {
         super(wrapper);
         setDefaultState(
                 getDefaultState()

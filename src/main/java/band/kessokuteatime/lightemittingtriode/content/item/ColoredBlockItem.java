@@ -2,6 +2,7 @@ package band.kessokuteatime.lightemittingtriode.content.item;
 
 import band.kessokuteatime.lightemittingtriode.LightEmittingTriode;
 import band.kessokuteatime.lightemittingtriode.content.item.base.Colorable;
+import band.kessokuteatime.lightemittingtriode.content.variant.Wrapper;
 import net.minecraft.block.Block;
 import net.minecraft.client.item.TooltipContext;
 import net.minecraft.item.BlockItem;
@@ -15,21 +16,25 @@ import org.jetbrains.annotations.Nullable;
 import java.util.List;
 
 public class ColoredBlockItem extends BlockItem implements Colorable {
-    private final DyeColor dyeColor;
+    private final Wrapper wrapper;
 
-    public ColoredBlockItem(Block block, Settings settings, DyeColor dyeColor) {
-        super(block, settings);
-        this.dyeColor = dyeColor;
+    public ColoredBlockItem(Wrapper wrapper) {
+        super(wrapper.block(), new Settings());
+        this.wrapper = wrapper;
+    }
+
+    protected Wrapper wrapper() {
+        return wrapper;
     }
 
     @Override
     public DyeColor getDyeColor() {
-        return dyeColor;
+        return wrapper().dyeColor();
     }
 
     @Override
     public String getParentTranslationKey() {
-        return getTranslationKey().replace("_" + dyeColor.getName(), "");
+        return getTranslationKey().replace("_" + getDyeColor().getName(), "");
     }
 
     @Override
@@ -47,8 +52,16 @@ public class ColoredBlockItem extends BlockItem implements Colorable {
         super.appendTooltip(stack, world, tooltip, context);
 
         tooltip.add(
-                Text.literal("#" + Integer.toHexString(LightEmittingTriode.getColorFromDyeColor(dyeColor)).toUpperCase())
-                        .formatted(Formatting.DARK_GRAY)
+                Text.literal("#" + Integer.toHexString(LightEmittingTriode.getColorFromDyeColor(getDyeColor())).toUpperCase())
+                        .styled(style -> style
+                                .withItalic(true)
+                                .withColor(LightEmittingTriode.mapColorRange(
+                                        LightEmittingTriode.getColorFromDyeColor(getDyeColor()),
+                                        0x10, 0x64
+                                ))
+                        )
         );
+
+        wrapper().basis().variant().getTooltips().forEach(modTooltip -> tooltip.add(modTooltip.text()));
     }
 }

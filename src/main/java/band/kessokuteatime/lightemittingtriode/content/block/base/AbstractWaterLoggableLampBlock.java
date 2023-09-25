@@ -1,6 +1,6 @@
 package band.kessokuteatime.lightemittingtriode.content.block.base;
 
-import band.kessokuteatime.lightemittingtriode.content.Variant;
+import band.kessokuteatime.lightemittingtriode.content.variant.Wrapper;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockState;
 import net.minecraft.block.Waterloggable;
@@ -18,7 +18,7 @@ import org.jetbrains.annotations.Nullable;
 import java.util.Objects;
 
 public abstract class AbstractWaterLoggableLampBlock extends AbstractLampBlock implements Waterloggable {
-    protected AbstractWaterLoggableLampBlock(Variant.Wrapper wrapper) {
+    protected AbstractWaterLoggableLampBlock(Wrapper wrapper) {
         super(wrapper);
         setDefaultState(
                 getDefaultState()

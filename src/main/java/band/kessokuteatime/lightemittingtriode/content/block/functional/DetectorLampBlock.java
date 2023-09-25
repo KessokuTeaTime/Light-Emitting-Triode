@@ -2,15 +2,15 @@ package band.kessokuteatime.lightemittingtriode.content.block.functional;
 
 import band.kessokuteatime.lightemittingtriode.LightEmittingTriode;
 import band.kessokuteatime.lightemittingtriode.VoxelShaper;
-import band.kessokuteatime.lightemittingtriode.content.Variant;
-import band.kessokuteatime.lightemittingtriode.content.block.base.Dimmable;
-import band.kessokuteatime.lightemittingtriode.content.block.base.Dyable;
+import band.kessokuteatime.lightemittingtriode.content.base.ChainedActions;
+import band.kessokuteatime.lightemittingtriode.content.block.base.tag.Dimmable;
+import band.kessokuteatime.lightemittingtriode.content.block.base.tag.Dyable;
 import band.kessokuteatime.lightemittingtriode.content.block.functional.base.FacingPowerableLampBlock;
+import band.kessokuteatime.lightemittingtriode.content.variant.Wrapper;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockState;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.player.PlayerEntity;
-import net.minecraft.item.ItemStack;
 import net.minecraft.server.world.ServerWorld;
 import net.minecraft.sound.SoundCategory;
 import net.minecraft.sound.SoundEvents;
@@ -33,7 +33,7 @@ import org.jetbrains.annotations.Nullable;
 import java.util.List;
 
 public class DetectorLampBlock extends FacingPowerableLampBlock implements Dimmable, Dyable {
-    public DetectorLampBlock(Variant.Wrapper wrapper) {
+    public DetectorLampBlock(Wrapper wrapper) {
         super(wrapper.wrapSettings(s -> s
                 .luminance(state ->
                         state.get(Properties.POWERED) && !state.get(LightEmittingTriode.Properties.DIM)
@@ -107,6 +107,11 @@ public class DetectorLampBlock extends FacingPowerableLampBlock implements Dimma
     }
 
     @Override
+    public DyeColor getDyableFallback() {
+        return wrapper().dyeColor();
+    }
+
+    @Override
     public BlockState ofAnotherColor(BlockState state, DyeColor dyeColor) {
         return super.ofAnotherColor(state, dyeColor)
                 .with(LightEmittingTriode.Properties.DIM, state.get(LightEmittingTriode.Properties.DIM));
@@ -123,18 +128,19 @@ public class DetectorLampBlock extends FacingPowerableLampBlock implements Dimma
     }
 
     @Override
-    public void onBroken(WorldAccess world, BlockPos pos, BlockState state) {
-        Dimmable.super.onBroken(world, pos, state);
+    public void onDimmableBroken(WorldAccess world, BlockPos pos, BlockState state) {
+        Dimmable.super.onDimmableBroken(world, pos, state);
         super.onBroken(world, pos, state);
     }
 
     @Override
     public ActionResult onUse(BlockState state, World world, BlockPos pos, PlayerEntity player, Hand hand, BlockHitResult hit) {
-        Dimmable.super.onUse(state, world, pos, player, hand);
-        Dyable.super.onUse(state, world, pos, player, hand, wrapper().dyeColor());
-
         updatePlateState(null, state, world, pos, getRedstoneOutput(state));
-        return super.onUse(state, world, pos, player, hand, hit);
+        return ChainedActions.chain(
+                state, world, pos, player, hand, hit,
+                super::onUse,
+                Dimmable.super::onUse, Dyable.super::onUse
+        );
     }
 
     @Override

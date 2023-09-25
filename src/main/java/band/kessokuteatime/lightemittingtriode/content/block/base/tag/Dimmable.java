@@ -1,22 +1,24 @@
-package band.kessokuteatime.lightemittingtriode.content.block.base;
+package band.kessokuteatime.lightemittingtriode.content.block.base.tag;
 
 import band.kessokuteatime.lightemittingtriode.LightEmittingTriode;
+import band.kessokuteatime.lightemittingtriode.content.base.ChainedActions;
 import band.kessokuteatime.lightemittingtriode.content.ModRegistries;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockState;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.ItemStack;
-import net.minecraft.item.Items;
 import net.minecraft.sound.SoundCategory;
 import net.minecraft.sound.SoundEvents;
 import net.minecraft.util.ActionResult;
 import net.minecraft.util.Hand;
+import net.minecraft.util.hit.BlockHitResult;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
 import net.minecraft.world.WorldAccess;
 
-public interface Dimmable {
-    default ActionResult onUse(BlockState state, World world, BlockPos pos, PlayerEntity player, Hand hand) {
+public interface Dimmable extends ChainedActions.Action {
+    @Override
+    default ActionResult onUse(BlockState state, World world, BlockPos pos, PlayerEntity player, Hand hand, BlockHitResult hit) {
         ItemStack stack = player.getStackInHand(hand);
 
         if (state.get(LightEmittingTriode.Properties.DIM) && LightEmittingTriode.isValidTool(stack)) {
@@ -34,7 +36,7 @@ public interface Dimmable {
         return ActionResult.PASS;
     }
 
-    default void onBroken(WorldAccess world, BlockPos pos, BlockState state) {
+    default void onDimmableBroken(WorldAccess world, BlockPos pos, BlockState state) {
         if (state.get(LightEmittingTriode.Properties.DIM))
             dropShadeStack((World) world, pos, 1);
     }

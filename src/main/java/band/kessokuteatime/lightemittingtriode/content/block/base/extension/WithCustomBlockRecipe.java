@@ -1,4 +1,4 @@
-package band.kessokuteatime.lightemittingtriode.content.block.base;
+package band.kessokuteatime.lightemittingtriode.content.block.base.extension;
 
 import net.minecraft.data.server.recipe.RecipeJsonProvider;
 

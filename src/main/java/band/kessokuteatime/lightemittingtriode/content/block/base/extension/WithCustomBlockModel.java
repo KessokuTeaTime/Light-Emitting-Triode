@@ -1,4 +1,4 @@
-package band.kessokuteatime.lightemittingtriode.content.block.base;
+package band.kessokuteatime.lightemittingtriode.content.block.base.extension;
 
 import band.kessokuteatime.lightemittingtriode.content.ModRegistries;
 import net.minecraft.block.Block;

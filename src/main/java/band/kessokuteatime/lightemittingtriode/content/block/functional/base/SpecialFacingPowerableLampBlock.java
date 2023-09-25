@@ -2,8 +2,8 @@ package band.kessokuteatime.lightemittingtriode.content.block.functional.base;
 
 import band.kessokuteatime.lightemittingtriode.VoxelShaper;
 import band.kessokuteatime.lightemittingtriode.content.ModRegistries;
-import band.kessokuteatime.lightemittingtriode.content.Variant;
-import band.kessokuteatime.lightemittingtriode.content.block.base.WithCustomBlockModel;
+import band.kessokuteatime.lightemittingtriode.content.block.base.extension.WithCustomBlockModel;
+import band.kessokuteatime.lightemittingtriode.content.variant.Wrapper;
 import net.minecraft.block.*;
 import net.minecraft.block.enums.WallMountLocation;
 import net.minecraft.data.client.*;
@@ -25,7 +25,7 @@ import org.jetbrains.annotations.Nullable;
 import java.util.function.BiFunction;
 
 public class SpecialFacingPowerableLampBlock extends AbstractPowerableLampBlock implements WithCustomBlockModel, PoweredBlockModelModifiers {
-    public SpecialFacingPowerableLampBlock(Variant.Wrapper wrapper) {
+    public SpecialFacingPowerableLampBlock(Wrapper wrapper) {
         super(wrapper);
         setDefaultState(
                 getDefaultState()

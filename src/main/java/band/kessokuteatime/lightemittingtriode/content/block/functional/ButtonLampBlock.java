@@ -1,8 +1,8 @@
 package band.kessokuteatime.lightemittingtriode.content.block.functional;
 
 import band.kessokuteatime.lightemittingtriode.VoxelShaper;
-import band.kessokuteatime.lightemittingtriode.content.Variant;
 import band.kessokuteatime.lightemittingtriode.content.block.functional.base.SpecialFacingPowerableLampBlock;
+import band.kessokuteatime.lightemittingtriode.content.variant.Wrapper;
 import net.minecraft.block.*;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.player.PlayerEntity;
@@ -27,7 +27,7 @@ import org.jetbrains.annotations.Nullable;
 public class ButtonLampBlock extends SpecialFacingPowerableLampBlock {
     private final int pressTicks;
 
-    public ButtonLampBlock(Variant.Wrapper wrapper, int pressTicks) {
+    public ButtonLampBlock(Wrapper wrapper, int pressTicks) {
         super(wrapper);
         this.pressTicks = pressTicks;
     }

@@ -1,7 +1,8 @@
 package band.kessokuteatime.lightemittingtriode.content.block.base;
 
 import band.kessokuteatime.lightemittingtriode.LightEmittingTriode;
-import band.kessokuteatime.lightemittingtriode.content.Variant;
+import band.kessokuteatime.lightemittingtriode.content.block.base.extension.WithCustomBlockRecipe;
+import band.kessokuteatime.lightemittingtriode.content.variant.Wrapper;
 import net.minecraft.block.AbstractGlassBlock;
 import net.minecraft.block.BlockState;
 import net.minecraft.data.server.recipe.RecipeJsonProvider;
@@ -15,14 +16,14 @@ import net.minecraft.world.World;
 import java.util.function.Consumer;
 
 public abstract class AbstractLampBlock extends AbstractGlassBlock implements WithCustomBlockRecipe, OfAnotherColor {
-    protected final Variant.Wrapper wrapper;
+    protected final Wrapper wrapper;
 
-    protected AbstractLampBlock(Variant.Wrapper wrapper) {
+    protected AbstractLampBlock(Wrapper wrapper) {
         super(wrapper.buildSettings());
         this.wrapper = wrapper;
     }
 
-    protected Variant.Wrapper wrapper() {
+    protected Wrapper wrapper() {
         return wrapper;
     }
 
@@ -41,7 +42,7 @@ public abstract class AbstractLampBlock extends AbstractGlassBlock implements Wi
 
     @Override
     public BlockState ofAnotherColor(BlockState state, DyeColor dyeColor) {
-        return wrapper().block(wrapper().basis(), dyeColor).getDefaultState();
+        return Wrapper.block(wrapper().basis(), dyeColor).getDefaultState();
     }
 
     public abstract boolean isLit(BlockState state);
