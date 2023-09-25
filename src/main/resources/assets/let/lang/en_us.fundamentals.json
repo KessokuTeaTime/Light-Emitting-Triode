@@ -1,5 +1,5 @@
 {
-    "item.let.shade": "The Shade",
+    "item.let.shade": "Shade",
     "item.let.bulb": "Bulb",
     "item.let.led": "Light Emitting Diode",
     "item.let.let": "Light Emitting Triode",
@@ -25,6 +25,11 @@
 
     "block.let.detector": "%s Detector",
 
-    "tooltip.let.dyable": "§7Can be colored by dyes",
-    "tooltip.let.dimmable": "§7Can be dimmed by the shade"
+    "tooltip.let.feature.dyable": "§7Can be colored by §fdyes",
+    "tooltip.let.feature.dimmable": "§7Can be dimmed by §fshades",
+
+    "tooltip.let.shade": "§7Can dim light sources\n§7Can be scraped off using tools",
+    "tooltip.let.switch": "§7Useful and emits light",
+    "tooltip.let.button": "§7Like wooden buttons but emits light",
+    "tooltip.let.detector": "§7Detects nearby entities and emits light"
 }

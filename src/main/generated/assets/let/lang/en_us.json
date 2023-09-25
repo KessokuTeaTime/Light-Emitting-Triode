@@ -30,9 +30,10 @@
   "item.let.bulb": "Bulb",
   "item.let.led": "Light Emitting Diode",
   "item.let.let": "Light Emitting Triode",
-  "item.let.shade": "The Shade",
+  "item.let.shade": "Shade",
   "item.let.tube": "Tube",
   "itemGroup.let.general": "Light Emitting Triode",
-  "tooltip.let.dimmable": "§7Can be dimmed by the shade",
-  "tooltip.let.dyable": "§7Can be colored by dyes"
+  "tooltip.let.dimmable": "§7Can be dimmed by §fshades",
+  "tooltip.let.dyable": "§7Can be colored by §fdyes",
+  "tooltip.let.shade": "§7Can dim light sources\n§7Can be scraped off using tools"
 }

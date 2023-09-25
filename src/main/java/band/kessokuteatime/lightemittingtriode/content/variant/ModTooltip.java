@@ -5,13 +5,17 @@ import net.minecraft.text.MutableText;
 import net.minecraft.text.Text;
 
 public enum ModTooltip {
-    DYABLE("dyable"),
-    DIMMABLE("dimmable");
+    DYABLE(true, "dyable"),
+    DIMMABLE(true, "dimmable"),
+
+    SHADE(false, "shade"),
+    SWITCH(false, "switch"),
+    BUTTON(false, "button");
 
     final String translationKey;
 
-    ModTooltip(String... paths) {
-        this.translationKey = LightEmittingTriode.idString("tooltip", paths);
+    ModTooltip(boolean featured, String... paths) {
+        this.translationKey = LightEmittingTriode.tooltipKey(featured, paths);
     }
 
     public String getTranslationKey() {

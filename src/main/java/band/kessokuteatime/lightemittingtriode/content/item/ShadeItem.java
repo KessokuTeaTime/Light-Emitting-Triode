@@ -2,20 +2,36 @@ package band.kessokuteatime.lightemittingtriode.content.item;
 
 import band.kessokuteatime.lightemittingtriode.LightEmittingTriode;
 import band.kessokuteatime.lightemittingtriode.content.ModRegistries;
+import band.kessokuteatime.lightemittingtriode.content.item.base.extension.WithMultilineTooltip;
 import net.minecraft.block.BlockState;
+import net.minecraft.client.item.TooltipContext;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.ItemUsageContext;
 import net.minecraft.sound.SoundCategory;
 import net.minecraft.sound.SoundEvents;
+import net.minecraft.text.Text;
 import net.minecraft.util.ActionResult;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
+import org.jetbrains.annotations.Nullable;
 
-public class ShadeItem extends Item {
+import java.util.List;
+
+public class ShadeItem extends Item implements WithMultilineTooltip {
     public ShadeItem(Settings settings) {
         super(settings);
+    }
+
+    @Override
+    public void appendTooltip(ItemStack stack, @Nullable World world, List<Text> tooltip, TooltipContext context) {
+        super.appendTooltip(stack, world, tooltip, context);
+
+        addMultilineTooltip(
+                tooltip::add,
+                Text.translatable(LightEmittingTriode.idString("tooltip", "shade"))
+        );
     }
 
     @Override

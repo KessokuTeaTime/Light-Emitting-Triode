@@ -6,6 +6,7 @@ import net.minecraft.block.Block;
 import net.minecraft.block.BlockState;
 import net.minecraft.state.StateManager;
 import net.minecraft.state.property.Properties;
+import net.minecraft.text.MutableText;
 import net.minecraft.util.DyeColor;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.Direction;
@@ -34,6 +35,11 @@ public abstract class AbstractPowerableLampBlock extends AbstractWaterLoggableLa
     @Override
     public boolean isLit(BlockState state) {
         return state.get(Properties.POWERED);
+    }
+
+    @Override
+    public MutableText getName() {
+        return (MutableText) wrapper().blockItem().getName();
     }
 
     @Override

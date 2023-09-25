@@ -22,7 +22,9 @@ import org.joml.Vector3f;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.List;
 
 public class LightEmittingTriode implements ModInitializer {
     public static final String ID = "let", NAME = "Light Emitting Triode";
@@ -30,6 +32,17 @@ public class LightEmittingTriode implements ModInitializer {
 
     public static String idString(String category, String... paths) {
         return category + "." + ID + "." + String.join(".", paths);
+    }
+
+    public static String tooltipKey(boolean featured, String... paths) {
+        if (featured) {
+            ArrayList<String> featuredPaths = new ArrayList<>(List.of("feature"));
+            featuredPaths.addAll(List.of(paths));
+
+            paths = featuredPaths.toArray(String[]::new);
+        }
+
+        return idString("tooltip", paths);
     }
 
     public static MutableText translatable(String category, String... paths) {

@@ -87,7 +87,7 @@ public enum Variant {
     CEILING("ceiling", size -> 10,
             size -> VoxelShaper.fromBottomCenter(16, 1),
             FacingLampBlock::new,
-            InventoryColoredBlockItem::new,
+            ColoredBlockItem::new,
 
             List.of(ModTooltip.DYABLE, ModTooltip.DIMMABLE),
 

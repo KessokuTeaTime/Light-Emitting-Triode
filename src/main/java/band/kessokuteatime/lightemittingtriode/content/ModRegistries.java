@@ -136,6 +136,11 @@ public class ModRegistries {
     }
 
     public static class Items {
+        public static final Item SHADE = registerItem(
+                LightEmittingTriode.id("shade"),
+                new ShadeItem(new Item.Settings())
+        );
+
         public static final Item BULB = registerItem(
                 LightEmittingTriode.id("bulb"),
                 new Item(new Item.Settings())
@@ -149,11 +154,6 @@ public class ModRegistries {
         public static final Item LET = registerItem(
                 LightEmittingTriode.id("let"),
                 new Item(new Item.Settings())
-        );
-
-        public static final Item SHADE = registerItem(
-                LightEmittingTriode.id("shade"),
-                new ShadeItem(new Item.Settings())
         );
 
         public static final Item TUBE = registerItem(
