@@ -1,18 +1,6 @@
 {
   "parent": "minecraft:recipes/root",
   "criteria": {
-    "has_nixie_tube": {
-      "conditions": {
-        "items": [
-          {
-            "items": [
-              "let:nixie_tube"
-            ]
-          }
-        ]
-      },
-      "trigger": "minecraft:inventory_changed"
-    },
     "has_quartz": {
       "conditions": {
         "items": [
@@ -31,6 +19,18 @@
       },
       "trigger": "minecraft:recipe_unlocked"
     },
+    "has_tube": {
+      "conditions": {
+        "items": [
+          {
+            "items": [
+              "let:tube"
+            ]
+          }
+        ]
+      },
+      "trigger": "minecraft:inventory_changed"
+    },
     "has_yellow_dye": {
       "conditions": {
         "items": [
@@ -47,7 +47,7 @@
   "requirements": [
     [
       "has_quartz",
-      "has_nixie_tube",
+      "has_tube",
       "has_yellow_dye",
       "has_the_recipe"
     ]

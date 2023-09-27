@@ -3,10 +3,10 @@
   "category": "building",
   "ingredients": [
     {
-      "item": "let:nixie_tube"
+      "item": "let:tube"
     },
     {
-      "item": "let:nixie_tube"
+      "item": "let:tube"
     },
     {
       "item": "let:shade"
