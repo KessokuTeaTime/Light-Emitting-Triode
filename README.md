@@ -1,4 +1,4 @@
-### <p align="right">[`→` Modrinth]()</p>
+### <p align="right">[`→` Modrinth](https://modrinth.com/mod/let)</p>
 
 # Light Emitting Triode
 
