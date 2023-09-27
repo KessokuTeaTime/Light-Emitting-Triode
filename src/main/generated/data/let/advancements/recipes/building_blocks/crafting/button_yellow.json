@@ -1,23 +1,23 @@
 {
   "parent": "minecraft:recipes/root",
   "criteria": {
-    "has_the_recipe": {
-      "conditions": {
-        "recipe": "let:crafting/button_yellow"
-      },
-      "trigger": "minecraft:recipe_unlocked"
-    },
-    "has_tube": {
+    "has_handheld_tube": {
       "conditions": {
         "items": [
           {
             "items": [
-              "let:tube"
+              "let:handheld_tube"
             ]
           }
         ]
       },
       "trigger": "minecraft:inventory_changed"
+    },
+    "has_the_recipe": {
+      "conditions": {
+        "recipe": "let:crafting/button_yellow"
+      },
+      "trigger": "minecraft:recipe_unlocked"
     },
     "has_yellow_dye": {
       "conditions": {
@@ -34,7 +34,7 @@
   },
   "requirements": [
     [
-      "has_tube",
+      "has_handheld_tube",
       "has_yellow_dye",
       "has_the_recipe"
     ]

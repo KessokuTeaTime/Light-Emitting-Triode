@@ -3,7 +3,7 @@
   "category": "building",
   "ingredients": [
     {
-      "item": "let:tube"
+      "item": "let:handheld_tube"
     },
     {
       "item": "minecraft:brown_dye"

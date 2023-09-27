@@ -13,6 +13,18 @@
       },
       "trigger": "minecraft:inventory_changed"
     },
+    "has_handheld_tube": {
+      "conditions": {
+        "items": [
+          {
+            "items": [
+              "let:handheld_tube"
+            ]
+          }
+        ]
+      },
+      "trigger": "minecraft:inventory_changed"
+    },
     "has_light_blue_dye": {
       "conditions": {
         "items": [
@@ -42,23 +54,11 @@
         "recipe": "let:crafting/detector_light_blue"
       },
       "trigger": "minecraft:recipe_unlocked"
-    },
-    "has_tube": {
-      "conditions": {
-        "items": [
-          {
-            "items": [
-              "let:tube"
-            ]
-          }
-        ]
-      },
-      "trigger": "minecraft:inventory_changed"
     }
   },
   "requirements": [
     [
-      "has_tube",
+      "has_handheld_tube",
       "has_shade",
       "has_gold_nugget",
       "has_light_blue_dye",

@@ -3,10 +3,10 @@
   "category": "building",
   "ingredients": [
     {
-      "item": "let:tube"
+      "item": "let:handheld_tube"
     },
     {
-      "item": "let:tube"
+      "item": "let:handheld_tube"
     },
     {
       "item": "let:shade"

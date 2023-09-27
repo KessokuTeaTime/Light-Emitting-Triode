@@ -13,6 +13,18 @@
       },
       "trigger": "minecraft:inventory_changed"
     },
+    "has_handheld_tube": {
+      "conditions": {
+        "items": [
+          {
+            "items": [
+              "let:handheld_tube"
+            ]
+          }
+        ]
+      },
+      "trigger": "minecraft:inventory_changed"
+    },
     "has_quartz": {
       "conditions": {
         "items": [
@@ -30,24 +42,12 @@
         "recipe": "let:crafting/switch_cyan"
       },
       "trigger": "minecraft:recipe_unlocked"
-    },
-    "has_tube": {
-      "conditions": {
-        "items": [
-          {
-            "items": [
-              "let:tube"
-            ]
-          }
-        ]
-      },
-      "trigger": "minecraft:inventory_changed"
     }
   },
   "requirements": [
     [
       "has_quartz",
-      "has_tube",
+      "has_handheld_tube",
       "has_cyan_dye",
       "has_the_recipe"
     ]

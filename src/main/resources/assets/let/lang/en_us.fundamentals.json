@@ -4,6 +4,7 @@
     "item.let.led": "Light Emitting Diode",
     "item.let.let": "Light Emitting Triode",
     "item.let.tube": "Tube",
+    "item.let.handheld_tube": "Nixie Tube",
 
     "itemGroup.let.general": "Light Emitting Triode",
 

@@ -13,6 +13,18 @@
       },
       "trigger": "minecraft:inventory_changed"
     },
+    "has_handheld_tube": {
+      "conditions": {
+        "items": [
+          {
+            "items": [
+              "let:handheld_tube"
+            ]
+          }
+        ]
+      },
+      "trigger": "minecraft:inventory_changed"
+    },
     "has_shade": {
       "conditions": {
         "items": [
@@ -31,18 +43,6 @@
       },
       "trigger": "minecraft:recipe_unlocked"
     },
-    "has_tube": {
-      "conditions": {
-        "items": [
-          {
-            "items": [
-              "let:tube"
-            ]
-          }
-        ]
-      },
-      "trigger": "minecraft:inventory_changed"
-    },
     "has_white_dye": {
       "conditions": {
         "items": [
@@ -58,7 +58,7 @@
   },
   "requirements": [
     [
-      "has_tube",
+      "has_handheld_tube",
       "has_shade",
       "has_gold_nugget",
       "has_white_dye",

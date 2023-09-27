@@ -1,6 +1,18 @@
 {
   "parent": "minecraft:recipes/root",
   "criteria": {
+    "has_handheld_tube": {
+      "conditions": {
+        "items": [
+          {
+            "items": [
+              "let:handheld_tube"
+            ]
+          }
+        ]
+      },
+      "trigger": "minecraft:inventory_changed"
+    },
     "has_light_gray_dye": {
       "conditions": {
         "items": [
@@ -30,24 +42,12 @@
         "recipe": "let:crafting/switch_light_gray"
       },
       "trigger": "minecraft:recipe_unlocked"
-    },
-    "has_tube": {
-      "conditions": {
-        "items": [
-          {
-            "items": [
-              "let:tube"
-            ]
-          }
-        ]
-      },
-      "trigger": "minecraft:inventory_changed"
     }
   },
   "requirements": [
     [
       "has_quartz",
-      "has_tube",
+      "has_handheld_tube",
       "has_light_gray_dye",
       "has_the_recipe"
     ]
