@@ -13,24 +13,24 @@
       },
       "trigger": "minecraft:inventory_changed"
     },
-    "has_handheld_tube": {
-      "conditions": {
-        "items": [
-          {
-            "items": [
-              "let:handheld_tube"
-            ]
-          }
-        ]
-      },
-      "trigger": "minecraft:inventory_changed"
-    },
     "has_light_gray_dye": {
       "conditions": {
         "items": [
           {
             "items": [
               "minecraft:light_gray_dye"
+            ]
+          }
+        ]
+      },
+      "trigger": "minecraft:inventory_changed"
+    },
+    "has_nixie_tube": {
+      "conditions": {
+        "items": [
+          {
+            "items": [
+              "let:nixie_tube"
             ]
           }
         ]
@@ -58,7 +58,7 @@
   },
   "requirements": [
     [
-      "has_handheld_tube",
+      "has_nixie_tube",
       "has_shade",
       "has_gold_nugget",
       "has_light_gray_dye",

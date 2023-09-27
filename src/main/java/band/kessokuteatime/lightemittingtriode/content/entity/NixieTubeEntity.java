@@ -1,14 +1,10 @@
 package band.kessokuteatime.lightemittingtriode.content.entity;
 
 import band.kessokuteatime.lightemittingtriode.content.ModRegistries;
-import com.google.common.collect.Sets;
-import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityType;
 import net.minecraft.entity.LivingEntity;
-import net.minecraft.entity.projectile.ArrowEntity;
 import net.minecraft.entity.projectile.PersistentProjectileEntity;
 import net.minecraft.item.ItemStack;
-import net.minecraft.potion.Potions;
 import net.minecraft.world.World;
 
 public class NixieTubeEntity extends PersistentProjectileEntity {
@@ -25,8 +21,17 @@ public class NixieTubeEntity extends PersistentProjectileEntity {
         super(ModRegistries.EntityTypes.NIXIE_TUBE, owner, world);
     }
 
+    public int getLuminance() {
+        return 20;
+    }
+
     @Override
     protected ItemStack asItemStack() {
         return ModRegistries.Items.NIXIE_TUBE.getDefaultStack();
+    }
+
+    @Override
+    public boolean isAttackable() {
+        return true;
     }
 }

@@ -1,24 +1,24 @@
 {
   "parent": "minecraft:recipes/root",
   "criteria": {
-    "has_handheld_tube": {
-      "conditions": {
-        "items": [
-          {
-            "items": [
-              "let:handheld_tube"
-            ]
-          }
-        ]
-      },
-      "trigger": "minecraft:inventory_changed"
-    },
     "has_magenta_dye": {
       "conditions": {
         "items": [
           {
             "items": [
               "minecraft:magenta_dye"
+            ]
+          }
+        ]
+      },
+      "trigger": "minecraft:inventory_changed"
+    },
+    "has_nixie_tube": {
+      "conditions": {
+        "items": [
+          {
+            "items": [
+              "let:nixie_tube"
             ]
           }
         ]
@@ -34,7 +34,7 @@
   },
   "requirements": [
     [
-      "has_handheld_tube",
+      "has_nixie_tube",
       "has_magenta_dye",
       "has_the_recipe"
     ]

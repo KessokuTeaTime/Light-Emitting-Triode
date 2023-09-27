@@ -2,6 +2,7 @@ package band.kessokuteatime.lightemittingtriode;
 
 import band.kessokuteatime.lightemittingtriode.content.ModRegistries;
 import net.fabricmc.api.ModInitializer;
+import net.minecraft.client.render.LightmapTextureManager;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.Items;
