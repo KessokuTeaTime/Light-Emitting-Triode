@@ -222,12 +222,12 @@ public enum Variant {
 
                     wrapper -> ShapelessRecipeJsonBuilder.create(RecipeCategory.BUILDING_BLOCKS, wrapper.block())
                             .input(Items.QUARTZ)
-                            .input(ModRegistries.Items.NIXIE_TUBE)
+                            .input(ModRegistries.Items.TUBE)
                             .input(wrapper.dye())
                             .criterion(FabricRecipeProvider.hasItem(Items.QUARTZ),
                                     FabricRecipeProvider.conditionsFromItem(Items.QUARTZ))
-                            .criterion(FabricRecipeProvider.hasItem(ModRegistries.Items.NIXIE_TUBE),
-                                    FabricRecipeProvider.conditionsFromItem(ModRegistries.Items.NIXIE_TUBE))
+                            .criterion(FabricRecipeProvider.hasItem(ModRegistries.Items.TUBE),
+                                    FabricRecipeProvider.conditionsFromItem(ModRegistries.Items.TUBE))
                             .criterion(FabricRecipeProvider.hasItem(wrapper.dye()),
                                     FabricRecipeProvider.conditionsFromItem(wrapper.dye())),
 
@@ -251,10 +251,10 @@ public enum Variant {
                     List::of,
 
                     wrapper -> ShapelessRecipeJsonBuilder.create(RecipeCategory.BUILDING_BLOCKS, wrapper.block())
-                            .input(ModRegistries.Items.NIXIE_TUBE)
+                            .input(ModRegistries.Items.TUBE)
                             .input(wrapper.dye())
-                            .criterion(FabricRecipeProvider.hasItem(ModRegistries.Items.NIXIE_TUBE),
-                                    FabricRecipeProvider.conditionsFromItem(ModRegistries.Items.NIXIE_TUBE))
+                            .criterion(FabricRecipeProvider.hasItem(ModRegistries.Items.TUBE),
+                                    FabricRecipeProvider.conditionsFromItem(ModRegistries.Items.TUBE))
                             .criterion(FabricRecipeProvider.hasItem(wrapper.dye()),
                                     FabricRecipeProvider.conditionsFromItem(wrapper.dye())),
 
@@ -288,12 +288,12 @@ public enum Variant {
                     () -> List.of(ModRegistries.BlockTag.DIMMABLES, ModRegistries.BlockTag.DYABLES),
 
                     wrapper -> ShapelessRecipeJsonBuilder.create(RecipeCategory.BUILDING_BLOCKS, wrapper.block())
-                            .input(ModRegistries.Items.NIXIE_TUBE, 2)
+                            .input(ModRegistries.Items.TUBE, 2)
                             .input(ModRegistries.Items.SHADE)
                             .input(Items.GOLD_NUGGET)
                             .input(wrapper.dye())
-                            .criterion(FabricRecipeProvider.hasItem(ModRegistries.Items.NIXIE_TUBE),
-                                    FabricRecipeProvider.conditionsFromItem(ModRegistries.Items.NIXIE_TUBE))
+                            .criterion(FabricRecipeProvider.hasItem(ModRegistries.Items.TUBE),
+                                    FabricRecipeProvider.conditionsFromItem(ModRegistries.Items.TUBE))
                             .criterion(FabricRecipeProvider.hasItem(ModRegistries.Items.SHADE),
                                     FabricRecipeProvider.conditionsFromItem(ModRegistries.Items.SHADE))
                             .criterion(FabricRecipeProvider.hasItem(Items.GOLD_NUGGET),

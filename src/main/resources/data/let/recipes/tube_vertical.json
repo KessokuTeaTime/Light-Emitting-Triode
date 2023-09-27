@@ -5,10 +5,10 @@
   ],
   "key": {
     "1": {
-      "item": "minecraft:quartz"
+      "item": "minecraft:redstone"
     },
     "2": {
-      "item": "minecraft:iron_bars"
+      "item": "let:bulb"
     }
   },
   "result": {

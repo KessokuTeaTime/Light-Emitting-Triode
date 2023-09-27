@@ -4,26 +4,19 @@ import band.kessokuteatime.lightemittingtriode.LightEmittingTriode;
 import band.kessokuteatime.lightemittingtriode.content.block.base.AbstractLampBlock;
 import band.kessokuteatime.lightemittingtriode.content.block.base.tag.Dimmable;
 import band.kessokuteatime.lightemittingtriode.content.block.base.tag.Dyable;
-import band.kessokuteatime.lightemittingtriode.content.entity.NixieTubeEntity;
-import band.kessokuteatime.lightemittingtriode.content.item.NixieTubeItem;
 import band.kessokuteatime.lightemittingtriode.content.item.ShadeItem;
 import band.kessokuteatime.lightemittingtriode.content.variant.Variant;
 import band.kessokuteatime.lightemittingtriode.content.variant.Wrapper;
-import band.kessokuteatime.lightemittingtriode.render.entity.NixieTubeEntityRenderer;
 import net.fabricmc.fabric.api.blockrenderlayer.v1.BlockRenderLayerMap;
 import net.fabricmc.fabric.api.client.rendering.v1.ColorProviderRegistry;
-import net.fabricmc.fabric.api.client.rendering.v1.EntityRendererRegistry;
 import net.fabricmc.fabric.api.itemgroup.v1.FabricItemGroup;
 import net.fabricmc.fabric.api.itemgroup.v1.ItemGroupEvents;
-import net.fabricmc.fabric.api.object.builder.v1.entity.FabricEntityTypeBuilder;
 import net.minecraft.block.Block;
 import net.minecraft.client.render.RenderLayer;
-import net.minecraft.client.render.entity.ArrowEntityRenderer;
-import net.minecraft.client.render.entity.FlyingItemEntityRenderer;
-import net.minecraft.entity.EntityDimensions;
-import net.minecraft.entity.EntityType;
-import net.minecraft.entity.SpawnGroup;
-import net.minecraft.item.*;
+import net.minecraft.item.Item;
+import net.minecraft.item.ItemConvertible;
+import net.minecraft.item.ItemGroup;
+import net.minecraft.item.ItemStack;
 import net.minecraft.registry.Registries;
 import net.minecraft.registry.Registry;
 import net.minecraft.registry.RegistryKeys;
@@ -57,7 +50,7 @@ public class ModRegistries {
         public static void establish() {
             net.minecraft.registry.Registries.ITEM_GROUP.getKey(GENERAL).ifPresent(key ->
                     ItemGroupEvents.modifyEntriesEvent(key).register(entries -> {
-                        fill(entries, Items.SHADE, Items.BULB, Items.LED, Items.LET, Items.TUBE, Items.NIXIE_TUBE);
+                        fill(entries, Items.SHADE, Items.BULB, Items.LED, Items.LET, Items.TUBE);
 
                         // Guard the items' order
                         Arrays.stream(Blocks.Type.values())
@@ -172,11 +165,6 @@ public class ModRegistries {
                 new Item(new Item.Settings())
         );
 
-        public static final Item NIXIE_TUBE = registerItem(
-                LightEmittingTriode.id("nixie_tube"),
-                new NixieTubeItem(new Item.Settings())
-        );
-
         public static void register() {
         }
     }
@@ -204,23 +192,7 @@ public class ModRegistries {
         }
     }
 
-    public static class EntityTypes {
-        public static final EntityType<NixieTubeEntity> NIXIE_TUBE = Registry.register(
-                Registries.ENTITY_TYPE, LightEmittingTriode.id("nixie_tube"),
-                FabricEntityTypeBuilder.<NixieTubeEntity>create(SpawnGroup.MISC, NixieTubeEntity::new)
-                        .dimensions(EntityDimensions.fixed(0.5F, 0.5F))
-                        .trackRangeBlocks(4)
-                        .trackedUpdateRate(20)
-                        .build()
-        );
-
-        public static void register() {
-            EntityRendererRegistry.register(NIXIE_TUBE, NixieTubeEntityRenderer::new);
-        }
-    }
-
     public static void register() {
-        EntityTypes.register();
         Blocks.register();
         Items.register();
         ItemGroups.establish();
