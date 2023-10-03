@@ -4,7 +4,6 @@
     "item.let.led": "Light Emitting Diode",
     "item.let.let": "Light Emitting Triode",
     "item.let.tube": "Tube",
-    "item.let.nixie_tube": "Nixie Tube",
 
     "itemGroup.let.general": "Light Emitting Triode",
 
@@ -33,5 +32,16 @@
     "tooltip.let.feature.emits_light": "§8- Emits light when triggered",
 
     "tooltip.let.shade": "§7Use on light sources to make\n§7them dim, while can be scraped\n§7off using tools",
-    "tooltip.let.detector": "§7Detects nearby entities"
+    "tooltip.let.detector": "§7Detects nearby entities",
+
+    "collapsibleEntry.let.blocks.clear": "Clear Triodes",
+    "collapsibleEntry.let.blocks.slab": "Slab Triodes",
+    "collapsibleEntry.let.blocks.ceiling": "Ceiling Triodes",
+
+    "collapsibleEntry.let.blocks.lantern": "Lantern Diodes",
+    "collapsibleEntry.let.blocks.alarm": "Alarm Diodes",
+
+    "collapsibleEntry.let.blocks.switch": "Switches",
+    "collapsibleEntry.let.blocks.button": "Buttons",
+    "collapsibleEntry.let.blocks.detector": "Detectors"
 }

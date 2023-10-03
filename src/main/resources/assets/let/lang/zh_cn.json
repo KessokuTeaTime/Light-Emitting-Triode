@@ -1,0 +1,64 @@
+{
+    "item.let.shade": "遮光粉",
+    "item.let.bulb": "灯泡",
+    "item.let.led": "发光二极管",
+    "item.let.let": "发光三极管",
+    "item.let.tube": "极性管",
+
+    "color.let.black": "黑色",
+    "color.let.blue": "蓝色",
+    "color.let.brown": "棕色",
+    "color.let.cyan": "青色",
+    "color.let.gray": "灰色",
+    "color.let.green": "绿色",
+    "color.let.light_blue": "淡蓝色",
+    "color.let.light_gray": "淡灰色",
+    "color.let.lime": "黄绿色",
+    "color.let.magenta": "品红色",
+    "color.let.orange": "橙色",
+    "color.let.pink": "粉色",
+    "color.let.purple": "紫色",
+    "color.let.red": "红色",
+    "color.let.white": "白色",
+    "color.let.yellow": "黄色",
+
+    "itemGroup.let.general": "发光三极管",
+
+    "block.let.clear": "%s灯",
+    "block.let.slab": "%s半高灯",
+
+    "block.let.ceiling": "%s地毯灯",
+
+    "block.let.lantern_small": "小型%s灯笼",
+    "block.let.lantern": "%s灯笼",
+    "block.let.lantern_large": "大型%s灯笼",
+
+    "block.let.alarm_small": "小型%s警报灯",
+    "block.let.alarm": "%s警报灯",
+    "block.let.alarm_large": "大型%s警报灯",
+
+    "block.let.switch": "%s开关",
+    "block.let.button": "%s按钮",
+
+    "block.let.detector": "%s探测器",
+
+    "tooltip.let.empty": "",
+
+    "tooltip.let.feature.dyable": "§8- 可以被§7染料§8染色",
+    "tooltip.let.feature.dimmable": "§8- 可以被§7遮光粉§8遮住光芒",
+    "tooltip.let.feature.emits_light": "§8- 在被触发时发光",
+
+    "tooltip.let.shade": "§7对着光源右击可以使它们变暗，使用工具右击\n§7可以恢复光芒",
+    "tooltip.let.detector": "§7自动检测附近的实体",
+
+    "collapsibleEntry.let.blocks.clear": "三极管灯",
+    "collapsibleEntry.let.blocks.slab": "三极管半高灯",
+    "collapsibleEntry.let.blocks.ceiling": "三极管地毯灯",
+
+    "collapsibleEntry.let.blocks.lantern": "二极管灯笼",
+    "collapsibleEntry.let.blocks.alarm": "二极管警报灯",
+
+    "collapsibleEntry.let.blocks.switch": "开关",
+    "collapsibleEntry.let.blocks.button": "按钮",
+    "collapsibleEntry.let.blocks.detector": "探测器"
+}

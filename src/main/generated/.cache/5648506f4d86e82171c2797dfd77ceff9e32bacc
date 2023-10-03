@@ -1,4 +1,4 @@
-// 1.20	2023-09-27T21:55:09.662778	Light Emitting Triode/Recipes
+// 1.20	2023-10-03T13:13:39.396251	Light Emitting Triode/Recipes
 219b830dd6436f2b5359b9cdfe75a66ba7c895f6 data/let/recipes/recoloring/to_green/lantern_white.json
 01e8ea64c63c04a43cc53b86a085391c4e218437 data/let/advancements/recipes/building_blocks/crafting/lantern_large_lime.json
 bc20bd247a7f987a236e51260a197350d97d3fc7 data/let/recipes/recoloring/to_red/clear_gray.json
@@ -1903,8 +1903,8 @@ dee58ca94a8c1e521a0b7ba97dce38d50e1a1d50 data/let/recipes/recoloring/to_red/alar
 681c82215c8c1e0b5f3a798ff2dc42261061df38 data/let/advancements/recipes/building_blocks/recoloring/to_red/switch_pink.json
 43fb025b3cc9d8ec2ebf3272dc47407810c57f26 data/let/advancements/recipes/building_blocks/recoloring/to_light_blue/slab_yellow.json
 6a9caaff04a192a23cd710336837a0b8bc98d6ba data/let/recipes/recoloring/to_light_blue/lantern_small_red.json
-7631ef0c715629617f5fc587592baffbe50607c5 data/let/advancements/recipes/building_blocks/recoloring/to_gray/lantern_small_white.json
 4626d6ce15809169c36a35ab19c9a1638f7b6849 data/let/recipes/recoloring/to_red/lantern_small_orange.json
+7631ef0c715629617f5fc587592baffbe50607c5 data/let/advancements/recipes/building_blocks/recoloring/to_gray/lantern_small_white.json
 db4796cbe8cab01edaf12048ef2c34cd56ca7969 data/let/recipes/recoloring/to_black/button_white.json
 9bdbb3828c6b5d9c5f8840adf51b91b936ed5a63 data/let/recipes/recoloring/to_red/clear_white.json
 34c9e605d4b68bb12f2f4cca44e2f5a2c3f72de2 data/let/recipes/recoloring/to_black/lantern_orange.json
@@ -1930,8 +1930,8 @@ d31532a4edfcad1af9497da4e6cfddb0e9dca365 data/let/advancements/recipes/building_
 cc2fbdc0521be9a6537424a10fd225a360aad30b data/let/recipes/recoloring/to_light_gray/alarm_small_pink.json
 21ca1b847c304b0d5e1bc69c49ca0639adec9531 data/let/recipes/recoloring/to_lime/button_black.json
 6d6958badc152c1b05d6cf9827ab75bc2593f2c0 data/let/advancements/recipes/building_blocks/recoloring/to_light_gray/slab_light_blue.json
-d6d2abf4764a8b2410b5b06aa9da504488cdaaa5 data/let/advancements/recipes/building_blocks/crafting/slab_lime.json
 bcc054aa17ebca26f2bac166c8a5e2ef31685687 data/let/advancements/recipes/building_blocks/upgrading/ceiling_green.json
+d6d2abf4764a8b2410b5b06aa9da504488cdaaa5 data/let/advancements/recipes/building_blocks/crafting/slab_lime.json
 4f0364803e87ded8f99c6d497ae7f67bb3055243 data/let/recipes/recoloring/to_light_gray/clear_brown.json
 837e3e8805fbdf3a40011d94c343f68e4e2c8893 data/let/recipes/recoloring/to_purple/alarm_large_magenta.json
 dc4dc521ef0daeead7534c453efee55f9495f9f8 data/let/recipes/recoloring/to_red/slab_light_gray.json
@@ -4784,8 +4784,8 @@ d133ccc8a7722853eb9e6b9db01ce15fa1b930dc data/let/recipes/recoloring/to_white/sl
 e93ba3e8521ffd8fcf68c7c12ec58dea20de2b33 data/let/advancements/recipes/building_blocks/recoloring/to_brown/slab_white.json
 3015e61d273d1dceb0ce965ff935cd9e3e46718d data/let/recipes/recoloring/to_white/lantern_small_lime.json
 85c892d8c3ab5ddc8dc31afd318c530be54581a9 data/let/advancements/recipes/building_blocks/upgrading/lantern_gray.json
-e04c0be72403796a99a9363d13c54f788e9eae05 data/let/advancements/recipes/building_blocks/recoloring/to_brown/lantern_light_gray.json
 64488b888492e5bb89749db793fa79e7f4a03b30 data/let/recipes/recoloring/to_green/lantern_light_gray.json
+e04c0be72403796a99a9363d13c54f788e9eae05 data/let/advancements/recipes/building_blocks/recoloring/to_brown/lantern_light_gray.json
 8e1921d4ec27bfafeae3e0ef2a327b08e7fe1853 data/let/advancements/recipes/building_blocks/recoloring/to_orange/alarm_small_white.json
 224835e053a775ca37df9653d4cca97bd8abe846 data/let/recipes/recoloring/to_magenta/detector_purple.json
 2599b0d2d087628b6e8aab00e70dcc5a19558230 data/let/recipes/recoloring/to_magenta/lantern_large_gray.json
@@ -5939,8 +5939,8 @@ c51390f0188f30f750c4d1213614923c1d8e0757 data/let/advancements/recipes/building_
 7340293cc1e121132c6f805c61689d58c20f2386 data/let/advancements/recipes/building_blocks/recoloring/to_pink/lantern_small_gray.json
 9e9e6b3d38065547bd35fbf343cd800b1a0caec1 data/let/advancements/recipes/building_blocks/recoloring/to_gray/clear_black.json
 6c8054b449943ab828f1e1142f501b690e2b4d72 data/let/recipes/recoloring/to_red/detector_light_blue.json
-d76d9c0cb42eea7a3507340d30fb3ed47a2397f6 data/let/advancements/recipes/building_blocks/recoloring/to_gray/alarm_green.json
 fbf15bbe703e79cfb91664b1733f29748517f8dc data/let/advancements/recipes/building_blocks/recoloring/to_cyan/lantern_lime.json
+d76d9c0cb42eea7a3507340d30fb3ed47a2397f6 data/let/advancements/recipes/building_blocks/recoloring/to_gray/alarm_green.json
 48b86389689bfccdaa6dab9dee8fe855d0d07be9 data/let/advancements/recipes/building_blocks/recoloring/to_green/detector_pink.json
 4779cf8dc7e2ba729517fac4ac2be8b1aa29fb7f data/let/advancements/recipes/building_blocks/recoloring/to_gray/lantern_lime.json
 523a94918ea57cae43d242100245a6dbb31ac77b data/let/advancements/recipes/building_blocks/recoloring/to_magenta/detector_orange.json

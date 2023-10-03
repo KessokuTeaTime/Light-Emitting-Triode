@@ -23,6 +23,9 @@
     ],
     "fabric-datagen": [
       "band.kessokuteatime.lightemittingtriode.datagen.ModDataGenerator"
+    ],
+    "rei_client": [
+      "band.kessokuteatime.lightemittingtriode.plugin.rei.ModREIClientPlugin"
     ]
   },
   "mixins": [
