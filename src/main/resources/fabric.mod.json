@@ -4,7 +4,7 @@
   "version": "${version}",
 
   "name": "Light Emitting Triode",
-  "description": "...And God Said, Let There Be Light; Then There were Redstone Lamps.",
+  "description": "...And god said, let there be light. Light Emitting Triode is a Fabric reimplementation of Light Emitting Diode on higher Minecraft versions.",
   "authors": [
     "Kessoku Tea Time"
   ],
