@@ -21,6 +21,9 @@
     "main": [
       "band.kessokuteatime.lightemittingtriode.LightEmittingTriode"
     ],
+    "client": [
+      "band.kessokuteatime.lightemittingtriode.LightEmittingTriodeClient"
+    ],
     "fabric-datagen": [
       "band.kessokuteatime.lightemittingtriode.datagen.ModDataGenerator"
     ],
