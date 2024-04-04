@@ -120,20 +120,11 @@ public class ModRegistries {
                     Wrapper wrapper = type.basis().with(dyeColor);
                     Identifier id = wrapper.id();
 
-                    Block block = registerBlock(id, wrapper.createBlock());
-                    Item item = registerItem(id, wrapper.createBlockItem());
+                    registerBlock(id, wrapper.createBlock());
+                    registerItem(id, wrapper.createBlockItem());
 
                     // Store the wrapper
                     type.wrappers().add(wrapper);
-
-                    // Register tints
-                    ColorProviderRegistry.BLOCK.register((state, world, pos, tintIndex) -> wrapper.colorOverlay(
-                            ((AbstractLampBlock) state.getBlock()).isLit(state), tintIndex
-                    ), block);
-                    ColorProviderRegistry.ITEM.register((stack, tintIndex) -> wrapper.colorOverlay(false, 2), item);
-
-                    // Make translucent
-                    BlockRenderLayerMap.INSTANCE.putBlock(block, RenderLayer.getTranslucent());
                 }
             }
         }
